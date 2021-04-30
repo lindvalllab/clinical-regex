@@ -2,7 +2,7 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
 const windowUrl = app.isPackaged
-  ? `file://${path.join(__dirname, "../build/index.mdx")}`
+  ? `file://${path.join(__dirname, "../build/index.html")}`
   : `http://localhost:3000`;
 
 let mainWindow;
