@@ -25,7 +25,8 @@
     "start:dev-server": "cross-env BROWSER=none react-scripts start",
     "start:dev-app": "wait-on http://localhost:3000 && electron .",
     "start:dev": "concurrently \"yarn start:dev-server\" \"yarn start:dev-app\"",
-    "build:electron": "yarn build:react && electron-builder"
+    "build:electron": "yarn build:react && electron-builder",
+    "lint": "eslint src"
   },
   "browserslist": {
     "production": [
