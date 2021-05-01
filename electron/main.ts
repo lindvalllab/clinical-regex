@@ -19,7 +19,7 @@ function createWindow() {
   // Disable dev tools menu option if in production.
   if (app.isPackaged) {
     const menu = Menu.getApplicationMenu();
-    if (app.isPackaged && menu !== null) {
+    if (menu !== null) {
       // Find View menu.
       // Typescript expects the role to be 'viewMenu', but in reality it is 'viewmenu'.
       // Convert to lowercase to resolve ambiguity.
