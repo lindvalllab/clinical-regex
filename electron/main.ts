@@ -12,7 +12,7 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      devTools: !app.isPackaged,
+      devTools: !app.isPackaged, // only allow dev tools in development
     },
   });
 
