@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 
 const windowUrl = app.isPackaged
@@ -11,7 +11,36 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      devTools: !app.isPackaged, // only allow dev tools in development
+    },
   });
+
+  // Disable dev tools menu option if in production.
+  if (app.isPackaged) {
+    const menu = Menu.getApplicationMenu();
+    if (menu !== null) {
+      // Find View menu.
+      // Typescript expects the role to be 'viewMenu', but in reality it is 'viewmenu'.
+      // Convert to lowercase to resolve ambiguity.
+      const viewMenu = menu.items.find(
+        (item) =>
+          item.role !== undefined && item.role.toLowerCase() === 'viewmenu'
+      );
+      if (viewMenu !== undefined && viewMenu.submenu !== undefined) {
+        // Find 'Toggle Dev Tools' menu item and disable it.
+        const toggleDevTools = viewMenu.submenu.items.find(
+          (item) =>
+            item.role !== undefined &&
+            item.role.toLowerCase() === 'toggledevtools'
+        );
+        if (toggleDevTools !== undefined) {
+          toggleDevTools.enabled = false;
+          toggleDevTools.visible = false;
+        }
+      }
+    }
+  }
   mainWindow.loadURL(windowUrl);
   mainWindow.on('closed', () => (mainWindow = null));
 }

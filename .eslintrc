@@ -5,7 +5,8 @@
   ],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "max-len": ["error", {"code": 100}]
   }
 }
 
