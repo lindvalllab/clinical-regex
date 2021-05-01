@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "noEmit": false,
+    "outDir": "build"
+  },
+  "include": ["electron"]
+}
