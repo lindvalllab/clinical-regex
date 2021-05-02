@@ -1,8 +1,14 @@
 import React from 'react';
 import logo from './logo.svg';
+import { api } from './api';
 import './App.css';
 
 function App() {
+  const onClick = () => {
+    console.log('Button clicked');
+    api.get(['test arg']);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +24,7 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={onClick}>Test</button>
       </header>
     </div>
   );

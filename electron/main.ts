@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 
 const windowUrl = app.isPackaged
@@ -13,6 +13,10 @@ function createWindow() {
     height: 600,
     webPreferences: {
       devTools: !app.isPackaged, // only allow dev tools in development
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.resolve(path.join(__dirname, 'preload.js')),
+      sandbox: true,
     },
   });
 
@@ -57,4 +61,9 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.handle('get', async (event, arg: string) => {
+  console.log(`Inside ipcMain get handler with arg ${arg}`);
+  return arg;
 });
