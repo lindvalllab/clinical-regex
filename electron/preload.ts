@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
-console.log('Inside preload');
-
 contextBridge.exposeInMainWorld('api', {
-  get: (args: string[]) => ipcRenderer.invoke('get', ...args),
+  getById: (tableName: string, id: number) =>
+    ipcRenderer.invoke('getById', tableName, id),
+  getEntry: (groupId: string) => ipcRenderer.invoke('getEntry', groupId),
 });

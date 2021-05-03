@@ -4,9 +4,10 @@ import { api } from './api';
 import './App.css';
 
 function App() {
-  const onClick = () => {
+  const onClick = async () => {
     console.log('Button clicked');
-    api.get(['test arg']);
+    const result = await api.getById('texts', 1);
+    console.log(result);
   };
 
   return (
