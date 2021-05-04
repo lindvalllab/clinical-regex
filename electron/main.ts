@@ -1,5 +1,6 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
+import { db, Text, Annotation } from './db';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../build/index.html')}`
@@ -13,6 +14,10 @@ function createWindow() {
     height: 600,
     webPreferences: {
       devTools: !app.isPackaged, // only allow dev tools in development
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.resolve(path.join(__dirname, 'preload.js')),
+      sandbox: true,
     },
   });
 
@@ -49,6 +54,7 @@ app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    db.destroy();
     app.quit();
   }
 });
@@ -57,4 +63,22 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+// For interacting with the database
+// See also: preload.ts
+
+ipcMain.handle('getById', async (event, tableName: string, id: number) => {
+  const result = await db(tableName).where({ id: id }).first();
+  return result;
+});
+
+ipcMain.handle('getEntry', async (event, groupId: string) => {
+  const texts = await Text.query().where({ group_id: groupId });
+  const annotations = await Annotation.query().where({ group_id: groupId });
+
+  return {
+    texts: texts,
+    annotations: annotations,
+  };
 });
