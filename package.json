@@ -28,7 +28,7 @@
   "scripts": {
     "start:react": "react-scripts start",
     "build:react": "react-scripts build",
-    "test:react": "react-scripts test",
+    "test:react": "react-scripts test --roots electron src",
     "eject:react": "react-scripts eject",
     "tsc:electron": "tsc -p tsconfig.electron.json",
     "start:dev-server": "cross-env BROWSER=none react-scripts start",
@@ -60,5 +60,19 @@
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.2.1",
     "wait-on": "^5.3.0"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/electron/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}",
+      "<rootDir>/electron/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "electron/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!electron/**/*.d.ts"
+    ]
   }
 }
