@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { api } from './api';
 import './App.css';
 
-function App() {
+function App(): JSX.Element {
   const onClick = async () => {
     console.log('Button clicked');
     const result = await api.getById('texts', 1);

@@ -13,19 +13,19 @@ const db = knex({
 Model.knex(db);
 
 export class Text extends Model {
-  static get tableName() {
+  static get tableName(): string {
     return 'texts';
   }
 }
 
 export class Label extends Model {
-  static get tableName() {
+  static get tableName(): string {
     return 'labels';
   }
 }
 
 export class Annotation extends Model {
-  static get tableName() {
+  static get tableName(): string {
     return 'annotations';
   }
 }
