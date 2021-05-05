@@ -12,19 +12,19 @@ const db = knex({
 // Give the knex instance to objection
 Model.knex(db);
 
-export class Text extends Model {
+export class TextModel extends Model {
   static get tableName(): string {
     return 'texts';
   }
 }
 
-export class Label extends Model {
+export class LabelModel extends Model {
   static get tableName(): string {
     return 'labels';
   }
 }
 
-export class Annotation extends Model {
+export class AnnotationModel extends Model {
   static get tableName(): string {
     return 'annotations';
   }
@@ -58,14 +58,14 @@ async function createSchema() {
 }
 
 async function createDummyData() {
-  const text = await Text.query().insert({
+  const text = await TextModel.query().insert({
     group_id: 0,
     text: 'this is an example text',
-  } as PartialModelObject<Text>);
+  } as PartialModelObject<TextModel>);
 
   console.log('created:', text);
 
-  const texts = await Text.query().orderBy('id');
+  const texts = await TextModel.query().orderBy('id');
   console.log(texts);
 }
 
