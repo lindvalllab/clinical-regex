@@ -35,7 +35,7 @@
     "start:dev-app": "wait-on http://localhost:3000 && yarn tsc:electron && electron .",
     "start:dev": "concurrently \"yarn start:dev-server\" \"yarn start:dev-app\"",
     "build:electron": "yarn build:react && yarn tsc:electron && electron-builder",
-    "lint": "eslint src"
+    "lint": "eslint src electron"
   },
   "browserslist": {
     "production": [

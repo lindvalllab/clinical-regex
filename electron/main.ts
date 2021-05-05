@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
-import { db, Text, Annotation } from './db';
+import { db, TextModel, AnnotationModel } from './db';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../build/index.html')}`
@@ -74,8 +74,10 @@ ipcMain.handle('getById', async (event, tableName: string, id: number) => {
 });
 
 ipcMain.handle('getEntry', async (event, groupId: string) => {
-  const texts = await Text.query().where({ group_id: groupId });
-  const annotations = await Annotation.query().where({ group_id: groupId });
+  const texts = await TextModel.query().where({ group_id: groupId });
+  const annotations = await AnnotationModel.query().where({
+    group_id: groupId,
+  });
 
   return {
     texts: texts,
