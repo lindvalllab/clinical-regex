@@ -9,5 +9,7 @@ jobs:
         run: yarn
       - name: Lint
         run: yarn lint
+      - name: Type check
+        run: yarn tc
       - name: Run tests
         run: yarn test:react
