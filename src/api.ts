@@ -4,12 +4,12 @@ declare global {
     id: number;
     text: string;
   }
-  interface AnnotationEntity {
+  interface LabelEntity {
     id: number;
     name: string;
     pattern: string;
   }
-  interface LabelEntity {
+  interface AnnotationEntity {
     id: number;
     group_id: string;
     label_id: number;
