@@ -9,7 +9,7 @@ function FileUploader(): JSX.Element {
   const [textCol, setTextCol] = useState<number>(0); // The column index to use as text.
   const [csv, setCsv] = useState<File>(); // The uploaded file.
 
-  const uploadHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
@@ -57,7 +57,7 @@ function FileUploader(): JSX.Element {
 
   return (
     <div>
-      <input type="file" name="file" accept=".csv" onChange={uploadHandler} />
+      <input type="file" name="file" accept=".csv" onChange={readHeader} />
       <label>
         Select group ID column.
         <select onChange={selectIdHandler}> {headerList} </select>
