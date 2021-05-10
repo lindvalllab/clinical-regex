@@ -75,7 +75,7 @@ async function insertTexts(texts: CRText[]): Promise<void> {
     try {
       await TextModel.query().insert(text as PartialModelObject<TextModel>);
     } catch (e) {
-      console.log('error: ', e);
+      console.error('error: ', e);
     }
   }
 }
