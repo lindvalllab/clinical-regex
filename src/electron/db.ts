@@ -1,5 +1,6 @@
 import { knex } from 'knex';
 import { Model, PartialModelObject } from 'objection';
+import type { CRText } from 'types';
 
 const db = knex({
   client: 'sqlite3',
@@ -69,10 +70,20 @@ async function createDummyData() {
   console.log(texts);
 }
 
+async function insertTexts(texts: CRText[]): Promise<void> {
+  for (const text of texts) {
+    try {
+      await TextModel.query().insert(text as PartialModelObject<TextModel>);
+    } catch (e) {
+      console.log('error: ', e);
+    }
+  }
+}
+
 createSchema()
   .then(() => createDummyData())
   .catch((err) => {
     console.error(err);
   });
 
-export { db };
+export { db, insertTexts };

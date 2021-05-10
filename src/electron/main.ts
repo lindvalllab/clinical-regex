@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
-import { db, TextModel, AnnotationModel } from './db';
+import { db, insertTexts, TextModel, AnnotationModel } from './db';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -83,4 +83,8 @@ ipcMain.handle('getEntry', async (event, groupId: string) => {
     texts: texts,
     annotations: annotations,
   };
+});
+
+ipcMain.handle('insertTexts', async (_event, texts) => {
+  insertTexts(texts);
 });
