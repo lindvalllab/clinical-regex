@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import { api } from './api';
+import FileUploader from './FileUploader';
 import './App.css';
 
 function App(): JSX.Element {
@@ -26,6 +27,7 @@ function App(): JSX.Element {
           Learn React
         </a>
         <button onClick={onClick}>Test</button>
+        <FileUploader />
       </header>
     </div>
   );
