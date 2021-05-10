@@ -1,12 +1,14 @@
+import { app } from 'electron';
 import { knex } from 'knex';
 import { Model, PartialModelObject } from 'objection';
+import path from 'path';
 import type { CRText } from 'types';
 
 const db = knex({
   client: 'sqlite3',
   useNullAsDefault: true,
   connection: () => ({
-    filename: './db.dev.sqlite',
+    filename: path.join(app.getPath('userData'), 'db.sqlite'),
   }),
 });
 
