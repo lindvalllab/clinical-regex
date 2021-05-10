@@ -1,18 +1,24 @@
-export interface TextEntity {
+export interface CRText {
   group_id: string;
-  id: number;
   text: string;
 }
-export interface LabelEntity {
+export interface TextEntity extends CRText {
   id: number;
+}
+export interface CRLabel {
   name: string;
   pattern: string;
 }
-export interface AnnotationEntity {
+export interface LabelEntity extends CRLabel {
   id: number;
+}
+export interface CRAnnotation {
   group_id: string;
   label_id: number;
   value: number;
+}
+export interface AnnotationEntity extends CRAnnotation {
+  id: number;
 }
 export type Entity = TextEntity | LabelEntity | AnnotationEntity;
 export interface Entry {
