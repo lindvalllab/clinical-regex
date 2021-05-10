@@ -3,7 +3,7 @@ import path from 'path';
 import { db, TextModel, AnnotationModel } from './db';
 
 const windowUrl = app.isPackaged
-  ? `file://${path.join(__dirname, '../build/index.html')}`
+  ? `file://${path.join(__dirname, '../index.html')}`
   : `http://localhost:3000`;
 
 let mainWindow: BrowserWindow | null;
