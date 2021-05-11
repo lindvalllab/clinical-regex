@@ -32,6 +32,9 @@ const db = knex({
 Model.knex(db);
 
 export class TextModel extends Model {
+  group_id?: string;
+  id?: number;
+  text?: string;
   static get tableName(): string {
     return 'texts';
   }

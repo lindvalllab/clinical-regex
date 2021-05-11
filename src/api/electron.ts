@@ -27,6 +27,15 @@ export default class ElectronApi extends BaseApi {
   async insertText(text: CRText): Promise<void> {
     await TextModel.query().insert(text as PartialModelObject<TextModel>);
   }
+  async getGroupIds(): Promise<string[]> {
+    const groupIds = await TextModel.query().distinct('group_id');
+
+    // Need some ts magic to filter out potential undefined elements.
+    // https://www.benmvp.com/blog/filtering-undefined-elements-from-array-typescript/
+    return groupIds
+      .map((model) => model.group_id)
+      .filter((g): g is string => g !== undefined);
+  }
 
   private static allMethodNames(): string[] {
     const self = this.prototype;
