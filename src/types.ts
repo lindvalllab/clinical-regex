@@ -1,3 +1,5 @@
+import { AnnotationModel, TextModel } from './electron/db';
+
 export interface CRText {
   group_id: string;
   text: string;
@@ -22,6 +24,6 @@ export interface AnnotationEntity extends CRAnnotation {
 }
 export type Entity = TextEntity | LabelEntity | AnnotationEntity;
 export interface Entry {
-  texts: TextEntity[];
-  annotations: AnnotationEntity[];
+  texts: TextModel[];
+  annotations: AnnotationModel[];
 }
