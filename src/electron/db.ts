@@ -1,15 +1,31 @@
-import { app } from 'electron';
+import { app, ipcRenderer } from 'electron';
 import { knex } from 'knex';
 import { Model, PartialModelObject } from 'objection';
 import path from 'path';
-import type { CRText } from 'types';
 
 const db = knex({
   client: 'sqlite3',
   useNullAsDefault: true,
-  connection: () => ({
-    filename: path.join(app.getPath('userData'), 'db.sqlite'),
-  }),
+  connection: async () => {
+    let userDataPath;
+
+    // app is not available in renderer process,
+    // use an ipc handler as a fallback (this may
+    // be called from either process)
+    // Reference: https://stackoverflow.com/a/65576869
+    if (app !== undefined) {
+      userDataPath = app.getPath('userData');
+    } else {
+      userDataPath = await ipcRenderer.invoke('electron:userDataPath');
+    }
+
+    const filename = path.join(userDataPath, 'db.sqlite');
+    console.info(`Connected to database: ${filename}`);
+
+    return {
+      filename: filename,
+    };
+  },
 });
 
 // Give the knex instance to objection
@@ -61,25 +77,10 @@ async function createSchema() {
 }
 
 async function createDummyData() {
-  const text = await TextModel.query().insert({
+  await TextModel.query().insert({
     group_id: 0,
     text: 'this is an example text',
   } as PartialModelObject<TextModel>);
-
-  console.log('created:', text);
-
-  const texts = await TextModel.query().orderBy('id');
-  console.log(texts);
-}
-
-async function insertTexts(texts: CRText[]): Promise<void> {
-  for (const text of texts) {
-    try {
-      await TextModel.query().insert(text as PartialModelObject<TextModel>);
-    } catch (e) {
-      console.error('error: ', e);
-    }
-  }
 }
 
 createSchema()
@@ -88,4 +89,4 @@ createSchema()
     console.error(err);
   });
 
-export { db, insertTexts };
+export { db };

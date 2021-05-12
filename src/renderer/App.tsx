@@ -7,7 +7,7 @@ import './App.css';
 function App(): JSX.Element {
   const onClick = async () => {
     console.log('Button clicked');
-    const result = await api.getById('texts', 1);
+    const result = await api.getAllTexts();
     console.log(result);
   };
 
@@ -26,7 +26,7 @@ function App(): JSX.Element {
         >
           Learn React
         </a>
-        <button onClick={onClick}>Test</button>
+        <button onClick={onClick}>Log all Text objects to console</button>
         <FileUploader />
       </header>
     </div>

@@ -6,5 +6,5 @@
     "noEmit": false,
     "outDir": "build"
   },
-  "include": ["src/electron"]
+  "include": ["src/electron", "src/api"]
 }
