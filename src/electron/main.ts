@@ -1,6 +1,9 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 import { db, insertTexts, TextModel, AnnotationModel } from './db';
+import { bar } from 'foo/bar';
+
+console.log(bar);
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
