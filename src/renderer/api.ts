@@ -1,4 +1,4 @@
-import { CRText, Entity, Entry } from 'types';
+import { CRText, Entity, Entry } from '../types';
 
 interface ApiType {
   getById: (tableName: string, id: number) => Promise<Entity | undefined>;

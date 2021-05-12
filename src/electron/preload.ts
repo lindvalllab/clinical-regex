@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { CRText } from 'types';
+import { CRText } from '../types';
 
 contextBridge.exposeInMainWorld('api', {
   getById: (tableName: string, id: number) =>
