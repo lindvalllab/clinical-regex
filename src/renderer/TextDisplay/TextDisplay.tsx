@@ -1,0 +1,73 @@
+import { useEffect, useState } from 'react';
+import { api } from '../api';
+import './TextDisplay.css';
+
+function TextDisplay(): JSX.Element {
+  const [page, setPage] = useState<number>(0);
+  const [texts, setTexts] = useState<string[]>([]);
+  const [groupIds, setGroupIds] = useState<string[]>([]);
+
+  // Get the list of groupIds on initial render.
+  useEffect(() => {
+    async function fetchGroupIds() {
+      setGroupIds(await api.getGroupIds());
+    }
+    fetchGroupIds();
+  }, []);
+
+  // Get the next set of texts when the page changes.
+  useEffect(() => {
+    async function getText() {
+      if (groupIds.length === 0) return;
+      const groupId = groupIds[page];
+      const entry = api.getEntry(groupId);
+      setTexts(
+        (await entry).texts.map((x) => (x.text !== undefined ? x.text : ''))
+      );
+    }
+    getText();
+  }, [groupIds, page]);
+
+  function clipPage(index: number) {
+    if (index < 0) {
+      return 0;
+    }
+    if (index >= groupIds.length) {
+      return groupIds.length - 1;
+    }
+    return index;
+  }
+
+  function incrementPage(amount: number) {
+    return () => setPage((oldPage) => clipPage(oldPage + amount));
+  }
+
+  function displayedTexts(txs: string[]): (string | JSX.Element)[] {
+    const out = [];
+    for (let i = 0; i < txs.length; i++) {
+      if (i !== 0) {
+        out.push(<hr key={i} />);
+      }
+      out.push(txs[i]);
+    }
+    return out;
+  }
+
+  return (
+    <div>
+      <div className="textArea">
+        {'Page: '} {page + 1} {'/'}{' '}
+        {groupIds !== undefined ? groupIds.length : ''} <br />
+        {'Group ID:'} {groupIds !== undefined ? groupIds[page] : '?'}
+        <br />
+        {displayedTexts(texts)}
+      </div>
+      <div>
+        <button onClick={incrementPage(-1)}>{'<-'}</button>
+        <button onClick={incrementPage(1)}>{'->'}</button>
+      </div>
+    </div>
+  );
+}
+
+export default TextDisplay;

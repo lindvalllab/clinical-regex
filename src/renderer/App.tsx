@@ -1,7 +1,7 @@
-import React from 'react';
 import logo from './logo.svg';
 import { api } from './api';
 import FileUploader from './FileUploader';
+import TextDisplay from './TextDisplay/TextDisplay';
 import './App.css';
 
 function App(): JSX.Element {
@@ -28,6 +28,7 @@ function App(): JSX.Element {
         </a>
         <button onClick={onClick}>Log all Text objects to console</button>
         <FileUploader />
+        <TextDisplay />
       </header>
     </div>
   );
