@@ -1,4 +1,4 @@
-import { CRText, Entry } from 'types';
+import { CRText, Entry } from '../types';
 
 export default abstract class BaseApi {
   public abstract getEntry(groupId: string): Promise<Entry>;

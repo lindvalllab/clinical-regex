@@ -1,7 +1,7 @@
 import BaseApi from './base';
 import { AnnotationModel, TextModel } from '../electron/db';
 import { PartialModelObject } from 'objection';
-import { CRText, Entry } from 'types';
+import { CRText, Entry } from '../types';
 import { IpcMain, IpcRenderer } from 'electron';
 import { IpcMainInvokeEvent } from 'electron/main';
 
