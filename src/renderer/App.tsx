@@ -2,7 +2,18 @@ import React from 'react';
 import logo from './logo.svg';
 import { api } from './api';
 import FileUploader from './FileUploader';
+import styled from 'styled-components';
+
 import './App.css';
+
+const Button = styled.button`
+  background: transparent;
+  border-radius: 3px;
+  border: 2px solid white;
+  color: white;
+  margin: 0.5em 1em;
+  padding: 0.25em 1em;
+`;
 
 function App(): JSX.Element {
   const onClick = async () => {
@@ -26,7 +37,7 @@ function App(): JSX.Element {
         >
           Learn React
         </a>
-        <button onClick={onClick}>Log all Text objects to console</button>
+        <Button onClick={onClick}>Log all Text objects to console</Button>
         <FileUploader />
       </header>
     </div>
