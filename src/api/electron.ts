@@ -28,9 +28,7 @@ export default class ElectronApi extends BaseApi {
     await TextModel.query().insert(text as PartialModelObject<TextModel>);
   }
 
-  private static allMethodNames(): ReturnType<
-    typeof Object.getOwnPropertyNames
-  > {
+  private static allMethodNames(): string[] {
     const self = this.prototype;
     const parent = Object.getPrototypeOf(self);
     // Object.getOwnPropertyNames only returns the ones implemented in the class;
