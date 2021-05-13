@@ -5,11 +5,11 @@ import { CRText, Entry } from '../types';
 import { IpcMain, IpcRenderer } from 'electron';
 import { IpcMainInvokeEvent } from 'electron/main';
 
-export interface RendererApi {
+interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
 }
 
-export class ElectronApi extends BaseApi {
+export default class ElectronApi extends BaseApi {
   async getAllTexts(): Promise<TextModel[]> {
     return TextModel.query();
   }
