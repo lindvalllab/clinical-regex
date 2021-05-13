@@ -1,6 +1,7 @@
+import ElectronApi from '../api/electron';
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
-import { db, insertTexts, TextModel, AnnotationModel } from './db';
+import { db } from './db';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -17,7 +18,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
-      sandbox: true,
+      enableRemoteModule: false,
     },
   });
 
@@ -68,23 +69,9 @@ app.on('activate', () => {
 // For interacting with the database
 // See also: preload.ts
 
-ipcMain.handle('getById', async (event, tableName: string, id: number) => {
-  const result = await db(tableName).where({ id: id }).first();
-  return result;
-});
+ElectronApi.initMain(ipcMain);
 
-ipcMain.handle('getEntry', async (event, groupId: string) => {
-  const texts = await TextModel.query().where({ group_id: groupId });
-  const annotations = await AnnotationModel.query().where({
-    group_id: groupId,
-  });
-
-  return {
-    texts: texts,
-    annotations: annotations,
-  };
-});
-
-ipcMain.handle('insertTexts', async (_event, texts) => {
-  insertTexts(texts);
+// extra utility handlers
+ipcMain.handle('electron:userDataPath', () => {
+  return app.getPath('userData');
 });
