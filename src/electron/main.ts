@@ -1,4 +1,4 @@
-import { ElectronApi } from '../api/electron';
+import ElectronApi from '../api/electron';
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 import { db } from './db';
