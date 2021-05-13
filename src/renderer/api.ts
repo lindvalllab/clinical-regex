@@ -1,3 +1,4 @@
+import BaseApi from '../api/base';
 import ElectronApi from '../api/electron';
 
 declare global {
@@ -6,4 +7,4 @@ declare global {
   }
 }
 
-export const api = window.api;
+export const api: BaseApi = window.api;
