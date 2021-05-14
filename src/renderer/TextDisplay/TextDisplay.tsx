@@ -9,25 +9,22 @@ function TextDisplay(): JSX.Element {
 
   // Get the list of groupIds on initial render.
   useEffect(() => {
-    async function fetchGroupIds() {
-      setGroupIds(await api.getAllGroupIds());
-    }
-    fetchGroupIds();
+    api.getAllGroupIds().then((ids) => {
+      setGroupIds(ids);
+    });
   }, []);
 
   // Get the next set of texts when the page changes.
   useEffect(() => {
-    async function getText() {
-      if (groupIds.length === 0) return;
-      const groupId = groupIds[page];
-      const entry = api.getEntry(groupId);
+    if (groupIds.length === 0) return;
+    const groupId = groupIds[page];
+    api.getEntry(groupId).then((entry) => {
       setTexts(
-        (await entry).texts.map((textObj) =>
+        entry.texts.map((textObj) =>
           textObj.text !== undefined ? textObj.text : ''
         )
       );
-    }
-    getText();
+    });
   }, [groupIds, page]);
 
   function clipPage(index: number) {
