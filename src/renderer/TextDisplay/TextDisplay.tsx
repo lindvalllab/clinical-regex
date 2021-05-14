@@ -22,7 +22,9 @@ function TextDisplay(): JSX.Element {
       const groupId = groupIds[page];
       const entry = api.getEntry(groupId);
       setTexts(
-        (await entry).texts.map((x) => (x.text !== undefined ? x.text : ''))
+        (await entry).texts.map((textObj) =>
+          textObj.text !== undefined ? textObj.text : ''
+        )
       );
     }
     getText();
@@ -63,8 +65,15 @@ function TextDisplay(): JSX.Element {
         {displayedTexts(texts)}
       </div>
       <div>
-        <button onClick={incrementPage(-1)}>{'<-'}</button>
-        <button onClick={incrementPage(1)}>{'->'}</button>
+        <button onClick={incrementPage(-1)} disabled={page === 0}>
+          {'<-'}
+        </button>
+        <button
+          onClick={incrementPage(1)}
+          disabled={page === groupIds.length - 1}
+        >
+          {'->'}
+        </button>
       </div>
     </div>
   );
