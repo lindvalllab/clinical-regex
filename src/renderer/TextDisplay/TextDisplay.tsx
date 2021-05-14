@@ -10,7 +10,7 @@ function TextDisplay(): JSX.Element {
   // Get the list of groupIds on initial render.
   useEffect(() => {
     async function fetchGroupIds() {
-      setGroupIds(await api.getGroupIds());
+      setGroupIds(await api.getAllGroupIds());
     }
     fetchGroupIds();
   }, []);
