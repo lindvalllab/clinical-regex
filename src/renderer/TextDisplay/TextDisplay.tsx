@@ -1,18 +1,22 @@
-import { useEffect, useState } from 'react';
-import { api } from '../api';
+import { useContext, useEffect, useState } from 'react';
+import { ApiContext } from '../api';
 import './TextDisplay.css';
 
 function TextDisplay(): JSX.Element {
   const [page, setPage] = useState<number>(0);
   const [texts, setTexts] = useState<string[]>([]);
   const [groupIds, setGroupIds] = useState<string[]>([]);
+  const api = useContext(ApiContext);
 
   // Get the list of groupIds on initial render.
   useEffect(() => {
-    api.getAllGroupIds().then((ids) => {
-      setGroupIds(ids);
-    });
-  }, []);
+    api
+      .getAllGroupIds()
+      .then((ids) => {
+        setGroupIds(ids);
+      })
+      .catch((e) => console.error(e));
+  }, [api]);
 
   // Get the next set of texts when the page changes.
   useEffect(() => {
@@ -21,7 +25,7 @@ function TextDisplay(): JSX.Element {
     api.getEntry(groupId).then((entry) => {
       setTexts(entry.texts.map((textObj) => textObj.text));
     });
-  }, [groupIds, page]);
+  }, [api, groupIds, page]);
 
   function clipPage(index: number) {
     if (index < 0) {

@@ -1,3 +1,4 @@
+import React from 'react';
 import BaseApi from '../api/base';
 import ElectronApi from '../api/electron';
 
@@ -7,4 +8,5 @@ declare global {
   }
 }
 
+export const ApiContext = React.createContext<BaseApi>(window.api);
 export const api: BaseApi = window.api;
