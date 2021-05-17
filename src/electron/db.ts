@@ -1,6 +1,6 @@
 import { app, ipcRenderer } from 'electron';
 import { knex } from 'knex';
-import { Model, PartialModelObject } from 'objection';
+import { Model } from 'objection';
 import path from 'path';
 
 const db = knex({
@@ -32,21 +32,28 @@ const db = knex({
 Model.knex(db);
 
 export class TextModel extends Model {
-  group_id?: string;
-  id?: number;
-  text?: string;
+  id!: number;
+  group_id!: string;
+  text!: string;
   static get tableName(): string {
     return 'texts';
   }
 }
 
 export class LabelModel extends Model {
+  id!: number;
+  name!: string;
+  pattern!: string;
   static get tableName(): string {
     return 'labels';
   }
 }
 
 export class AnnotationModel extends Model {
+  id!: number;
+  group_id!: string;
+  label_id!: string;
+  value!: string;
   static get tableName(): string {
     return 'annotations';
   }
@@ -56,25 +63,33 @@ async function createSchema() {
   if (!(await db.schema.hasTable('texts'))) {
     await db.schema.createTable('texts', (table) => {
       table.increments('id').primary();
-      table.string('group_id');
-      table.text('text');
+      table.string('group_id').notNullable();
+      table.text('text').notNullable();
     });
   }
 
   if (!(await db.schema.hasTable('labels'))) {
     await db.schema.createTable('labels', (table) => {
       table.increments('id').primary();
-      table.string('name').unique();
-      table.text('pattern');
+      table.string('name').unique().notNullable();
+      table.text('pattern').notNullable();
     });
   }
 
   if (!(await db.schema.hasTable('annotations'))) {
     await db.schema.createTable('annotations', (table) => {
       table.increments('id').primary();
-      table.string('group_id').references('group_id').inTable('texts');
-      table.integer('label_id').references('id').inTable('labels');
-      table.integer('value');
+      table
+        .string('group_id')
+        .references('group_id')
+        .inTable('texts')
+        .notNullable();
+      table
+        .integer('label_id')
+        .references('id')
+        .inTable('labels')
+        .notNullable();
+      table.integer('value').notNullable();
     });
   }
 }
@@ -83,7 +98,7 @@ async function createDummyData() {
   await TextModel.query().insert({
     group_id: 0,
     text: 'this is an example text',
-  } as PartialModelObject<TextModel>);
+  });
 }
 
 createSchema()
