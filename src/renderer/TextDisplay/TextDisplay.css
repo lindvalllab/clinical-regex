@@ -1,0 +1,10 @@
+.textArea {
+  color: #000;
+  background-color: #EEE;
+  height: 40em;
+  width: 50em;
+  overflow: auto;
+  white-space: pre-wrap;
+  text-align: left;
+  font-size: 12pt;
+}

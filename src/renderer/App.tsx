@@ -1,10 +1,12 @@
-import React from 'react';
+import { useContext } from 'react';
+import { ApiContext } from './api';
 import logo from './logo.svg';
-import { api } from './api';
 import FileUploader from './FileUploader';
+import TextDisplay from './TextDisplay/TextDisplay';
 import './App.css';
 
 function App(): JSX.Element {
+  const api = useContext(ApiContext);
   const onClick = async () => {
     console.log('Button clicked');
     const result = await api.getAllTexts();
@@ -28,6 +30,7 @@ function App(): JSX.Element {
         </a>
         <button onClick={onClick}>Log all Text objects to console</button>
         <FileUploader />
+        <TextDisplay />
       </header>
     </div>
   );
