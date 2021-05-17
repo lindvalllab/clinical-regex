@@ -1,6 +1,5 @@
 import logo from './logo.svg';
-import { api, ApiContext } from './api';
-import BaseApi from '../api/base';
+import { api } from './api';
 import FileUploader from './FileUploader';
 import TextDisplay from './TextDisplay/TextDisplay';
 import './App.css';
@@ -29,9 +28,7 @@ function App(): JSX.Element {
         </a>
         <button onClick={onClick}>Log all Text objects to console</button>
         <FileUploader />
-        <ApiContext.Provider value={window.api}>
-          <TextDisplay />
-        </ApiContext.Provider>
+        <TextDisplay />
       </header>
     </div>
   );
