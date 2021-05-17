@@ -1,13 +1,14 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import './App.css';
 import Papa from 'papaparse';
-import { api } from './api';
+import { ApiContext } from './api';
 
 function FileUploader(): JSX.Element {
   const [headers, setHeaders] = useState<string[]>([]); // List of all header names
   const [idCol, setIdCol] = useState<number>(0); // The column index to use as ID.
   const [textCol, setTextCol] = useState<number>(0); // The column index to use as text.
   const [csv, setCsv] = useState<File>(); // The uploaded file.
+  const api = useContext(ApiContext);
 
   const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
