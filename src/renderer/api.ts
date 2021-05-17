@@ -9,4 +9,3 @@ declare global {
 }
 
 export const ApiContext = React.createContext<BaseApi>(window.api);
-export const api: BaseApi = window.api;
