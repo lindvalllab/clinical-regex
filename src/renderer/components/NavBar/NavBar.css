@@ -1,0 +1,14 @@
+.navbar ul {
+  display: flex;
+  justify-content: space-between;
+  padding-inline-start: 0;
+}
+.navbar li {
+  display: inline;
+  flex: 1;
+  text-align: center;
+}
+
+.navbar a {
+  color: #CCC;
+}

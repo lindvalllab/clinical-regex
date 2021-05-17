@@ -1,12 +1,14 @@
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import UploadCsv from './pages/UploadCsv';
 import ViewTexts from './pages/ViewTexts';
+import NavBar from './components/NavBar';
 import './App.css';
 
 function App(): JSX.Element {
   return (
     <Router>
+      <NavBar />
       <Switch>
         <Route path="/upload">
           <UploadCsv />
