@@ -1,8 +1,7 @@
-import { CRText, Entry } from '../types';
-import { TextModel } from '../electron/db';
+import { CRText, Entry, TextEntity } from '../types';
 
 export default abstract class BaseApi {
-  public abstract getAllTexts(): Promise<TextModel[]>;
+  public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getEntry(groupId: string): Promise<Entry>;
   public abstract insertText(text: CRText): Promise<void>;
   public async insertTexts(texts: CRText[]): Promise<void> {

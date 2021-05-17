@@ -1,7 +1,6 @@
 import BaseApi from './base';
 import { AnnotationModel, TextModel } from '../electron/db';
-import { PartialModelObject } from 'objection';
-import { CRText, Entry } from '../types';
+import { CRText, Entry, TextEntity } from '../types';
 import { IpcMain, IpcRenderer } from 'electron';
 import { IpcMainInvokeEvent } from 'electron/main';
 
@@ -10,7 +9,7 @@ interface RendererApi {
 }
 
 export default class ElectronApi extends BaseApi {
-  async getAllTexts(): Promise<TextModel[]> {
+  async getAllTexts(): Promise<TextEntity[]> {
     return TextModel.query();
   }
   async getEntry(groupId: string): Promise<Entry> {
@@ -25,7 +24,7 @@ export default class ElectronApi extends BaseApi {
     };
   }
   async insertText(text: CRText): Promise<void> {
-    await TextModel.query().insert(text as PartialModelObject<TextModel>);
+    await TextModel.query().insert(text);
   }
 
   private static allMethodNames(): string[] {
