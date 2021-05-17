@@ -29,11 +29,7 @@ export default class ElectronApi extends BaseApi {
   async getAllGroupIds(): Promise<string[]> {
     const groupIds = await TextModel.query().distinct('group_id');
 
-    // Need some ts magic to filter out potential undefined elements.
-    // https://www.benmvp.com/blog/filtering-undefined-elements-from-array-typescript/
-    return groupIds
-      .map((model) => model.group_id)
-      .filter((g): g is string => g !== undefined);
+    return groupIds.map((model) => model.group_id);
   }
 
   private static allMethodNames(): string[] {

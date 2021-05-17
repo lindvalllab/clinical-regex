@@ -19,11 +19,7 @@ function TextDisplay(): JSX.Element {
     if (groupIds.length === 0) return;
     const groupId = groupIds[page];
     api.getEntry(groupId).then((entry) => {
-      setTexts(
-        entry.texts.map((textObj) =>
-          textObj.text !== undefined ? textObj.text : ''
-        )
-      );
+      setTexts(entry.texts.map((textObj) => textObj.text));
     });
   }, [groupIds, page]);
 
