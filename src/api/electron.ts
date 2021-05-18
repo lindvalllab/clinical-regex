@@ -26,6 +26,11 @@ export default class ElectronApi extends BaseApi {
   async insertText(text: CRText): Promise<void> {
     await TextModel.query().insert(text);
   }
+  async getAllGroupIds(): Promise<string[]> {
+    const groupIds = await TextModel.query().distinct('group_id');
+
+    return groupIds.map((model) => model.group_id);
+  }
 
   private static allMethodNames(): string[] {
     const self = this.prototype;
