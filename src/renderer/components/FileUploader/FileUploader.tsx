@@ -44,7 +44,7 @@ function FileUploader(): JSX.Element {
     };
     if (csv !== undefined) {
       Papa.parse<string[]>(csv, {
-        complete: parseCsv,
+        chunk: parseCsv,
         skipEmptyLines: true,
       });
     }
