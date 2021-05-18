@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react';
-import './App.css';
 import Papa from 'papaparse';
-import { ApiContext } from './api';
+import { ApiContext } from '../../api';
+import './FileUploader.css';
 
 function FileUploader(): JSX.Element {
   const [headers, setHeaders] = useState<string[]>([]); // List of all header names
@@ -57,7 +57,7 @@ function FileUploader(): JSX.Element {
   ));
 
   return (
-    <div>
+    <div className="FileUpload">
       <input type="file" name="file" accept=".csv" onChange={readHeader} />
       <label>
         Select group ID column.
