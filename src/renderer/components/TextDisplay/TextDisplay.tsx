@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { ApiContext } from '../api';
+import { ApiContext } from '../../api';
 import './TextDisplay.css';
 
 function TextDisplay(): JSX.Element {
