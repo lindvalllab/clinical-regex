@@ -1,9 +1,9 @@
-import React from 'react';
+import { useContext } from 'react';
+import { ApiContext } from './api';
 import logo from './logo.svg';
-import { api } from './api';
 import FileUploader from './FileUploader';
 import styled from 'styled-components';
-
+import TextDisplay from './TextDisplay/TextDisplay';
 import './App.css';
 
 const Button = styled.button`
@@ -16,6 +16,7 @@ const Button = styled.button`
 `;
 
 function App(): JSX.Element {
+  const api = useContext(ApiContext);
   const onClick = async () => {
     console.log('Button clicked');
     const result = await api.getAllTexts();
@@ -39,6 +40,7 @@ function App(): JSX.Element {
         </a>
         <Button onClick={onClick}>Log all Text objects to console</Button>
         <FileUploader />
+        <TextDisplay />
       </header>
     </div>
   );
