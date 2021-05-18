@@ -7,8 +7,9 @@
   display: inline;
   flex: 1;
   text-align: center;
+  font-size: calc(10px + 1vmin);
 }
 
-.navbar a {
+.navbar li a {
   color: #CCC;
 }

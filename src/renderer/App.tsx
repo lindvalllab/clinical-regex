@@ -8,18 +8,20 @@ import './App.css';
 function App(): JSX.Element {
   return (
     <Router>
-      <NavBar />
-      <Switch>
-        <Route path="/upload">
-          <UploadCsv />
-        </Route>
-        <Route path="/texts">
-          <ViewTexts />
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <div className="App">
+        <NavBar />
+        <Switch>
+          <Route path="/upload">
+            <UploadCsv />
+          </Route>
+          <Route path="/texts">
+            <ViewTexts />
+          </Route>
+          <Route exact path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
     </Router>
   );
 }

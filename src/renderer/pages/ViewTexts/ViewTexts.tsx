@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import { ApiContext } from '../../api';
 import TextDisplay from '../../components/TextDisplay';
+import './ViewTexts.css';
 
 const Button = styled.button`
   background: transparent;
@@ -21,8 +22,8 @@ function ViewTexts(): JSX.Element {
   };
 
   return (
-    <div>
-      <Button onClick={onClick}>Log all Text objects to console</Button>;
+    <div className="ViewTexts page">
+      <Button onClick={onClick}>Log all Text objects to console</Button>
       <TextDisplay />
     </div>
   );
