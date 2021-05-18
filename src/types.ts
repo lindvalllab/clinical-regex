@@ -1,4 +1,5 @@
-import { AnnotationModel, TextModel } from './electron/db';
+import { ModelObject } from 'objection';
+import { AnnotationModel, LabelModel, TextModel } from './electron/db';
 
 export interface CRText {
   group_id: string;
@@ -13,7 +14,11 @@ export interface CRAnnotation {
   label_id: number;
   value: number;
 }
+// The three types below are like the ones above but require an ID field.
+export type TextEntity = ModelObject<TextModel>;
+export type LabelEntity = ModelObject<LabelModel>;
+export type AnnotationEntity = ModelObject<AnnotationModel>;
 export interface Entry {
-  texts: TextModel[];
-  annotations: AnnotationModel[];
+  texts: TextEntity[];
+  annotations: AnnotationEntity[];
 }
