@@ -2,8 +2,18 @@ import { useContext } from 'react';
 import { ApiContext } from './api';
 import logo from './logo.svg';
 import FileUploader from './FileUploader';
+import styled from 'styled-components';
 import TextDisplay from './TextDisplay/TextDisplay';
 import './App.css';
+
+const Button = styled.button`
+  background: transparent;
+  border-radius: 3px;
+  border: 2px solid white;
+  color: white;
+  margin: 0.5em 1em;
+  padding: 0.25em 1em;
+`;
 
 function App(): JSX.Element {
   const api = useContext(ApiContext);
@@ -28,7 +38,7 @@ function App(): JSX.Element {
         >
           Learn React
         </a>
-        <button onClick={onClick}>Log all Text objects to console</button>
+        <Button onClick={onClick}>Log all Text objects to console</Button>
         <FileUploader />
         <TextDisplay />
       </header>
