@@ -9,12 +9,7 @@ function Home(): JSX.Element {
       <p>
         Edit <code>src/Home.tsx</code> and save to reload.
       </p>
-      <a
-        className="Home-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
         Learn React
       </a>
       <ul>
