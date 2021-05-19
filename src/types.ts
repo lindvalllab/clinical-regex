@@ -22,3 +22,17 @@ export interface Entry {
   texts: TextEntity[];
   annotations: AnnotationEntity[];
 }
+export interface Span {
+  start: number;
+  length: number;
+}
+export interface SpanWithTag extends Span {
+  tag: string;
+  tags?: never;
+}
+export interface SpanWithTags extends Span {
+  tag?: never;
+  tags: string[];
+  entities?: SpanWithTag[];
+}
+export type AnnotatedSpan = SpanWithTag | SpanWithTags;
