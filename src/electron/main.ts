@@ -22,8 +22,8 @@ function createWindow() {
     },
   });
 
-  // Disable dev tools menu option if in production.
   if (app.isPackaged) {
+    // Disable dev tools menu option if in production.
     const menu = Menu.getApplicationMenu();
     if (menu !== null) {
       // Find View menu.
@@ -46,6 +46,13 @@ function createWindow() {
         }
       }
     }
+  } else {
+    // Use react developer tools.
+    // "Dynamic imports" allow us to only perform the import in development.
+    import('electron-devtools-installer')
+      .then((installer) => installer.default(installer.REACT_DEVELOPER_TOOLS))
+      .then((name) => console.log(`Added extension: ${name}`))
+      .catch((err) => console.log('An error occurred: ', err));
   }
   mainWindow.loadURL(windowUrl);
   mainWindow.on('closed', () => (mainWindow = null));
