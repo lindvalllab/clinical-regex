@@ -5,19 +5,16 @@ const flattenSpans = (
   text: string,
   annotatedSpans: SpanWithTag[]
 ): SpanWithTags[] => {
-  if (
-    annotatedSpans.some(
-      (span: SpanWithTag) =>
-        typeof span.tag !== 'string' ||
-        typeof span.start !== 'number' ||
-        typeof span.length !== 'number'
-    )
-  )
+  if (annotatedSpans.some((span: SpanWithTag) => typeof span.tag !== 'string'))
     throw new Error(`Tag must be a string.`);
-  const fullRange = [null, 0, text.length];
+  const fullRange: [SpanWithTag | null, number, number] = [
+    null,
+    0,
+    text.length,
+  ];
 
   // flatten takes a list of [id, start, length] lists
-  const toFlatten: (SpanWithTag | number | null)[][] = annotatedSpans.map(
+  const toFlatten: [SpanWithTag | null, number, number][] = annotatedSpans.map(
     (span: SpanWithTag) => [span, span.start, span.length]
   );
 
