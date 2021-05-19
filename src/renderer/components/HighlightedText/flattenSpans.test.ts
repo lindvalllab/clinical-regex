@@ -149,22 +149,6 @@ describe('flattenSpans', () => {
       flattenSpans(text, highlights as any);
     }).toThrowError();
   });
-
-  it('Throws an error if start (offset) value is not a number', () => {
-    const text = 'This is a sample text.';
-    const highlights = [
-      {
-        start: '0',
-        length: 3,
-        tag: 'foo',
-      },
-    ];
-
-    expect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      flattenSpans(text, highlights as any);
-    }).toThrowError();
-  });
   it('Merges overlapping spans with the same tags', () => {
     const text = 'This is a sample text.';
     const highlights: SpanWithTag[] = [
