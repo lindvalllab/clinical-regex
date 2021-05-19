@@ -5843,6 +5843,11 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.1.1.tgz#c4b489e80096d9df1dfc97c79871aea7c617c469"
   integrity sha512-zAoAQiudy+r5SvnSw3KJy5os/oRJYHzrzja/tBDqrZtNhUw8bt6y8OBzMWcjWr+8liV8Eb6yOhw8WZ7VFZ5ZzA==
 
+flatten-overlapping-ranges@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/flatten-overlapping-ranges/-/flatten-overlapping-ranges-1.0.1.tgz#9d76a1e7e9c16c9a2d6339c3942bc04f6f1fabf8"
+  integrity sha512-ZKivEflTqLTY6/cnGgJUvaTW0vYEKBLFy0V5HQwvgJT8EGOHw7kpRjB4IX2udJHyt08g3Wwpdl0eDrv+dHkWFw==
+
 flatten@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.3.tgz#c1283ac9f27b368abc1e36d1ff7b04501a30356b"
