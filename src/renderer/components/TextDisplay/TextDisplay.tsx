@@ -1,6 +1,30 @@
 import { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../api';
-import './TextDisplay.css';
+import HighlightedText from '../HighlightedText';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  background-color: gray;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  width: 80vw;
+`;
+
+const TextsContainer = styled.div`
+  overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.div`
+  background-color: lightgray;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+`;
 
 function TextDisplay(): JSX.Element {
   const [page, setPage] = useState<number>(0);
@@ -41,38 +65,55 @@ function TextDisplay(): JSX.Element {
     return () => setPage((oldPage) => clipPage(oldPage + amount));
   }
 
-  function displayedTexts(txs: string[]): (string | JSX.Element)[] {
-    const out = [];
-    for (let i = 0; i < txs.length; i++) {
-      if (i !== 0) {
-        out.push(<hr key={i} />);
-      }
-      out.push(txs[i]);
-    }
-    return out;
+  function entryDisplay(texts: string[]): JSX.Element[] {
+    const highlights = [
+      {
+        start: 0,
+        length: 12,
+        tag: 'Foo',
+      },
+      {
+        start: 5,
+        length: 12,
+        tag: 'Bar',
+      },
+    ];
+
+    const palette = {
+      Foo: '#4089ff',
+      Bar: '#f302fe',
+    };
+    return texts.map((text, index) => (
+      <HighlightedText
+        key={index}
+        text={text}
+        highlights={highlights}
+        palette={palette}
+      />
+    ));
   }
 
   return (
-    <div>
-      <div className="textArea">
-        {'Page: '} {page + 1} {'/'}{' '}
-        {groupIds !== undefined ? groupIds.length : ''} <br />
-        {'Group ID:'} {groupIds !== undefined ? groupIds[page] : '?'}
-        <br />
-        {displayedTexts(texts)}
-      </div>
+    <Container>
+      <Header>
+        <span>
+          Entry: {page + 1} / {groupIds !== undefined ? groupIds.length : ''}
+        </span>
+        <span>Group ID: {groupIds !== undefined ? groupIds[page] : '?'}</span>
+      </Header>
+      <TextsContainer>{entryDisplay(texts)}</TextsContainer>
       <div>
         <button onClick={incrementPage(-1)} disabled={page === 0}>
-          {'<-'}
+          Prev
         </button>
         <button
           onClick={incrementPage(1)}
           disabled={page === groupIds.length - 1}
         >
-          {'->'}
+          Next
         </button>
       </div>
-    </div>
+    </Container>
   );
 }
 

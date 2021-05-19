@@ -17,15 +17,9 @@ const flattenSpans = (
   const fullRange = [null, 0, text.length];
 
   // flatten takes a list of [id, start, length] lists
-  const toFlatten: (
-    | SpanWithTag
-    | number
-    | null
-  )[][] = annotatedSpans.map((span: SpanWithTag) => [
-    span,
-    span.start,
-    span.length,
-  ]);
+  const toFlatten: (SpanWithTag | number | null)[][] = annotatedSpans.map(
+    (span: SpanWithTag) => [span, span.start, span.length]
+  );
 
   toFlatten.push(fullRange);
 
