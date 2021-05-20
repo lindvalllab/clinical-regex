@@ -1,5 +1,5 @@
 import c_c from 'color-mixer';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import flattenSpans from './flattenSpans';
 import { SpanWithTag, SpanWithTags } from '../../../types';
 

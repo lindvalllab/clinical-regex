@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { ApiContext } from '../../api';
 import TextDisplay from '../../components/TextDisplay';
 import './ViewTexts.css';
