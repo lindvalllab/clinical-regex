@@ -12,7 +12,7 @@ function NavBar(): JSX.Element {
           <Link to="/upload">Upload a file</Link>
         </li>
         <li>
-          <Link to="/texts">View texts</Link>
+          <Link to="/annotation-interface">View texts</Link>
         </li>
       </ul>
     </div>
