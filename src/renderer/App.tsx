@@ -1,7 +1,7 @@
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import UploadCsv from './pages/UploadCsv';
-import ViewTexts from './pages/ViewTexts';
+import AnnotationInterface from './pages/AnnotationInterface';
 import NavBar from './components/NavBar';
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -15,8 +15,8 @@ function App(): JSX.Element {
             <Route path="/upload">
               <UploadCsv />
             </Route>
-            <Route path="/texts">
-              <ViewTexts />
+            <Route path="/annotation-interface">
+              <AnnotationInterface />
             </Route>
             <Route exact path="/">
               <Home />

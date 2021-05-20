@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ApiContext } from '../../api';
 import TextDisplay from '../../components/TextDisplay';
-import './ViewTexts.css';
+import './AnnotationInterface.css';
 
 const Button = styled.button`
   background: transparent;
@@ -13,7 +13,7 @@ const Button = styled.button`
   padding: 0.25em 1em;
 `;
 
-function ViewTexts(): JSX.Element {
+function AnnotationInterface(): JSX.Element {
   const api = useContext(ApiContext);
   const onClick = async () => {
     console.log('Button clicked');
@@ -29,4 +29,4 @@ function ViewTexts(): JSX.Element {
   );
 }
 
-export default ViewTexts;
+export default AnnotationInterface;
