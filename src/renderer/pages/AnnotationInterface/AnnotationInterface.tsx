@@ -70,7 +70,8 @@ function AnnotationInterface(): JSX.Element {
         position="sticky"
         bottom={0}
         bg={bg}
-        p={4}
+        py={4}
+        px={6}
         borderTopWidth={1}
       >
         <Flex>
@@ -79,10 +80,10 @@ function AnnotationInterface(): JSX.Element {
             templateRows="repeat(2, 1fr)"
             columnGap={4}
           >
-            <Text fontSize="xs" color="gray.500">
+            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
               Entry
             </Text>
-            <Text fontSize="xs" color="gray.500">
+            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
               Group ID [{groupIdField}]
             </Text>
             <Text fontSize="md" fontWeight="extrabold">
