@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { ApiContext } from '../../api';
 import TextDisplay from '../../components/TextDisplay';
-import './AnnotationInterface.css';
+import { Box } from '@chakra-ui/layout';
 
 const Button = styled.button`
   background: transparent;
@@ -22,10 +22,10 @@ function AnnotationInterface(): JSX.Element {
   };
 
   return (
-    <div className="ViewTexts page">
+    <Box>
       <Button onClick={onClick}>Log all Text objects to console</Button>
       <TextDisplay />
-    </div>
+    </Box>
   );
 }
 

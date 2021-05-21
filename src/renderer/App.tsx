@@ -9,20 +9,12 @@ function App(): JSX.Element {
   return (
     <ChakraProvider>
       <Router>
-        <div className="App">
-          <NavBar />
-          <Switch>
-            <Route path="/upload">
-              <UploadCsv />
-            </Route>
-            <Route path="/annotation-interface">
-              <AnnotationInterface />
-            </Route>
-            <Route exact path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </div>
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/upload" component={UploadCsv} />
+          <Route path="/annotation-interface" component={AnnotationInterface} />
+        </Switch>
       </Router>
     </ChakraProvider>
   );
