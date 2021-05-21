@@ -2,26 +2,21 @@ import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
 import { Entry } from '../../../types';
-import { Box } from '@chakra-ui/layout';
-import { Button, SkeletonText } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-
-const Header = styled.div`
-  background-color: lightgray;
-  color: black;
-  display: flex;
-  justify-content: space-between;
-  padding: 1em;
-`;
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Grid,
+  SkeletonText,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 function AnnotationInterface(): JSX.Element {
   const api = useContext(ApiContext);
-  const onClick = async () => {
-    console.log('Button clicked');
-    const result = await api.getAllTexts();
-    console.log(result);
-  };
 
+  const bg = useColorModeValue('white', 'gray.800');
   const [page, setPage] = useState<number>(0);
   const [groupIds, setGroupIds] = useState<string[]>([]);
   const [entry, setEntry] = useState<Entry>();
@@ -59,31 +54,62 @@ function AnnotationInterface(): JSX.Element {
     });
   }, [api, groupIds, page]);
 
+  // this will have to be changed later
+  const groupIdField = 'SUBJECT_ID';
+
   return (
     <Box>
-      <Button onClick={onClick}>Log all Text objects to console</Button>
-      <Header>
-        <span>
-          Entry: {page + 1} / {groupIds !== undefined ? groupIds.length : ''}
-        </span>
-        <span>Group ID: {groupIds !== undefined ? groupIds[page] : '?'}</span>
-      </Header>
       {entry ? (
         <EntryDisplay entry={entry} />
       ) : (
-        <SkeletonText noOfLines={12} spacing={4} />
+        <SkeletonText noOfLines={12} spacing={4} p={8} />
       )}
-      <div>
-        <button onClick={incrementPage(-1)} disabled={page === 0}>
-          Prev
-        </button>
-        <button
-          onClick={incrementPage(1)}
-          disabled={page === groupIds.length - 1}
-        >
-          Next
-        </button>
-      </div>
+      <Flex
+        w="100%"
+        justify="space-between"
+        position="sticky"
+        bottom={0}
+        bg={bg}
+        p={4}
+        borderTopWidth={1}
+      >
+        <Flex>
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            templateRows="repeat(2, 1fr)"
+            columnGap={4}
+          >
+            <Text fontSize="xs" color="gray.500">
+              Entry
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              Group ID [{groupIdField}]
+            </Text>
+            <Text fontSize="md" fontWeight="extrabold">
+              {page + 1} / {groupIds !== undefined ? groupIds.length : ''}
+            </Text>
+            <Text fontSize="md" fontWeight="extrabold">
+              {groupIds !== undefined ? groupIds[page] : '?'}
+            </Text>
+          </Grid>
+        </Flex>
+        <ButtonGroup isAttached>
+          <Button
+            colorScheme="gray"
+            onClick={incrementPage(-1)}
+            disabled={page === 0}
+          >
+            Prev
+          </Button>
+          <Button
+            colorScheme="gray"
+            onClick={incrementPage(1)}
+            disabled={page === groupIds.length - 1}
+          >
+            Next
+          </Button>
+        </ButtonGroup>
+      </Flex>
     </Box>
   );
 }

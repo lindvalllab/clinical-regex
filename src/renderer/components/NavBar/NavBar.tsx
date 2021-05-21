@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ApiContext } from '../../api';
 import { NavLink } from 'react-router-dom';
 import './NavBar.css';
 import { useViewportScroll } from 'framer-motion';
 import {
   chakra,
+  Button,
   Flex,
   Heading,
   HStack,
@@ -29,6 +31,13 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
   React.useEffect(() => {
     return scrollY.onChange(() => setY(scrollY.get()));
   }, [scrollY]);
+
+  const api = useContext(ApiContext);
+  const onClick = async () => {
+    console.log('Button clicked');
+    const result = await api.getAllTexts();
+    console.log(result);
+  };
 
   return (
     <chakra.header
@@ -68,6 +77,7 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
               onClick={toggleColorMode}
               icon={<SwitchIcon />}
             />
+            <Button onClick={onClick}>Log All Texts</Button>
           </HStack>
         </Flex>
       </Flex>
