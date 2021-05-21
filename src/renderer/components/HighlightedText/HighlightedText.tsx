@@ -3,21 +3,12 @@ import styled from '@emotion/styled';
 import flattenSpans from './flattenSpans';
 import { SpanWithTag, SpanWithTags } from '../../../types';
 import { Tooltip } from '@chakra-ui/tooltip';
+import { Text } from '@chakra-ui/layout';
 
 const Container = styled.div`
-  background: white;
-  border: 2px solid white;
-  color: black;
   margin: 1em;
   padding: 1em;
   white-space: pre-wrap;
-`;
-
-const Highlight = styled.mark`
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  background: ${(props) => props.color || 'white'};
 `;
 
 type HighlightedTextProps = {
@@ -32,8 +23,8 @@ const getColor = (tags: string[], palette: Record<string, string>) => {
   }
 
   const colors = tags.map((tag: string) => {
-    const color = palette[tag] ? palette[tag] : '#ffffff';
-    return new c_c.Color({ hex: color });
+    const color = palette[tag] ? palette[tag] : null;
+    return new c_c.Color(color ? { hex: color } : { name: 'transparent' });
   });
 
   if (colors.length === 1) {
@@ -56,9 +47,9 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const toDisplay = resolvedSpans.map((span) => {
     return (
       <Tooltip hasArrow key={span.start} label={getTooltip(span)}>
-        <Highlight color={getColor(span.tags, props.palette)}>
+        <Text as="span" bg={getColor(span.tags, props.palette)}>
           {props.text.slice(span.start, span.start + span.length)}
-        </Highlight>
+        </Text>
       </Tooltip>
     );
   });
