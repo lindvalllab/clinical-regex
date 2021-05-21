@@ -5,7 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache node_modules
+        id: cache-node
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
       - name: Install modules
+        if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
       - name: Lint
         run: yarn lint
