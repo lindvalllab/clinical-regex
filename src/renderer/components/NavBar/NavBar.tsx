@@ -64,6 +64,9 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
             <NavLink to="/upload" activeClassName="is-active">
               Upload a file
             </NavLink>
+            <NavLink to="/dashboard" activeClassName="is-active">
+              Dashboard
+            </NavLink>
             <NavLink to="/annotation-interface" activeClassName="is-active">
               Annotate
             </NavLink>
