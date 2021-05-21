@@ -1,7 +1,8 @@
 import c_c from 'color-mixer';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import flattenSpans from './flattenSpans';
 import { SpanWithTag, SpanWithTags } from '../../../types';
+import { Tooltip } from '@chakra-ui/tooltip';
 
 const Container = styled.div`
   background: white;
@@ -25,10 +26,6 @@ type HighlightedTextProps = {
   palette: Record<string, string>;
 };
 
-const onMouseOver = (span: SpanWithTags) => {
-  return () => console.log(span);
-};
-
 const getColor = (tags: string[], palette: Record<string, string>) => {
   if (tags.length === 0) {
     return undefined;
@@ -49,18 +46,20 @@ const getColor = (tags: string[], palette: Record<string, string>) => {
   return undefined;
 };
 
+const getTooltip = (span: SpanWithTags): string => {
+  return span.tags.join(', ');
+};
+
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
 
   const toDisplay = resolvedSpans.map((span) => {
     return (
-      <Highlight
-        key={span.start}
-        color={getColor(span.tags, props.palette)}
-        onMouseOver={onMouseOver(span)}
-      >
-        {props.text.slice(span.start, span.start + span.length)}
-      </Highlight>
+      <Tooltip hasArrow key={span.start} label={getTooltip(span)}>
+        <Highlight color={getColor(span.tags, props.palette)}>
+          {props.text.slice(span.start, span.start + span.length)}
+        </Highlight>
+      </Tooltip>
     );
   });
   return <Container>{toDisplay}</Container>;

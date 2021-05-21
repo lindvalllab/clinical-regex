@@ -1,7 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
 import Papa from 'papaparse';
 import { ApiContext } from '../../api';
-import './FileUploader.css';
 
 function FileUploader(): JSX.Element {
   const [headers, setHeaders] = useState<string[]>([]); // List of all header names
