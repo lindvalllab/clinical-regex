@@ -3,34 +3,6 @@ import { knex } from 'knex';
 import { Model } from 'objection';
 import path from 'path';
 
-const db = knex({
-  client: 'sqlite3',
-  useNullAsDefault: true,
-  connection: async () => {
-    let userDataPath;
-
-    // app is not available in renderer process,
-    // use an ipc handler as a fallback (this may
-    // be called from either process)
-    // Reference: https://stackoverflow.com/a/65576869
-    if (app !== undefined) {
-      userDataPath = app.getPath('userData');
-    } else {
-      userDataPath = await ipcRenderer.invoke('electron:userDataPath');
-    }
-
-    const filename = path.join(userDataPath, 'db.sqlite');
-    console.info(`Connected to database: ${filename}`);
-
-    return {
-      filename: filename,
-    };
-  },
-});
-
-// Give the knex instance to objection
-Model.knex(db);
-
 export class TextModel extends Model {
   id!: number;
   group_id!: string;
@@ -59,52 +31,82 @@ export class AnnotationModel extends Model {
   }
 }
 
-async function createSchema() {
-  if (!(await db.schema.hasTable('texts'))) {
-    await db.schema.createTable('texts', (table) => {
-      table.increments('id').primary();
-      table.string('group_id').notNullable();
-      table.text('text').notNullable();
-    });
-  }
+const initDb = (): void => {
+  const db = knex({
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: async () => {
+      let userDataPath;
 
-  if (!(await db.schema.hasTable('labels'))) {
-    await db.schema.createTable('labels', (table) => {
-      table.increments('id').primary();
-      table.string('name').unique().notNullable();
-      table.text('pattern').notNullable();
-    });
-  }
+      // app is not available in renderer process,
+      // use an ipc handler as a fallback (this may
+      // be called from either process)
+      // Reference: https://stackoverflow.com/a/65576869
+      if (app !== undefined) {
+        userDataPath = app.getPath('userData');
+      } else {
+        userDataPath = await ipcRenderer.invoke('electron:userDataPath');
+      }
 
-  if (!(await db.schema.hasTable('annotations'))) {
-    await db.schema.createTable('annotations', (table) => {
-      table.increments('id').primary();
-      table
-        .string('group_id')
-        .references('group_id')
-        .inTable('texts')
-        .notNullable();
-      table
-        .integer('label_id')
-        .references('id')
-        .inTable('labels')
-        .notNullable();
-      table.integer('value').notNullable();
-    });
-  }
-}
+      const filename = path.join(userDataPath, 'db.sqlite');
+      console.info(`Connected to database: ${filename}`);
 
-async function createDummyData() {
-  await TextModel.query().insert({
-    group_id: 0,
-    text: 'this is an example text',
-  });
-}
-
-createSchema()
-  .then(() => createDummyData())
-  .catch((err) => {
-    console.error(err);
+      return {
+        filename: filename,
+      };
+    },
   });
 
-export { db };
+  // Give the knex instance to objection
+  Model.knex(db);
+
+  async function createSchema() {
+    if (!(await db.schema.hasTable('texts'))) {
+      await db.schema.createTable('texts', (table) => {
+        table.increments('id').primary();
+        table.string('group_id').notNullable();
+        table.text('text').notNullable();
+      });
+    }
+
+    if (!(await db.schema.hasTable('labels'))) {
+      await db.schema.createTable('labels', (table) => {
+        table.increments('id').primary();
+        table.string('name').unique().notNullable();
+        table.text('pattern').notNullable();
+      });
+    }
+
+    if (!(await db.schema.hasTable('annotations'))) {
+      await db.schema.createTable('annotations', (table) => {
+        table.increments('id').primary();
+        table
+          .string('group_id')
+          .references('group_id')
+          .inTable('texts')
+          .notNullable();
+        table
+          .integer('label_id')
+          .references('id')
+          .inTable('labels')
+          .notNullable();
+        table.integer('value').notNullable();
+      });
+    }
+  }
+
+  async function createDummyData() {
+    await TextModel.query().insert({
+      group_id: 0,
+      text: 'this is an example text',
+    });
+  }
+
+  createSchema()
+    .then(() => createDummyData())
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+export { initDb };
