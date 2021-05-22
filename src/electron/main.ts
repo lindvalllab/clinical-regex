@@ -1,7 +1,7 @@
 import ElectronApi from '../api/electron';
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
-import { db } from './db';
+import { initDb } from './db';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -60,11 +60,13 @@ function createWindow() {
   mainWindow.on('closed', () => (mainWindow = null));
 }
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  initDb();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    db.destroy();
     app.quit();
   }
 });
