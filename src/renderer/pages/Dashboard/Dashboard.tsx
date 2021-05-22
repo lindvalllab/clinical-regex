@@ -30,18 +30,22 @@ function Dashboard(): JSX.Element {
 
   return (
     <Box px={8} py={4}>
-      <Heading size="sm">Entries</Heading>
+      <Heading size="sm" mb={4}>
+        Entries
+      </Heading>
       <Box>
         <Table variant="simple" size="sm">
           <Thead>
-            <Th>Group ID</Th>
-            <Th>Text</Th>
-            <Th>Keyword Matches</Th>
-            <Th>Is Annotated</Th>
+            <Tr>
+              <Th>Group ID</Th>
+              <Th>Text</Th>
+              <Th>Keyword Matches</Th>
+              <Th>Is Annotated</Th>
+            </Tr>
           </Thead>
           <Tbody>
-            {groupIds.map((id) => (
-              <Tr>
+            {groupIds.map((id, index) => (
+              <Tr key={index}>
                 <Td>{id}</Td>
                 <Td>Text</Td>
                 <Td>
