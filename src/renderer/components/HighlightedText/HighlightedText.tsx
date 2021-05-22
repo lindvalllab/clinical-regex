@@ -47,7 +47,11 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const toDisplay = resolvedSpans.map((span) => {
     return (
       <Tooltip hasArrow key={span.start} label={getTooltip(span)}>
-        <Text as="span" bg={getColor(span.tags, props.palette)}>
+        <Text
+          as="span"
+          bg={getColor(span.tags, props.palette)}
+          fontFamily="mono"
+        >
           {props.text.slice(span.start, span.start + span.length)}
         </Text>
       </Tooltip>
