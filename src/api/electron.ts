@@ -1,8 +1,8 @@
+import fs from 'fs';
 import BaseApi from './base';
-import { AnnotationModel, TextModel } from '../electron/db';
+import { getDbPath, AnnotationModel, TextModel } from '../electron/db';
 import { CRText, Entry, TextEntity } from '../types';
-import { IpcMain, IpcRenderer } from 'electron';
-import { IpcMainInvokeEvent } from 'electron/main';
+import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -30,6 +30,28 @@ export default class ElectronApi extends BaseApi {
     const groupIds = await TextModel.query().distinct('group_id');
 
     return groupIds.map((model) => model.group_id);
+  }
+
+  async saveDb(): Promise<string | undefined> {
+    const destination = dialog.showSaveDialogSync({
+      title: 'Save File',
+      filters: [
+        {
+          name: 'Clinical Regex Save File',
+          extensions: ['cr'], // TO-DO: decide on actual extension
+        },
+      ],
+    });
+
+    if (destination) {
+      const source = await getDbPath();
+      fs.copyFileSync(source, destination);
+      return destination;
+    } else {
+      // TO-DO: figure out a better way to handle this.
+      console.error(`Destination ${destination} not valid.`);
+      return;
+    }
   }
 
   private static allMethodNames(): string[] {
