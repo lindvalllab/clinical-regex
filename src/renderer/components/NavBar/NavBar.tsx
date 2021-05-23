@@ -15,6 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaMoon, FaSun } from 'react-icons/fa';
+import useSaveDb from '../../hooks/useSaveDb';
 
 function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
   // For color mode toggle
@@ -33,11 +34,13 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
   }, [scrollY]);
 
   const api = useContext(ApiContext);
-  const onClick = async () => {
+
+  const onClickLog = async () => {
     console.log('Button clicked');
     const result = await api.getAllTexts();
     console.log(result);
   };
+  const onClickSave = useSaveDb();
 
   return (
     <chakra.header
@@ -80,7 +83,8 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
               onClick={toggleColorMode}
               icon={<SwitchIcon />}
             />
-            <Button onClick={onClick}>Log All Texts</Button>
+            <Button onClick={onClickLog}>Log All Texts</Button>
+            <Button onClick={onClickSave}>Save</Button>
           </HStack>
         </Flex>
       </Flex>

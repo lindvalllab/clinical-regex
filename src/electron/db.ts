@@ -31,24 +31,28 @@ export class AnnotationModel extends Model {
   }
 }
 
+const getDbPath = async (): Promise<string> => {
+  let userDataPath;
+
+  // app is not available in renderer process,
+  // use an ipc handler as a fallback (this may
+  // be called from either process)
+  // Reference: https://stackoverflow.com/a/65576869
+  if (app !== undefined) {
+    userDataPath = app.getPath('userData');
+  } else {
+    userDataPath = await ipcRenderer.invoke('electron:userDataPath');
+  }
+
+  return path.join(userDataPath, 'db.sqlite');
+};
+
 const initDb = (): void => {
   const db = knex({
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: async () => {
-      let userDataPath;
-
-      // app is not available in renderer process,
-      // use an ipc handler as a fallback (this may
-      // be called from either process)
-      // Reference: https://stackoverflow.com/a/65576869
-      if (app !== undefined) {
-        userDataPath = app.getPath('userData');
-      } else {
-        userDataPath = await ipcRenderer.invoke('electron:userDataPath');
-      }
-
-      const filename = path.join(userDataPath, 'db.sqlite');
+      const filename = await getDbPath();
       console.info(`Connected to database: ${filename}`);
 
       return {
@@ -109,4 +113,4 @@ const initDb = (): void => {
     });
 };
 
-export { initDb };
+export { getDbPath, initDb };
