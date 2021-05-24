@@ -2,6 +2,7 @@ import ElectronApi from '../api/electron';
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 import { initDb } from './db';
+import { URL } from 'url';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -21,6 +22,9 @@ function createWindow() {
       contextIsolation: true,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
       enableRemoteModule: false,
+      allowRunningInsecureContent: false,
+      experimentalFeatures: false,
+      webSecurity: true,
     },
   });
 
@@ -59,6 +63,37 @@ function createWindow() {
   mainWindow.loadURL(windowUrl);
   mainWindow.on('closed', () => (mainWindow = null));
 }
+
+app.on('web-contents-created', (event, contents) => {
+  // disable creation of new windows
+  contents.setWindowOpenHandler(({ url }) => ({
+    action: 'deny',
+  }));
+
+  contents.on('will-attach-webview', (event, webPreferences, params) => {
+    // Strip away preload scripts if unused or verify their location is legitimate
+    delete webPreferences.preload;
+
+    // Disable Node.js integration
+    webPreferences.nodeIntegration = false;
+
+    // Verify URL being loaded
+    if (!params.src.startsWith(windowUrl)) {
+      event.preventDefault();
+    }
+  });
+
+  // only allow navigation to whitelisted origins
+  contents.on('will-navigate', (event, url) => {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.origin !== windowUrl) {
+      event.preventDefault();
+      // may want to add some kind of dev/user
+      // feedback here at some point
+    }
+  });
+});
 
 app.on('ready', () => {
   createWindow();
