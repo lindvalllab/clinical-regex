@@ -18,6 +18,7 @@
     "@types/react-dom": "^17.0.0",
     "color-mixer": "^1.0.0",
     "flatten-overlapping-ranges": "^1.0.1",
+    "formik": "^2.2.8",
     "framer-motion": "^4",
     "knex": "^0.95.4",
     "objection": "^2.2.15",
