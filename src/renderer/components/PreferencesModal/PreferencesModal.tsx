@@ -1,8 +1,6 @@
 import {
   Flex,
   Heading,
-  HStack,
-  IconButton,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,9 +9,10 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
-  Tooltip,
   Spacer,
   useColorMode,
+  Button,
+  ButtonGroup,
 } from '@chakra-ui/react';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
@@ -27,35 +26,29 @@ function AppearancePreferences(): JSX.Element {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <>
-      <Flex>
+      <Flex alignItems="center">
         <Text>Theme</Text>
         <Spacer />
-        <HStack gridGap={1}>
-          <Tooltip label="Light">
-            <IconButton
-              size="sm"
-              fontSize="lg"
-              aria-label="Switch to light mode"
-              variant="ghost"
-              color="current"
-              onClick={toggleColorMode}
-              icon={<FaSun />}
-              isActive={colorMode === 'light'}
-            />
-          </Tooltip>
-          <Tooltip label="Dark">
-            <IconButton
-              size="sm"
-              fontSize="lg"
-              aria-label="Switch to dark mode"
-              variant="ghost"
-              color="current"
-              onClick={toggleColorMode}
-              icon={<FaMoon />}
-              isActive={colorMode === 'dark'}
-            />
-          </Tooltip>
-        </HStack>
+        <ButtonGroup colorScheme="gray" variant="ghost">
+          <Button
+            aria-label="Switch to light mode"
+            color="current"
+            onClick={toggleColorMode}
+            leftIcon={<FaSun />}
+            isActive={colorMode === 'light'}
+          >
+            Light
+          </Button>
+          <Button
+            aria-label="Switch to dark mode"
+            color="current"
+            onClick={toggleColorMode}
+            leftIcon={<FaMoon />}
+            isActive={colorMode === 'dark'}
+          >
+            Dark
+          </Button>
+        </ButtonGroup>
       </Flex>
     </>
   );
