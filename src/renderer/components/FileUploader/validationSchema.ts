@@ -9,12 +9,9 @@ const validationSchema = Yup.object({
   useId: Yup.boolean(),
   idCol: Yup.number().when('useId', {
     is: true,
-    then: Yup.number().min(
-      0,
-      'Please select a column or uncheck the "Group notes" checkbox'
-    ),
+    then: Yup.number().min(0, 'Required when "Group notes" is selected'),
   }),
-  textCol: Yup.number().min(0, 'Please select a column'),
+  textCol: Yup.number().min(0, 'Required'),
   labels: Yup.array().min(1).of(labelSchema),
 });
 

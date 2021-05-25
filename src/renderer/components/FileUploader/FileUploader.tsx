@@ -20,6 +20,7 @@ import Papa from 'papaparse';
 import { ApiContext } from '../../api';
 import { CRLabel } from '../../../types';
 import validationSchema from './validationSchema';
+import LabelWithError from './LabelWithError';
 
 type FormData = {
   useId: boolean;
@@ -98,13 +99,13 @@ function FileUploader(): JSX.Element {
               onChange={readHeader}
             />
           </FormControl>
-          <FormControl>
+          <FormControl marginBlock="1em">
             <Field name="useId" as={Checkbox} defaultIsChecked>
               Group notes by ID column?
             </Field>
           </FormControl>
-          <FormControl>
-            <FormLabel>Select group ID column.</FormLabel>
+          <FormControl marginBlock="1em">
+            <LabelWithError text="Select group ID column." name="idCol" />
             <Field
               name="idCol"
               as={Select}
@@ -114,15 +115,13 @@ function FileUploader(): JSX.Element {
               <option value="-1">Select a column</option>
               {headerList}
             </Field>
-            <ErrorMessage name="idCol" component={Box} />
           </FormControl>
-          <FormControl marginBlockStart="0.5em">
-            <FormLabel>Select text column.</FormLabel>
+          <FormControl marginBlock="1em">
+            <LabelWithError text="Select text column." name="textCol" />
             <Field name="textCol" as={Select}>
               <option value="-1">Select a column</option>
               {headerList}
             </Field>
-            <ErrorMessage name="textCol" />
           </FormControl>
           <FormControl marginBlockStart="1em">
             <FieldArray
@@ -149,29 +148,34 @@ function FileUploader(): JSX.Element {
                     <Box key={index}>
                       <Box display="flex" alignItems="center">
                         <FormControl marginInlineEnd="0.5em" minWidth="20em">
-                          <FormLabel>Label {index + 1}</FormLabel>
+                          <LabelWithError
+                            text={`Label ${index + 1}`}
+                            name={`labels.${index}.name`}
+                          />
                           <Field
                             name={`labels.${index}.name`}
                             as={Textarea}
                             placeholder="Palliative Care"
                           />
-                          <ErrorMessage name={`labels.${index}.name`} />
                         </FormControl>
                         <FormControl
                           marginInlineStart="0.5em"
-                          marginInlineEnd="1em"
+                          marginInlineEnd="0.5em"
                           minWidth="20em"
                         >
-                          <FormLabel>Pattern {index + 1}</FormLabel>
+                          <LabelWithError
+                            text={`Pattern ${index + 1}`}
+                            name={`labels.${index}.pattern`}
+                          />
                           <Field
                             name={`labels.${index}.pattern`}
                             as={Textarea}
                             placeholder="pall(iative)? (care|medicine)"
                           />
-                          <ErrorMessage name={`labels.${index}.pattern`} />
                         </FormControl>
                         <Button
                           type="button"
+                          marginInlineStart="0.5em"
                           onClick={() => arrayHelpers.remove(index)}
                           disabled={props.values.labels.length === 1}
                         >
