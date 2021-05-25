@@ -19,6 +19,7 @@ import {
 import Papa from 'papaparse';
 import { ApiContext } from '../../api';
 import { CRLabel } from '../../../types';
+import validationSchema from './validationSchema';
 
 type FormData = {
   useId: boolean;
@@ -84,6 +85,7 @@ function FileUploader(): JSX.Element {
         labels: [{ name: '', pattern: '' }],
       }}
       onSubmit={sendData}
+      validationSchema={validationSchema}
     >
       {(props) => (
         <Form>
@@ -112,7 +114,7 @@ function FileUploader(): JSX.Element {
               <option value="-1">Select a column</option>
               {headerList}
             </Field>
-            <ErrorMessage name="idCol" />
+            <ErrorMessage name="idCol" component={Box} />
           </FormControl>
           <FormControl marginBlockStart="0.5em">
             <FormLabel>Select text column.</FormLabel>
@@ -122,12 +124,16 @@ function FileUploader(): JSX.Element {
             </Field>
             <ErrorMessage name="textCol" />
           </FormControl>
-          <FormControl marginBlockStart="0.5em">
+          <FormControl marginBlockStart="1em">
             <FieldArray
               name="labels"
               render={(arrayHelpers) => (
                 <Box>
-                  <Box display="flex" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
                     <FormLabel>Labels and patterns</FormLabel>
                     <Button
                       type="button"
@@ -142,17 +148,19 @@ function FileUploader(): JSX.Element {
                   {props.values.labels.map((_label, index) => (
                     <Box key={index}>
                       <Box display="flex" alignItems="center">
-                        <FormControl marginInlineEnd="0.5em">
+                        <FormControl marginInlineEnd="0.5em" minWidth="20em">
                           <FormLabel>Label {index + 1}</FormLabel>
                           <Field
                             name={`labels.${index}.name`}
                             as={Textarea}
                             placeholder="Palliative Care"
                           />
+                          <ErrorMessage name={`labels.${index}.name`} />
                         </FormControl>
                         <FormControl
                           marginInlineStart="0.5em"
                           marginInlineEnd="1em"
+                          minWidth="20em"
                         >
                           <FormLabel>Pattern {index + 1}</FormLabel>
                           <Field
@@ -160,10 +168,12 @@ function FileUploader(): JSX.Element {
                             as={Textarea}
                             placeholder="pall(iative)? (care|medicine)"
                           />
+                          <ErrorMessage name={`labels.${index}.pattern`} />
                         </FormControl>
                         <Button
                           type="button"
                           onClick={() => arrayHelpers.remove(index)}
+                          disabled={props.values.labels.length === 1}
                         >
                           -
                         </Button>
