@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import FileUploader from '../../components/FileUploader';
 
-function UploadCsv(): JSX.Element {
+function NewProject(): JSX.Element {
   return (
     <Box display="flex" justifyContent="center">
       <FileUploader />
@@ -9,4 +9,4 @@ function UploadCsv(): JSX.Element {
   );
 }
 
-export default UploadCsv;
+export default NewProject;
