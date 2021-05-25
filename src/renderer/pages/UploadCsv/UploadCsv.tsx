@@ -1,11 +1,11 @@
+import { Box } from '@chakra-ui/react';
 import FileUploader from '../../components/FileUploader';
-import './UploadCsv.css';
 
 function UploadCsv(): JSX.Element {
   return (
-    <div className="Upload page">
+    <Box display="flex" justifyContent="center">
       <FileUploader />
-    </div>
+    </Box>
   );
 }
 
