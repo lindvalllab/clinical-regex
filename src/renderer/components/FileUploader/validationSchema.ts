@@ -6,12 +6,20 @@ const labelSchema = Yup.object({
 });
 
 const validationSchema = Yup.object({
-  useId: Yup.boolean(),
-  idCol: Yup.number().when('useId', {
+  isGrouped: Yup.boolean(),
+  idColIndex: Yup.number().when('isGrouped', {
     is: true,
     then: Yup.number().min(0, 'Required when "Group notes" is selected'),
   }),
-  textCol: Yup.number().min(0, 'Required'),
+  textColIndex: Yup.number()
+    .min(0, 'Required')
+    .when('isGrouped', {
+      is: true,
+      then: Yup.number().notOneOf(
+        [Yup.ref('idColIndex')],
+        'Cannot be the same as group ID'
+      ),
+    }),
   labels: Yup.array().min(1).of(labelSchema),
 });
 
