@@ -47,17 +47,19 @@ function FileUploader(): JSX.Element {
     console.log(JSON.stringify(values, null, 2));
     const idColIndex = values.idColIndex;
     const textColIndex = values.textColIndex;
+    let headerRows = 1;
     const parseCsv = (result: Papa.ParseResult<string[]>) => {
       api.insertTexts(
         result.data
-          .slice(1) // Ignore header row.
+          .slice(headerRows) // Ignore header row.
           .map((x) => ({ group_id: x[idColIndex], text: x[textColIndex] }))
       );
-      helpers.setSubmitting(false);
+      headerRows = 0;
     };
     if (csv !== undefined) {
       Papa.parse<string[]>(csv, {
-        complete: parseCsv,
+        chunk: parseCsv,
+        complete: () => helpers.setSubmitting(false),
         skipEmptyLines: true,
       });
     }
