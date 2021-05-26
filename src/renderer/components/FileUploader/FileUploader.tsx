@@ -16,7 +16,7 @@ import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 
 type FormData = {
-  useId: boolean;
+  isGrouped: boolean;
   idCol: string;
   textCol: string;
   labels: CRLabel[];
@@ -73,7 +73,7 @@ function FileUploader(): JSX.Element {
   return (
     <Formik
       initialValues={{
-        useId: true,
+        isGrouped: true,
         idCol: '-1',
         textCol: '-1',
         labels: [{ name: '', pattern: '' }],
@@ -102,7 +102,7 @@ function FileUploader(): JSX.Element {
             <Field
               name="idCol"
               as={Select}
-              disabled={!props.values.useId}
+              disabled={!props.values.isGrouped}
               placeholder=""
             >
               <option value="-1">Select a column</option>
