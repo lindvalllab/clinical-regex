@@ -1,7 +1,20 @@
 import fs from 'fs';
 import BaseApi from './base';
-import { getDbPath, AnnotationModel, TextModel } from '../electron/db';
-import { CRText, Entry, TextEntity } from '../types';
+import {
+  getDbPath,
+  AnnotationModel,
+  LabelModel,
+  TextModel,
+} from '../electron/db';
+import {
+  AnnotationEntity,
+  CRAnnotation,
+  CRLabel,
+  CRText,
+  Entry,
+  LabelEntity,
+  TextEntity,
+} from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 
 interface RendererApi {
@@ -9,6 +22,12 @@ interface RendererApi {
 }
 
 export default class ElectronApi extends BaseApi {
+  async getAllAnnotations(): Promise<AnnotationEntity[]> {
+    return AnnotationModel.query();
+  }
+  async getAllLabels(): Promise<LabelEntity[]> {
+    return LabelModel.query();
+  }
   async getAllTexts(): Promise<TextEntity[]> {
     return TextModel.query();
   }
@@ -25,6 +44,12 @@ export default class ElectronApi extends BaseApi {
   }
   async insertText(text: CRText): Promise<void> {
     await TextModel.query().insert(text);
+  }
+  async insertLabel(label: CRLabel): Promise<void> {
+    await LabelModel.query().insert(label);
+  }
+  async insertAnnotation(annotation: CRAnnotation): Promise<void> {
+    await AnnotationModel.query().insert(annotation);
   }
   async getAllGroupIds(): Promise<string[]> {
     const groupIds = await TextModel.query().distinct('group_id');
