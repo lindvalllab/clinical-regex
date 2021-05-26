@@ -3,12 +3,12 @@ import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
 import { Entry } from '../../../types';
 import {
-  Box,
   Button,
   ButtonGroup,
   Flex,
   Grid,
   SkeletonText,
+  Spacer,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -58,12 +58,13 @@ function AnnotationInterface(): JSX.Element {
   const groupIdField = 'SUBJECT_ID';
 
   return (
-    <Box>
+    <Flex flexDirection="column" height="100%">
       {entry ? (
         <EntryDisplay entry={entry} />
       ) : (
         <SkeletonText noOfLines={12} spacing={4} p={8} />
       )}
+      <Spacer />
       <Flex
         w="100%"
         justify="space-between"
@@ -111,7 +112,7 @@ function AnnotationInterface(): JSX.Element {
           </Button>
         </ButtonGroup>
       </Flex>
-    </Box>
+    </Flex>
   );
 }
 
