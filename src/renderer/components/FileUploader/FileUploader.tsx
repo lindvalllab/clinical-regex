@@ -93,7 +93,7 @@ function FileUploader(): JSX.Element {
             />
           </FormControl>
           <FormControl marginBlock="1em">
-            <Field name="useId" as={Checkbox} defaultIsChecked>
+            <Field name="isGrouped" as={Checkbox} defaultIsChecked>
               Group notes by ID column?
             </Field>
           </FormControl>
@@ -104,14 +104,14 @@ function FileUploader(): JSX.Element {
               as={Select}
               disabled={!props.values.isGrouped}
             >
-              <option value="-1">Select a column</option>
+              <option value={-1}>Select a column</option>
               {headerList}
             </Field>
           </FormControl>
           <FormControl marginBlock="1em">
             <LabelWithError text="Select text column." name="textColIndex" />
             <Field name="textColIndex" as={Select}>
-              <option value="-1">Select a column</option>
+              <option value={-1}>Select a column</option>
               {headerList}
             </Field>
           </FormControl>
