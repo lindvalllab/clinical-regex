@@ -1,6 +1,6 @@
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
-import UploadCsv from './pages/UploadCsv';
+import NewProject from './pages/NewProject';
 import Dashboard from './pages/Dashboard';
 import AnnotationInterface from './pages/AnnotationInterface';
 import NavBar from './components/NavBar';
@@ -17,7 +17,7 @@ function App(): JSX.Element {
         <NavBar />
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/upload" component={UploadCsv} />
+          <Route path="/upload" component={NewProject} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/annotation-interface" component={AnnotationInterface} />
         </Switch>

@@ -29,7 +29,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "sqlite3": "^5.0.2",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.2",
+    "yup": "^0.32.9"
   },
   "homepage": "./",
   "main": "./build/electron/main.js",
@@ -48,7 +49,7 @@
     "start:dev-app": "wait-on http://localhost:3000 && yarn tsc:electron && electron .",
     "start:dev": "concurrently --kill-others \"yarn start:dev-server\" \"yarn start:dev-app\"",
     "build:electron": "yarn build:react && yarn tsc:electron && electron-builder",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings 0",
     "tc": "tsc --noEmit -p tsconfig.json"
   },
   "browserslist": {
