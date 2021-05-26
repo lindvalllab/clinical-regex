@@ -8,14 +8,7 @@ import {
   Select,
   Textarea,
 } from '@chakra-ui/react';
-import {
-  ErrorMessage,
-  Field,
-  FieldArray,
-  Form,
-  Formik,
-  FormikHelpers,
-} from 'formik';
+import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import Papa from 'papaparse';
 import { ApiContext } from '../../api';
 import { CRLabel } from '../../../types';
