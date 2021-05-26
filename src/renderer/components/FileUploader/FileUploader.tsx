@@ -56,6 +56,8 @@ function FileUploader(): JSX.Element {
       );
       headerRows = 0;
     };
+
+    api.insertLabels(values.labels);
     if (csv !== undefined) {
       Papa.parse<string[]>(csv, {
         chunk: parseCsv,
@@ -63,7 +65,6 @@ function FileUploader(): JSX.Element {
         skipEmptyLines: true,
       });
     }
-    helpers.resetForm();
   };
 
   const headerList = headers.map((h, i) => (
