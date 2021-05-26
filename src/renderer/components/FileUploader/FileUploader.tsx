@@ -95,7 +95,15 @@ function FileUploader(): JSX.Element {
             />
           </FormControl>
           <FormControl marginBlock="1em">
-            <Field name="isGrouped" as={Checkbox} defaultIsChecked>
+            <Field
+              name="isGrouped"
+              as={Checkbox}
+              defaultIsChecked
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                props.setFieldValue('idColIndex', -1);
+                props.handleChange(e);
+              }}
+            >
               Group notes by ID column?
             </Field>
           </FormControl>
