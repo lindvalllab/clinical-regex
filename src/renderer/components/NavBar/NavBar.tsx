@@ -33,8 +33,15 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
 
   const onClickLog = async () => {
     console.log('Button clicked');
-    const result = await api.getAllTexts();
-    console.log(result);
+    console.log('Texts');
+    const texts = await api.getAllTexts();
+    console.log(texts);
+    console.log('Labels');
+    const labels = await api.getAllLabels();
+    console.log(labels);
+    console.log('Annotations');
+    const annotations = await api.getAllAnnotations();
+    console.log(annotations);
   };
 
   return (
