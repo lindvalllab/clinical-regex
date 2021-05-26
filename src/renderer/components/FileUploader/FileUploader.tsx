@@ -17,8 +17,8 @@ import LabelWithError from './LabelWithError';
 
 type FormData = {
   isGrouped: boolean;
-  idCol: string;
-  textCol: string;
+  idColIndex: number;
+  textColIndex: number;
   labels: CRLabel[];
 };
 
@@ -45,13 +45,13 @@ function FileUploader(): JSX.Element {
 
   const sendData = (values: FormData, helpers: FormikHelpers<FormData>) => {
     console.log(JSON.stringify(values, null, 2));
-    const idCol = Number(values.idCol);
-    const textCol = Number(values.textCol);
+    const idColIndex = values.idColIndex;
+    const textColIndex = values.textColIndex;
     const parseCsv = (result: Papa.ParseResult<string[]>) => {
       api.insertTexts(
         result.data
           .slice(1) // Ignore header row.
-          .map((x) => ({ group_id: x[idCol], text: x[textCol] }))
+          .map((x) => ({ group_id: x[idColIndex], text: x[textColIndex] }))
       );
       helpers.setSubmitting(false);
     };
@@ -74,8 +74,8 @@ function FileUploader(): JSX.Element {
     <Formik
       initialValues={{
         isGrouped: true,
-        idCol: '-1',
-        textCol: '-1',
+        idColIndex: -1,
+        textColIndex: -1,
         labels: [{ name: '', pattern: '' }],
       }}
       onSubmit={sendData}
@@ -98,20 +98,19 @@ function FileUploader(): JSX.Element {
             </Field>
           </FormControl>
           <FormControl marginBlock="1em">
-            <LabelWithError text="Select group ID column." name="idCol" />
+            <LabelWithError text="Select group ID column." name="idColIndex" />
             <Field
-              name="idCol"
+              name="idColIndex"
               as={Select}
               disabled={!props.values.isGrouped}
-              placeholder=""
             >
               <option value="-1">Select a column</option>
               {headerList}
             </Field>
           </FormControl>
           <FormControl marginBlock="1em">
-            <LabelWithError text="Select text column." name="textCol" />
-            <Field name="textCol" as={Select}>
+            <LabelWithError text="Select text column." name="textColIndex" />
+            <Field name="textColIndex" as={Select}>
               <option value="-1">Select a column</option>
               {headerList}
             </Field>
