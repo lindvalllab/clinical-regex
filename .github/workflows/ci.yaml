@@ -19,4 +19,4 @@ jobs:
       - name: Type check
         run: yarn tc
       - name: Run tests
-        run: yarn test:react
+        run: yarn test

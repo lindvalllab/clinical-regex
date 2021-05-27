@@ -47,8 +47,9 @@
     "tsc:electron": "tsc -p tsconfig.electron.json",
     "start:dev-server": "cross-env BROWSER=none react-scripts start",
     "start:dev-app": "wait-on http://localhost:3000 && yarn tsc:electron && electron .",
-    "start:dev": "concurrently --kill-others \"yarn start:dev-server\" \"yarn start:dev-app\"",
-    "build:electron": "yarn build:react && yarn tsc:electron && electron-builder",
+    "dev": "concurrently --kill-others \"yarn start:dev-server\" \"yarn start:dev-app\"",
+    "build": "yarn build:react && yarn tsc:electron && electron-builder",
+    "test": "yarn test:react",
     "lint": "eslint src --max-warnings 0",
     "tc": "tsc --noEmit -p tsconfig.json"
   },
