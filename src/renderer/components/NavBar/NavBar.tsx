@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ApiContext } from '../../api';
 import { NavLink } from 'react-router-dom';
-import './NavBar.css';
 import { useViewportScroll } from 'framer-motion';
 import {
   chakra,
@@ -12,6 +11,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import NavBarMenu from './NavBarMenu';
+
+const activeStyle: React.CSSProperties = {
+  fontWeight: 'bold',
+};
 
 function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
   // For color mode toggle
@@ -51,13 +54,13 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
         </Flex>
         <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
           <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
-            <NavLink to="/" exact={true} activeClassName="is-active">
+            <NavLink to="/" exact={true} activeStyle={activeStyle}>
               Home
             </NavLink>
-            <NavLink to="/dashboard" activeClassName="is-active">
+            <NavLink to="/dashboard" activeStyle={activeStyle}>
               Dashboard
             </NavLink>
-            <NavLink to="/annotation-interface" activeClassName="is-active">
+            <NavLink to="/annotation-interface" activeStyle={activeStyle}>
               Annotate
             </NavLink>
             <Button onClick={onClickLog}>Log All Texts</Button>
