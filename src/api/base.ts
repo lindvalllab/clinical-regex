@@ -14,6 +14,7 @@ export default abstract class BaseApi {
   public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getAllGroupIds(): Promise<string[]>;
   public abstract getEntry(groupId: string): Promise<Entry>;
+  public abstract clearDb(): Promise<void>;
   public abstract saveDb(): Promise<string | undefined>;
   public abstract insertAnnotation(text: CRAnnotation): Promise<void>;
   public abstract insertLabel(text: CRLabel): Promise<void>;

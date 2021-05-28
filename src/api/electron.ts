@@ -57,6 +57,12 @@ export default class ElectronApi extends BaseApi {
     return groupIds.map((model) => model.group_id);
   }
 
+  async clearDb(): Promise<void> {
+    await AnnotationModel.query().delete();
+    await TextModel.query().delete();
+    await LabelModel.query().delete();
+  }
+
   async saveDb(): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Save File',
