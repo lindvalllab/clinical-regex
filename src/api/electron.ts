@@ -95,11 +95,11 @@ export default class ElectronApi extends BaseApi {
       const csv = fs.createReadStream(path);
       const promises: Promise<TextEntity>[] = [];
       await TextModel.transaction(async (trx) => {
-        let headers = true;
+        let isHeaderRow = true;
         const parseLine = async (result: Papa.ParseResult<string>) => {
           console.log(result.data[idColIndex]);
           // Skip header row.
-          if (!headers) {
+          if (!isHeaderRow) {
             promises.push(
               TextModel.query(trx).insert({
                 group_id: result.data[idColIndex],
@@ -107,7 +107,7 @@ export default class ElectronApi extends BaseApi {
               })
             );
           }
-          headers = false;
+          isHeaderRow = false;
         };
         await new Promise<void>((resolve) =>
           Papa.parse<string>(csv, {
