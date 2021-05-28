@@ -43,27 +43,16 @@ function FileUploader(): JSX.Element {
     }
   };
 
-  const sendData = (values: FormData, helpers: FormikHelpers<FormData>) => {
-    console.log(JSON.stringify(values, null, 2));
-    const idColIndex = values.idColIndex;
-    const textColIndex = values.textColIndex;
-    let headerRows = 1;
-    const parseCsv = (result: Papa.ParseResult<string[]>) => {
-      api.insertTexts(
-        result.data
-          .slice(headerRows) // Ignore header row.
-          .map((x) => ({ group_id: x[idColIndex], text: x[textColIndex] }))
-      );
-      headerRows = 0;
-    };
-    if (csv !== undefined) {
-      Papa.parse<string[]>(csv, {
-        chunk: parseCsv,
-        complete: () => helpers.setSubmitting(false),
-        skipEmptyLines: true,
-      });
+  const sendData = async (
+    values: FormData,
+    helpers: FormikHelpers<FormData>
+  ) => {
+    if (csv) {
+      await api.clearDb();
+      await api.loadCsv(csv.path, values.idColIndex, values.textColIndex);
+      await api.insertLabels(values.labels);
     }
-    helpers.resetForm();
+    helpers.setSubmitting(false);
   };
 
   const headerList = headers.map((h, i) => (
