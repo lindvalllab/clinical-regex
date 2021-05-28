@@ -92,7 +92,7 @@ export default class ElectronApi extends BaseApi {
       (name) =>
         name !== 'constructor' && typeof Reflect.get(self, name) === 'function'
     );
-    return methods;
+    return Array.from(new Set(methods));
   }
 
   private static getMethod(name: string) {
