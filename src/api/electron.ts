@@ -17,6 +17,7 @@ import {
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
+import { Transaction } from 'objection';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -43,14 +44,41 @@ export default class ElectronApi extends BaseApi {
       annotations: annotations,
     };
   }
-  async insertText(text: CRText): Promise<void> {
-    await TextModel.query().insert(text);
+  async insertText(text: CRText, trx?: Transaction): Promise<void> {
+    if (trx !== undefined) await TextModel.query(trx).insert(text);
+    else await TextModel.query().insert(text);
   }
-  async insertLabel(label: CRLabel): Promise<void> {
-    await LabelModel.query().insert(label);
+  async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
+    if (trx !== undefined) await LabelModel.query(trx).insert(label);
+    else await LabelModel.query().insert(label);
   }
-  async insertAnnotation(annotation: CRAnnotation): Promise<void> {
-    await AnnotationModel.query().insert(annotation);
+  async insertAnnotation(
+    annotation: CRAnnotation,
+    trx?: Transaction
+  ): Promise<void> {
+    if (trx !== undefined) await AnnotationModel.query(trx).insert(annotation);
+    else await AnnotationModel.query().insert(annotation);
+  }
+  async insertTexts(texts: CRText[]): Promise<void> {
+    await TextModel.transaction(async (trx) => {
+      for (const text of texts) {
+        await this.insertText(text, trx);
+      }
+    });
+  }
+  async insertLabels(labels: CRLabel[]): Promise<void> {
+    await LabelModel.transaction(async (trx) => {
+      for (const label of labels) {
+        await this.insertLabel(label, trx);
+      }
+    });
+  }
+  async insertAnnotations(annotations: CRAnnotation[]): Promise<void> {
+    await AnnotationModel.transaction(async (trx) => {
+      for (const annotation of annotations) {
+        await this.insertAnnotation(annotation, trx);
+      }
+    });
   }
   async getAllGroupIds(): Promise<string[]> {
     const groupIds = await TextModel.query().distinct('group_id');
@@ -93,18 +121,20 @@ export default class ElectronApi extends BaseApi {
   ): Promise<void> {
     try {
       const csv = fs.createReadStream(path);
-      const promises: Promise<TextEntity>[] = [];
+      const promises: Promise<void>[] = [];
       await TextModel.transaction(async (trx) => {
         let isHeaderRow = true;
         const parseLine = async (result: Papa.ParseResult<string>) => {
-          console.log(result.data[idColIndex]);
           // Skip header row.
           if (!isHeaderRow) {
             promises.push(
-              TextModel.query(trx).insert({
-                group_id: result.data[idColIndex],
-                text: result.data[textColIndex],
-              })
+              this.insertText(
+                {
+                  group_id: result.data[idColIndex],
+                  text: result.data[textColIndex],
+                },
+                trx
+              )
             );
           }
           isHeaderRow = false;
