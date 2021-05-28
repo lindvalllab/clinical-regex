@@ -19,6 +19,11 @@ export default abstract class BaseApi {
   public abstract insertAnnotation(text: CRAnnotation): Promise<void>;
   public abstract insertLabel(text: CRLabel): Promise<void>;
   public abstract insertText(text: CRText): Promise<void>;
+  public abstract loadCsv(
+    path: string,
+    idColIndex: number,
+    textColIndex: number
+  ): Promise<void>;
   public async insertAnnotations(annotations: CRAnnotation[]): Promise<void> {
     for (const annotation of annotations) {
       await this.insertAnnotation(annotation);

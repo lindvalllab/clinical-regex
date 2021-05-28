@@ -16,6 +16,7 @@ import {
   TextEntity,
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
+import Papa from 'papaparse';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -82,6 +83,46 @@ export default class ElectronApi extends BaseApi {
       // TO-DO: figure out a better way to handle this.
       console.error(`Destination ${destination} not valid.`);
       return;
+    }
+  }
+
+  async loadCsv(
+    path: string,
+    idColIndex: number,
+    textColIndex: number
+  ): Promise<void> {
+    try {
+      const csv = fs.createReadStream(path);
+      const promises: Promise<TextEntity>[] = [];
+      await TextModel.transaction(async (trx) => {
+        let headers = true;
+        const parseLine = async (result: Papa.ParseResult<string>) => {
+          console.log(result.data[idColIndex]);
+          // Skip header row.
+          if (!headers) {
+            promises.push(
+              TextModel.query(trx).insert({
+                group_id: result.data[idColIndex],
+                text: result.data[textColIndex],
+              })
+            );
+          }
+          headers = false;
+        };
+        await new Promise<void>((resolve) =>
+          Papa.parse<string>(csv, {
+            step: parseLine,
+            complete: async () => {
+              await Promise.all(promises);
+              resolve();
+            },
+            skipEmptyLines: true,
+          })
+        );
+      });
+    } catch (err) {
+      console.log('Error completing database insert transaction');
+      console.error(err);
     }
   }
 
