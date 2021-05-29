@@ -53,6 +53,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
 
   const toDisplay = resolvedSpans.map((span, index) => {
+    const isLastSpan = index === resolvedSpans.length - 1;
     const isHighlight = span.tags.length !== 0;
     const textContent = props.text.slice(span.start, span.start + span.length);
 
@@ -105,7 +106,8 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
                 <Button onClick={props.onClickMore}>More</Button>
               </ButtonGroup>
             </Flex>
-            {endChunk}
+            {/* Only truncate on one side if at end of text */}
+            {!isLastSpan ? endChunk : ''}
           </>
         );
       }
