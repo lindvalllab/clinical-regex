@@ -45,7 +45,9 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
 
               setNoContextLines(newValue);
             }}
-            value={String(noContextLines)}
+            value={
+              noContextLines === undefined ? 'all' : String(noContextLines)
+            }
           >
             <Stack direction="row">
               <Radio value="2">2</Radio>
