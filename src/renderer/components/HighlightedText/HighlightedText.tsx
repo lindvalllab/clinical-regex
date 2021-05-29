@@ -12,13 +12,9 @@ type HighlightedTextProps = {
   highlights: SpanWithTag[];
   palette: Record<string, string>;
   contextLines?: number;
-  onChangeContextLines?: () => void;
 };
 
-const HighlightedText = ({
-  onChangeContextLines,
-  ...props
-}: HighlightedTextProps): JSX.Element => {
+const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
   const hasNoHighlights =
     resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
@@ -36,12 +32,6 @@ const HighlightedText = ({
       )
     );
   }, [props.contextLines, resolvedSpans.length]);
-
-  useEffect(() => {
-    if (onChangeContextLines) {
-      onChangeContextLines();
-    }
-  }, [contextLines, onChangeContextLines]);
 
   const updateContextLines = (index: number, newValue: number) => {
     setContextLines((prevState) => {
