@@ -23,6 +23,9 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     Array(resolvedSpans.length).fill(props.contextLines)
   );
 
+  // reset context windows when props.contextLines changes
+  // would be nice to not repeat the Array(resolvedSpans.length).fill(props.contextLines)
+  // part, not sure how to do that, though...
   useEffect(() => {
     setContextLines(Array(resolvedSpans.length).fill(props.contextLines));
   }, [props.contextLines, resolvedSpans.length]);
