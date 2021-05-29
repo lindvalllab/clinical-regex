@@ -9,28 +9,43 @@ import {
 } from '@chakra-ui/form-control';
 
 const DEFAULT_NO_CONTEXT_LINES = 2;
-const CONTEXT_INCREMENT_SIZE = 2;
 
 type EntryDisplayProps = {
   entry: Entry;
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
-  const [noContextLines, setNoContextLines] = useState<number | undefined>(
+  const [contextLines, setContextLines] = useState<number | undefined>(
     DEFAULT_NO_CONTEXT_LINES
   );
 
   const highlights = [
     {
+      start: 50,
+      length: 5,
+      tag: 'Foo',
+    },
+    {
+      start: 48,
+      length: 50,
+      tag: 'Bar',
+    },
+    {
+      start: 2500,
+      length: 150,
+      tag: 'Foo',
+    },
+    {
       start: 1000,
       length: 10,
-      tag: 'Foo',
+      tag: 'Baz',
     },
   ];
 
   const palette = {
     Foo: '#4089ff',
     Bar: '#f302fe',
+    Baz: '#ffd900',
   };
 
   return (
@@ -39,15 +54,10 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
         <FormControl as="fieldset">
           <FormLabel as="legend">Context Window</FormLabel>
           <RadioGroup
-            defaultValue="2"
             onChange={(value) => {
-              const newValue = value === 'all' ? undefined : Number(value);
-
-              setNoContextLines(newValue);
+              setContextLines(Number(value));
             }}
-            value={
-              noContextLines === undefined ? 'all' : String(noContextLines)
-            }
+            value={String(contextLines)}
           >
             <Stack direction="row">
               <Radio value="2">2</Radio>
@@ -55,7 +65,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
               <Radio value="10">10</Radio>
               <Radio value="50">50</Radio>
               <Radio value="100">100</Radio>
-              <Radio value="all">Show entire text</Radio>
+              <Radio value="-1">Show entire text</Radio>
             </Stack>
           </RadioGroup>
           <FormHelperText>
@@ -68,19 +78,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
               text={textObj.text}
               highlights={highlights}
               palette={palette}
-              noContextLines={noContextLines}
-              onClickMore={() =>
-                noContextLines !== undefined &&
-                setNoContextLines(noContextLines + CONTEXT_INCREMENT_SIZE)
-              }
-              onClickLess={() =>
-                noContextLines !== undefined &&
-                noContextLines > 2 &&
-                setNoContextLines(noContextLines - CONTEXT_INCREMENT_SIZE)
-              }
-              isDisabledLess={
-                noContextLines !== undefined && noContextLines <= 2
-              }
+              contextLines={contextLines}
             />
           </Box>
         ))}
