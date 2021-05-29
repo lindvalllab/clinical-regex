@@ -51,8 +51,11 @@ const getTooltip = (span: SpanWithTags): string => {
 
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
+  const hasNoHighlights =
+    resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
 
   const toDisplay = resolvedSpans.map((span, index) => {
+    const isFirstSpan = index === 0;
     const isLastSpan = index === resolvedSpans.length - 1;
     const isHighlight = span.tags.length !== 0;
     const textContent = props.text.slice(span.start, span.start + span.length);
@@ -74,7 +77,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
         const numLinesHidden = lines.length - 2 * props.noContextLines;
         return (
           <>
-            {startChunk}
+            {!isFirstSpan || hasNoHighlights ? startChunk : ''}
             <Flex
               w="100%"
               p={2}

@@ -8,27 +8,19 @@ import {
   FormLabel,
 } from '@chakra-ui/form-control';
 
+const DEFAULT_NO_CONTEXT_LINES = 2;
+const CONTEXT_INCREMENT_SIZE = 2;
+
 type EntryDisplayProps = {
   entry: Entry;
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
-  const DEFAULT_NO_CONTEXT_LINES = 2;
   const [noContextLines, setNoContextLines] = useState<number | undefined>(
     DEFAULT_NO_CONTEXT_LINES
   );
 
   const highlights = [
-    {
-      start: 0,
-      length: 12,
-      tag: 'Foo',
-    },
-    {
-      start: 5,
-      length: 12,
-      tag: 'Bar',
-    },
     {
       start: 1000,
       length: 10,
@@ -77,12 +69,12 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
               noContextLines={noContextLines}
               onClickMore={() =>
                 noContextLines !== undefined &&
-                setNoContextLines(noContextLines + 2)
+                setNoContextLines(noContextLines + CONTEXT_INCREMENT_SIZE)
               }
               onClickLess={() =>
                 noContextLines !== undefined &&
                 noContextLines > 2 &&
-                setNoContextLines(noContextLines - 2)
+                setNoContextLines(noContextLines - CONTEXT_INCREMENT_SIZE)
               }
               isDisabledLess={
                 noContextLines !== undefined && noContextLines <= 2
