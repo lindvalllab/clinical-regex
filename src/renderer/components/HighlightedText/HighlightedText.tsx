@@ -93,7 +93,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
           bg={getColor(span.tags, props.palette)}
           fontFamily="mono"
           _hover={{
-            opacity: 0.8,
+            opacity: isHighlight ? 0.8 : 1,
           }}
         >
           {format(textContent)}
