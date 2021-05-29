@@ -11,7 +11,7 @@ type HighlightedTextProps = {
   text: string;
   highlights: SpanWithTag[];
   palette: Record<string, string>;
-  contextLines?: number;
+  contextLines: number;
 };
 
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
@@ -20,17 +20,11 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
 
   const [contextLines, setContextLines] = useState<number[]>(
-    Array(resolvedSpans.length).fill(
-      props.contextLines ? props.contextLines : 2
-    )
+    Array(resolvedSpans.length).fill(props.contextLines)
   );
 
   useEffect(() => {
-    setContextLines(
-      Array(resolvedSpans.length).fill(
-        props.contextLines ? props.contextLines : 2
-      )
-    );
+    setContextLines(Array(resolvedSpans.length).fill(props.contextLines));
   }, [props.contextLines, resolvedSpans.length]);
 
   const updateContextLines = (index: number, newValue: number) => {

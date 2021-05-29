@@ -78,7 +78,9 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
               text={textObj.text}
               highlights={highlights}
               palette={palette}
-              contextLines={contextLines}
+              contextLines={
+                contextLines ? contextLines : DEFAULT_NO_CONTEXT_LINES
+              }
             />
           </Box>
         ))}
