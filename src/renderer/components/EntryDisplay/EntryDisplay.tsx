@@ -72,7 +72,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
             Number of lines of context to show around highlights.
           </FormHelperText>
         </FormControl>
-        {props.entry.texts.map((textObj, index) => (
+        {props.entry.texts.map((textObj) => (
           <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
             <HighlightedText
               text={textObj.text}
