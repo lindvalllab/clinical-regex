@@ -1,23 +1,31 @@
 import c_c from 'color-mixer';
-import styled from '@emotion/styled';
 import flattenSpans from './flattenSpans';
 import { SpanWithTag, SpanWithTags } from '../../../types';
-import { Tooltip } from '@chakra-ui/tooltip';
-import { Text } from '@chakra-ui/layout';
-
-const Container = styled.div`
-  margin: 1em;
-  padding: 1em;
-  white-space: pre-wrap;
-`;
+import {
+  Box,
+  Divider,
+  Flex,
+  Text,
+  Tooltip,
+  Button,
+  ButtonGroup,
+} from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
 type HighlightedTextProps = {
   text: string;
   highlights: SpanWithTag[];
   palette: Record<string, string>;
+  noContextLines?: number;
+  onClickLess?: () => void;
+  onClickMore?: () => void;
+  isDisabledLess?: boolean;
 };
 
-const getColor = (tags: string[], palette: Record<string, string>) => {
+const getColor = (
+  tags: string[],
+  palette: Record<string, string>
+): string | undefined => {
   if (tags.length === 0) {
     return undefined;
   }
@@ -44,20 +52,85 @@ const getTooltip = (span: SpanWithTags): string => {
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
 
-  const toDisplay = resolvedSpans.map((span) => {
+  const toDisplay = resolvedSpans.map((span, index) => {
+    const isHighlight = span.tags.length !== 0;
+    const textContent = props.text.slice(span.start, span.start + span.length);
+
+    const format = (text: string): ReactNode => {
+      const lines = text.split('\n');
+      if (
+        isHighlight ||
+        props.noContextLines === undefined ||
+        2 * props.noContextLines >= lines.length
+      ) {
+        return text;
+      } else {
+        const startChunk = lines.slice(0, props.noContextLines).join('\n');
+        const endChunk = lines
+          .slice(lines.length - props.noContextLines + 1, lines.length)
+          .join('\n');
+
+        const numLinesHidden = lines.length - 2 * props.noContextLines;
+        return (
+          <>
+            {startChunk}
+            <Flex
+              w="100%"
+              p={2}
+              fontFamily="body"
+              fontSize="xs"
+              alignItems="center"
+              gridGap={4}
+              opacity={0.4}
+              m={4}
+            >
+              <Box whiteSpace="nowrap">
+                {numLinesHidden} line{numLinesHidden !== 1 ? 's' : null} not
+                shown
+              </Box>
+              <Divider />
+              <ButtonGroup
+                variant="ghost"
+                colorScheme="gray"
+                size="xs"
+                spacing={2}
+                alignItems="center"
+              >
+                <Button
+                  onClick={props.onClickLess}
+                  disabled={props.isDisabledLess}
+                >
+                  Less
+                </Button>
+                <Button onClick={props.onClickMore}>More</Button>
+              </ButtonGroup>
+            </Flex>
+            {endChunk}
+          </>
+        );
+      }
+    };
+
     return (
       <Tooltip hasArrow key={span.start} label={getTooltip(span)}>
         <Text
           as="span"
           bg={getColor(span.tags, props.palette)}
           fontFamily="mono"
+          _hover={{
+            opacity: 0.8,
+          }}
         >
-          {props.text.slice(span.start, span.start + span.length)}
+          {format(textContent)}
         </Text>
       </Tooltip>
     );
   });
-  return <Container>{toDisplay}</Container>;
+  return (
+    <Box margin={4} padding={4} whiteSpace="pre-wrap">
+      {toDisplay}
+    </Box>
+  );
 };
 
 export default HighlightedText;
