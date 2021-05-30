@@ -5,10 +5,11 @@ import { Entry } from '../../../types';
 import {
   Button,
   ButtonGroup,
+  Center,
   Flex,
   Grid,
-  SkeletonText,
   Spacer,
+  Spinner,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -62,7 +63,15 @@ function AnnotationInterface(): JSX.Element {
       {entry ? (
         <EntryDisplay entry={entry} />
       ) : (
-        <SkeletonText noOfLines={12} spacing={4} p={8} />
+        <Center w="full" h="full" bg={bg}>
+          <Spinner
+            thickness="4px"
+            size="xl"
+            speed="0.65s"
+            color="gray"
+            bg="transparent"
+          />
+        </Center>
       )}
       <Spacer />
       <Flex
