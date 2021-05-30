@@ -1,5 +1,5 @@
 import HighlightedText from '../HighlightedText';
-import { Entry } from '../../../types';
+import { CRLabel, Entry, SpanWithTag } from '../../../types';
 import { useState } from 'react';
 import { Box, Stack, VStack, Radio, RadioGroup } from '@chakra-ui/react';
 import {
@@ -11,6 +11,7 @@ import { DEFAULT_CONTEXT_WINDOW_SIZE } from '../HighlightedText/constants';
 
 type EntryDisplayProps = {
   entry: Entry;
+  labels: CRLabel[];
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
@@ -18,34 +19,30 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
 
-  const highlights = [
-    {
-      start: 50,
-      length: 5,
-      tag: 'Foo',
-    },
-    {
-      start: 48,
-      length: 50,
-      tag: 'Bar',
-    },
-    {
-      start: 2500,
-      length: 150,
-      tag: 'Foo',
-    },
-    {
-      start: 1000,
-      length: 10,
-      tag: 'Baz',
-    },
-  ];
-
-  const palette = {
-    Foo: '#4089ff',
-    Bar: '#f302fe',
-    Baz: '#ffd900',
+  const highlights = (text: string): SpanWithTag[] => {
+    const matches: SpanWithTag[] = [];
+    for (const label of props.labels) {
+      const re = new RegExp(label.pattern, 'gi');
+      for (const match of Array.from(text.matchAll(re))) {
+        if (match.index !== undefined) {
+          matches.push({
+            start: match.index,
+            length: match[0].length,
+            tag: label.name,
+          });
+        }
+      }
+    }
+    return matches;
   };
+
+  // Temporary solution to color palette: cycle through three different colors.
+  const palette: Record<string, string> = {};
+  for (let i = 0; i < props.labels.length; i++) {
+    if (i % 3 === 0) palette[props.labels[i].name] = '#4089ff';
+    else if (i % 3 === 1) palette[props.labels[i].name] = '#f302fe';
+    else palette[props.labels[i].name] = '#ffd900';
+  }
 
   return (
     <>
@@ -75,7 +72,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
             <HighlightedText
               text={textObj.text}
-              highlights={highlights}
+              highlights={highlights(textObj.text)}
               palette={palette}
               contextWindow={
                 contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE

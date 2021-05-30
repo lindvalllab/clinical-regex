@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
-import { Entry } from '../../../types';
+import { CRLabel, Entry } from '../../../types';
 import {
   Button,
   ButtonGroup,
@@ -20,6 +20,7 @@ function AnnotationInterface(): JSX.Element {
   const bg = useColorModeValue('white', 'gray.800');
   const [page, setPage] = useState<number>(0);
   const [groupIds, setGroupIds] = useState<string[]>([]);
+  const [labels, setLabels] = useState<CRLabel[]>([]);
   const [entry, setEntry] = useState<Entry>();
 
   function clipPage(index: number) {
@@ -36,12 +37,18 @@ function AnnotationInterface(): JSX.Element {
     return () => setPage((oldPage) => clipPage(oldPage + amount));
   }
 
-  // Get the list of groupIds on initial render.
+  // Get the groupIds and labels on initial render.
   useEffect(() => {
     api
       .getAllGroupIds()
       .then((ids) => {
         setGroupIds(ids);
+      })
+      .catch((e) => console.error(e));
+    api
+      .getAllLabels()
+      .then((labels) => {
+        setLabels(labels);
       })
       .catch((e) => console.error(e));
   }, [api]);
@@ -61,7 +68,7 @@ function AnnotationInterface(): JSX.Element {
   return (
     <Flex flexDirection="column" height="100%">
       {entry ? (
-        <EntryDisplay entry={entry} />
+        <EntryDisplay entry={entry} labels={labels} />
       ) : (
         <Center w="full" h="full" bg={bg}>
           <Spinner
