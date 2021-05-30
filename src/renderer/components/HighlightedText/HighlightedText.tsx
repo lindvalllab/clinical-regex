@@ -3,15 +3,14 @@ import { SpanWithTag } from '../../../types';
 import { Box, Text, Tooltip } from '@chakra-ui/react';
 import { ReactNode, useEffect, useState } from 'react';
 import DividerClamp from './DividerClamp';
-import { getColor, getTooltip, isValidContextLinesValue } from './utils';
-
-const CONTEXT_INCREMENT_SIZE = 2;
+import { getColor, getTooltip, isValidContextWindowValue } from './utils';
+import { CONTEXT_INCREMENT_SIZE } from './constants';
 
 type HighlightedTextProps = {
   text: string;
   highlights: SpanWithTag[];
   palette: Record<string, string>;
-  contextLines: number;
+  contextWindow: number;
 };
 
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
@@ -19,22 +18,22 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const hasNoHighlights =
     resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
 
-  const [contextLines, setContextLines] = useState<number[]>(
-    Array(resolvedSpans.length).fill(props.contextLines)
+  const [contextWindow, setContextWindow] = useState<number[]>(
+    Array(resolvedSpans.length).fill(props.contextWindow)
   );
 
-  // reset context windows when props.contextLines changes
-  // would be nice to not repeat the Array(resolvedSpans.length).fill(props.contextLines)
+  // reset context windows when props.contextWindow changes
+  // would be nice to not repeat the Array(resolvedSpans.length).fill(props.contextWindow)
   // part, not sure how to do that, though...
   useEffect(() => {
-    setContextLines(Array(resolvedSpans.length).fill(props.contextLines));
-  }, [props.contextLines, resolvedSpans.length]);
+    setContextWindow(Array(resolvedSpans.length).fill(props.contextWindow));
+  }, [props.contextWindow, resolvedSpans.length]);
 
-  const updateContextLines = (index: number, newValue: number) => {
-    setContextLines((prevState) => {
+  const updateContextWindow = (index: number, newValue: number) => {
+    setContextWindow((prevState) => {
       const updated = [...prevState];
       // don't change value if newValue <= 0
-      updated[index] = !isValidContextLinesValue(newValue)
+      updated[index] = !isValidContextWindowValue(newValue)
         ? updated[index]
         : newValue;
       return updated;
@@ -48,42 +47,49 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     const textContent = props.text.slice(span.start, span.start + span.length);
 
     const format = (text: string): ReactNode => {
-      const lines = text.split('\n');
-      const numLinesHidden = lines.length - 2 * contextLines[index];
+      // split() will return the delimiters as odd array items
+      // if wrapped in parentheses
+      const words = text.split(/(\s+)/);
 
-      if (isHighlight || numLinesHidden <= 0 || contextLines[index] <= 0) {
+      // divide by 2 to avoid counting delimiter elements
+      // first and last spans only get truncated from one side
+      const numHidden =
+        (words.length + (words.length % 2)) / 2 -
+        (isFirstSpan || isLastSpan ? 1 : 2) * contextWindow[index];
+
+      if (isHighlight || numHidden <= 0 || contextWindow[index] <= 0) {
         return text;
       } else {
-        const startChunk = lines.slice(0, contextLines[index]).join('\n');
-        const endChunk = lines
-          .slice(lines.length - contextLines[index] + 1, lines.length)
-          .join('\n');
+        const startChunk = words.slice(0, 2 * contextWindow[index]).join('');
+        const endChunk = words
+          .slice(words.length - 2 * contextWindow[index] + 1, words.length)
+          .join('');
 
         return (
           <>
-            {!isFirstSpan || hasNoHighlights ? startChunk : ''}
+            {!isFirstSpan || hasNoHighlights ? `${startChunk} ...` : ''}
             <DividerClamp
-              numLines={numLinesHidden}
+              number={numHidden}
               onClickLess={() =>
-                updateContextLines(
+                updateContextWindow(
                   index,
-                  contextLines[index] - CONTEXT_INCREMENT_SIZE
+                  contextWindow[index] - CONTEXT_INCREMENT_SIZE
                 )
               }
               onClickMore={() =>
-                updateContextLines(
+                updateContextWindow(
                   index,
-                  contextLines[index] + CONTEXT_INCREMENT_SIZE
+                  contextWindow[index] + CONTEXT_INCREMENT_SIZE
                 )
               }
               isDisabledLess={
-                !isValidContextLinesValue(
-                  contextLines[index] - CONTEXT_INCREMENT_SIZE
+                !isValidContextWindowValue(
+                  contextWindow[index] - CONTEXT_INCREMENT_SIZE
                 )
               }
             />
             {/* Only truncate on one side if at end of text */}
-            {!isLastSpan ? endChunk : ''}
+            {!isLastSpan ? `... ${endChunk}` : ''}
           </>
         );
       }
@@ -97,6 +103,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
           fontFamily="mono"
           _hover={{
             opacity: isHighlight ? 0.8 : 1,
+            cursor: isHighlight ? 'pointer' : undefined,
           }}
         >
           {format(textContent)}

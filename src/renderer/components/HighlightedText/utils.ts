@@ -1,5 +1,6 @@
 import c_c from 'color-mixer';
 import { SpanWithTags } from '../../../types';
+import { MIN_CONTEXT_WINDOW_SIZE } from './constants';
 
 export const getColor = (
   tags: string[],
@@ -28,4 +29,5 @@ export const getTooltip = (span: SpanWithTags): string => {
   return span.tags.join(', ');
 };
 
-export const isValidContextLinesValue = (value: number): boolean => value >= 2;
+export const isValidContextWindowValue = (value: number): boolean =>
+  value >= MIN_CONTEXT_WINDOW_SIZE;

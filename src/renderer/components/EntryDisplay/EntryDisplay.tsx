@@ -7,16 +7,15 @@ import {
   FormHelperText,
   FormLabel,
 } from '@chakra-ui/form-control';
-
-const DEFAULT_NO_CONTEXT_LINES = 2;
+import { DEFAULT_CONTEXT_WINDOW_SIZE } from '../HighlightedText/constants';
 
 type EntryDisplayProps = {
   entry: Entry;
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
-  const [contextLines, setContextLines] = useState<number | undefined>(
-    DEFAULT_NO_CONTEXT_LINES
+  const [contextWindow, setContextWindow] = useState<number | undefined>(
+    DEFAULT_CONTEXT_WINDOW_SIZE
   );
 
   const highlights = [
@@ -55,12 +54,12 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           <FormLabel as="legend">Context Window</FormLabel>
           <RadioGroup
             onChange={(value) => {
-              setContextLines(Number(value));
+              console.log(`Clicked ${value}`);
+              setContextWindow(Number(value));
             }}
-            value={String(contextLines)}
+            value={String(contextWindow)}
           >
             <Stack direction="row">
-              <Radio value="2">2</Radio>
               <Radio value="5">5</Radio>
               <Radio value="10">10</Radio>
               <Radio value="50">50</Radio>
@@ -69,7 +68,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
             </Stack>
           </RadioGroup>
           <FormHelperText>
-            Number of lines of context to show around highlights.
+            Number of words of context to show around highlights.
           </FormHelperText>
         </FormControl>
         {props.entry.texts.map((textObj) => (
@@ -78,8 +77,8 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
               text={textObj.text}
               highlights={highlights}
               palette={palette}
-              contextLines={
-                contextLines ? contextLines : DEFAULT_NO_CONTEXT_LINES
+              contextWindow={
+                contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
               }
             />
           </Box>

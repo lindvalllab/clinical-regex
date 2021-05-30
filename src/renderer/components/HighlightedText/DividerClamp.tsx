@@ -1,14 +1,14 @@
 import { Box, Divider, Flex, Button, ButtonGroup } from '@chakra-ui/react';
 
 type DividerClampProps = {
-  numLines: number;
+  number: number;
   isDisabledLess?: boolean;
   onClickLess?: () => void;
   onClickMore?: () => void;
 };
 
 const DividerClamp = ({
-  numLines,
+  number,
   isDisabledLess,
   onClickLess,
   onClickMore,
@@ -24,7 +24,7 @@ const DividerClamp = ({
     m={4}
   >
     <Box whiteSpace="nowrap">
-      {numLines} line{numLines !== 1 ? 's' : null} not shown
+      {number} word{number !== 1 ? 's' : null} not shown
     </Box>
     <Divider />
     <ButtonGroup
