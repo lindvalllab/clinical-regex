@@ -36,11 +36,13 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
     return matches;
   };
 
-  const palette: Record<string, string> = {
-    Foo: '#4089ff',
-    Bar: '#f302fe',
-    Baz: '#ffd900',
-  };
+  // Temporary solution to color palette: cycle through three different colors.
+  const palette: Record<string, string> = {};
+  for (let i = 0; i < props.labels.length; i++) {
+    if (i % 3 === 0) palette[props.labels[i].name] = '#4089ff';
+    else if (i % 3 === 1) palette[props.labels[i].name] = '#f302fe';
+    else palette[props.labels[i].name] = '#ffd900';
+  }
 
   return (
     <>
