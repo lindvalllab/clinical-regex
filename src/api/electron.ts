@@ -85,7 +85,12 @@ export default class ElectronApi extends BaseApi {
 
     return groupIds.map((model) => model.group_id);
   }
-
+  async getDashboardTable(
+    page: number,
+    pageSize: number
+  ): Promise<{ results: TextEntity[]; total: number }> {
+    return TextModel.query().groupBy('group_id').page(page, pageSize);
+  }
   async clearDb(): Promise<void> {
     await AnnotationModel.query().delete();
     await TextModel.query().delete();

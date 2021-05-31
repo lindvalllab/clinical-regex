@@ -1,64 +1,82 @@
-import { useEffect, useContext, useState } from 'react';
+import { useContext, useState, useMemo, useRef, useCallback } from 'react';
+import { Column } from 'react-table';
 import { ApiContext } from '../../api';
-import {
-  Box,
-  Heading,
-  Icon,
-  Table,
-  Tag,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react';
+import { Box, Heading, Icon, Tag, Text } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
+import { TextEntity } from '../../../types';
+import DataTable from '../../components/DataTable';
 
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
-  const [groupIds, setGroupIds] = useState<string[]>([]);
+  const columns = useMemo<Column<TextEntity>[]>(
+    () => [
+      {
+        Header: 'Entry ID',
+        accessor: 'id',
+      },
+      {
+        Header: 'Group ID',
+        accessor: 'group_id',
+      },
+      {
+        Header: 'Keyword Matches',
+        Cell: () => <Tag>Label</Tag>,
+      },
+      {
+        Header: 'Is Annotated',
+        Cell: () => <Icon as={FaCheckCircle} color="green.500" />,
+      },
+      {
+        Header: 'Text',
+        accessor: 'text',
+        Cell: ({ row }) => (
+          <Text
+            isTruncated
+            textOverflow="ellipsis"
+            overflow="hidden"
+            maxW="40vw"
+          >
+            {row.original.text}
+          </Text>
+        ),
+      },
+    ],
+    []
+  );
+  const [data, setData] = useState<TextEntity[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [pageCount, setPageCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const fetchIdRef = useRef(0);
 
-  // Get the list of groupIds on initial render.
-  useEffect(() => {
-    api
-      .getAllGroupIds()
-      .then((ids) => {
-        setGroupIds(ids);
-      })
-      .catch((e) => console.error(e));
-  }, [api]);
+  const fetchData = useCallback(
+    async ({ pageIndex, pageSize }) => {
+      const fetchId = ++fetchIdRef.current;
+      setLoading(true);
+
+      if (fetchId === fetchIdRef.current) {
+        const result = await api.getDashboardTable(pageIndex, pageSize);
+        setData(result.results);
+        setPageCount(Math.ceil(result.total / pageSize));
+        setLoading(false);
+        setTotalCount(result.total);
+      }
+    },
+    [api]
+  );
 
   return (
     <Box px={8} py={4}>
-      <Heading size="sm" mb={4}>
-        Entries
-      </Heading>
-      <Box>
-        <Table variant="simple" size="sm">
-          <Thead>
-            <Tr>
-              <Th>Group ID</Th>
-              <Th>Text</Th>
-              <Th>Keyword Matches</Th>
-              <Th>Is Annotated</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {groupIds.map((id, index) => (
-              <Tr key={index}>
-                <Td>{id}</Td>
-                <Td>Text</Td>
-                <Td>
-                  <Tag>Label</Tag>
-                </Td>
-                <Td>
-                  <Icon as={FaCheckCircle} color="green.500" />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Box>
+      <Heading size="sm">Entries</Heading>
+      <DataTable
+        columns={columns}
+        data={data}
+        fetchData={fetchData}
+        loading={loading}
+        pageCount={pageCount}
+        totalCount={totalCount}
+        p={4}
+      />
     </Box>
   );
 }
