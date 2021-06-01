@@ -1,7 +1,6 @@
 import flattenSpans from './flattenSpans';
 import { SpanWithTag } from '../../../types';
 import {
-  Badge,
   Box,
   Button,
   ButtonGroup,
@@ -23,7 +22,7 @@ import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from './constants';
-import { FaCheckCircle, FaCircle } from 'react-icons/fa';
+import { FaCircle } from 'react-icons/fa';
 
 const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS['Tiny'];
 
