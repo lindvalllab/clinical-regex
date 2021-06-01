@@ -1,16 +1,30 @@
 import flattenSpans from './flattenSpans';
 import { SpanWithTag } from '../../../types';
-import { Box, Text, Tooltip } from '@chakra-ui/react';
-import { ReactNode, useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Flex,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import DividerClamp from './DividerClamp';
 import { getColor, getTooltip, isValidContextWindowValue } from './utils';
-import { CONTEXT_INCREMENT_SIZE } from './constants';
+import {
+  CONTEXT_INCREMENT_SIZE,
+  CONTEXT_WINDOW_SIZE_OPTIONS,
+} from './constants';
+
+const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS['Tiny'];
 
 type HighlightedTextProps = {
   text: string;
   highlights: SpanWithTag[];
   palette: Record<string, string>;
   contextWindow: number;
+  isHidden?: boolean;
 };
 
 const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
@@ -18,16 +32,29 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const hasNoHighlights =
     resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
 
-  const [contextWindow, setContextWindow] = useState<number[]>(
-    Array(resolvedSpans.length).fill(props.contextWindow)
+  const fillContextWindowArray = useCallback(
+    (value: number): number[] => {
+      return Array(resolvedSpans.length).fill(value);
+    },
+    [resolvedSpans.length]
   );
 
+  const [contextWindow, setContextWindow] = useState<number[]>(
+    fillContextWindowArray(props.contextWindow)
+  );
+
+  const [isHidden, setIsHidden] = useState(props.isHidden || false);
+
   // reset context windows when props.contextWindow changes
-  // would be nice to not repeat the Array(resolvedSpans.length).fill(props.contextWindow)
-  // part, not sure how to do that, though...
   useEffect(() => {
-    setContextWindow(Array(resolvedSpans.length).fill(props.contextWindow));
-  }, [props.contextWindow, resolvedSpans.length]);
+    setContextWindow(fillContextWindowArray(props.contextWindow));
+  }, [props.contextWindow, fillContextWindowArray]);
+
+  useEffect(() => {
+    if (props.isHidden) {
+      setIsHidden(props.isHidden);
+    }
+  }, [props.isHidden]);
 
   const updateContextWindow = (index: number, newValue: number) => {
     setContextWindow((prevState) => {
@@ -112,8 +139,57 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     );
   });
   return (
-    <Box margin={4} padding={4} whiteSpace="pre-wrap">
-      {toDisplay}
+    <Box p={4}>
+      <Flex justifyContent="flex-end" gridGap={4}>
+        {isHidden ? (
+          <Text
+            isTruncated
+            fontSize="sm"
+            fontFamily="mono"
+            color="darkgray"
+            px={4}
+          >
+            {props.text}
+          </Text>
+        ) : (
+          <></>
+        )}
+        <ButtonGroup
+          size="xs"
+          variant="outline"
+          colorScheme="gray"
+          display={isHidden ? 'none' : undefined}
+        >
+          <Button
+            onClick={() =>
+              setContextWindow(fillContextWindowArray(MIN_CONTEXT_WINDOW_SIZE))
+            }
+            disabled={contextWindow.every((v) => v === MIN_CONTEXT_WINDOW_SIZE)}
+          >
+            Collapse All
+          </Button>
+          <Button
+            onClick={() => setContextWindow(fillContextWindowArray(-1))}
+            disabled={contextWindow.every((v) => v === -1)}
+          >
+            Expand All
+          </Button>
+        </ButtonGroup>
+        <Checkbox
+          size="sm"
+          isChecked={isHidden}
+          onChange={() => setIsHidden(!isHidden)}
+        >
+          Hide
+        </Checkbox>
+      </Flex>
+      {!isHidden ? (
+        <Box margin={4} padding={4} whiteSpace="pre-wrap">
+          {toDisplay}
+        </Box>
+      ) : (
+        <></>
+      )}
     </Box>
   );
 };
