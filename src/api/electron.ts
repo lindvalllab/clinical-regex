@@ -17,11 +17,16 @@ import {
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
-import { Transaction } from 'objection';
+import { Transaction, ref } from 'objection';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
 }
+
+type HasText = {
+  group_id?: string;
+  text: string;
+};
 
 export default class ElectronApi extends BaseApi {
   async getAllAnnotations(): Promise<AnnotationEntity[]> {
@@ -44,9 +49,23 @@ export default class ElectronApi extends BaseApi {
       annotations: annotations,
     };
   }
-  async insertText(text: CRText, trx?: Transaction): Promise<void> {
-    if (trx !== undefined) await TextModel.query(trx).insert(text);
-    else await TextModel.query().insert(text);
+  async insertText(text: HasText, trx?: Transaction): Promise<void> {
+    trx = trx === undefined ? [] : [trx];
+
+    if (text.group_id === undefined) {
+      const dummyText = {
+        // Insert a dummy group ID to be replaced by the entry ID.
+        group_id: '',
+        text: text.text,
+      };
+      const insertion = await TextModel.query(...trx).insert(dummyText);
+      // Replace the dummy ID by the entry ID.
+      await TextModel.query(...trx)
+        .where('id', insertion.id)
+        .update({ group_id: ref('id') });
+    } else {
+      await TextModel.query(...trx).insert(text);
+    }
   }
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
     if (trx !== undefined) await LabelModel.query(trx).insert(label);
@@ -135,7 +154,8 @@ export default class ElectronApi extends BaseApi {
             promises.push(
               this.insertText(
                 {
-                  group_id: result.data[idColIndex],
+                  group_id:
+                    idColIndex === -1 ? undefined : result.data[idColIndex],
                   text: result.data[textColIndex],
                 },
                 trx
