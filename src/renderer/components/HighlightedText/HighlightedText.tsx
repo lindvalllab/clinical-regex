@@ -151,7 +151,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   });
   return (
     <Box p={4}>
-      <Flex justifyContent="flex-end" alignItems="center" gridGap={4}>
+      <Flex justifyContent="flex-end" alignItems="center" gridGap={2}>
         {isHidden ? (
           <>
             {uniqueTags.map((tag) => (
