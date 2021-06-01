@@ -7,7 +7,10 @@ import {
   FormHelperText,
   FormLabel,
 } from '@chakra-ui/form-control';
-import { DEFAULT_CONTEXT_WINDOW_SIZE } from '../HighlightedText/constants';
+import {
+  DEFAULT_CONTEXT_WINDOW_SIZE,
+  CONTEXT_WINDOW_SIZE_OPTIONS,
+} from '../HighlightedText/constants';
 
 type EntryDisplayProps = {
   entry: Entry;
@@ -51,17 +54,18 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           <FormLabel as="legend">Context Window</FormLabel>
           <RadioGroup
             onChange={(value) => {
-              console.log(`Clicked ${value}`);
               setContextWindow(Number(value));
             }}
-            value={String(contextWindow)}
+            value={contextWindow}
           >
             <Stack direction="row">
-              <Radio value="5">5</Radio>
-              <Radio value="10">10</Radio>
-              <Radio value="50">50</Radio>
-              <Radio value="100">100</Radio>
-              <Radio value="-1">Show entire text</Radio>
+              {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
+                ([name, value]) => (
+                  <Radio key={value} value={value}>
+                    {name}
+                  </Radio>
+                )
+              )}
             </Stack>
           </RadioGroup>
           <FormHelperText>
