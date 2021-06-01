@@ -23,11 +23,6 @@ interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
 }
 
-type HasText = {
-  group_id?: string;
-  text: string;
-};
-
 export default class ElectronApi extends BaseApi {
   async getAllAnnotations(): Promise<AnnotationEntity[]> {
     return AnnotationModel.query();
@@ -49,7 +44,10 @@ export default class ElectronApi extends BaseApi {
       annotations: annotations,
     };
   }
-  async insertText(text: HasText, trx?: Transaction): Promise<void> {
+  async insertText(
+    text: Omit<CRText, 'group_id'> & Partial<CRText>,
+    trx?: Transaction
+  ): Promise<void> {
     if (text.group_id === undefined) {
       const dummyText = {
         // Insert a dummy group ID to be replaced by the entry ID.
