@@ -1,5 +1,6 @@
 import flatten from 'flatten-overlapping-ranges';
 import { SpanWithTag, SpanWithTags } from '../../../types';
+import { getUnique } from './utils';
 
 const flattenSpans = (
   text: string,
@@ -29,8 +30,6 @@ const flattenSpans = (
     const start = prevStart;
     const length = flattened[i][0];
     const entities = flattened[i][1].filter(<T>(el: T): boolean => el !== null);
-
-    const getUnique = <T>(arr: T[]) => Array.from(new Set(arr));
 
     const tags: string[] = getUnique(
       entities.map((span: SpanWithTag) => span.tag)

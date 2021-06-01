@@ -1,21 +1,29 @@
 import flattenSpans from './flattenSpans';
 import { SpanWithTag } from '../../../types';
 import {
+  Badge,
   Box,
   Button,
   ButtonGroup,
   Checkbox,
   Flex,
+  Icon,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import DividerClamp from './DividerClamp';
-import { getColor, getTooltip, isValidContextWindowValue } from './utils';
+import {
+  getColor,
+  getTooltip,
+  getUnique,
+  isValidContextWindowValue,
+} from './utils';
 import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from './constants';
+import { FaCheckCircle, FaCircle } from 'react-icons/fa';
 
 const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS['Tiny'];
 
@@ -31,6 +39,10 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   const resolvedSpans = flattenSpans(props.text, props.highlights);
   const hasNoHighlights =
     resolvedSpans.length === 1 && resolvedSpans[0].tags.length === 0;
+
+  const uniqueTags = hasNoHighlights
+    ? []
+    : getUnique(resolvedSpans.map((span) => span.tags).flat()).sort();
 
   const fillContextWindowArray = useCallback(
     (value: number): number[] => {
@@ -140,17 +152,35 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   });
   return (
     <Box p={4}>
-      <Flex justifyContent="flex-end" gridGap={4}>
+      <Flex justifyContent="flex-end" alignItems="center" gridGap={4}>
         {isHidden ? (
-          <Text
-            isTruncated
-            fontSize="sm"
-            fontFamily="mono"
-            color="darkgray"
-            px={4}
-          >
-            {props.text}
-          </Text>
+          <>
+            {uniqueTags.map((tag) => (
+              <Tooltip key={tag} label={tag}>
+                {/* From https://chakra-ui.com/docs/overlay/tooltip:
+                Note 🚨: If you're wrapping an icon from react-icons,
+                you need to also wrap the icon in a span element as
+                react-icons icons do not use forwardRef. */}
+                <span>
+                  <Icon
+                    as={FaCircle}
+                    boxSize={2}
+                    color={props.palette[tag]}
+                    cursor="pointer"
+                  />
+                </span>
+              </Tooltip>
+            ))}
+            <Text
+              isTruncated
+              fontSize="sm"
+              fontFamily="mono"
+              color="darkgray"
+              px={4}
+            >
+              {props.text}
+            </Text>
+          </>
         ) : (
           <></>
         )}
