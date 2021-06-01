@@ -50,33 +50,29 @@ export default class ElectronApi extends BaseApi {
     };
   }
   async insertText(text: HasText, trx?: Transaction): Promise<void> {
-    trx = trx === undefined ? [] : [trx];
-
     if (text.group_id === undefined) {
       const dummyText = {
         // Insert a dummy group ID to be replaced by the entry ID.
         group_id: '',
         text: text.text,
       };
-      const insertion = await TextModel.query(...trx).insert(dummyText);
+      const insertion = await TextModel.query(trx).insert(dummyText);
       // Replace the dummy ID by the entry ID.
-      await TextModel.query(...trx)
+      await TextModel.query(trx)
         .where('id', insertion.id)
         .update({ group_id: ref('id') });
     } else {
-      await TextModel.query(...trx).insert(text);
+      await TextModel.query(trx).insert(text);
     }
   }
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
-    if (trx !== undefined) await LabelModel.query(trx).insert(label);
-    else await LabelModel.query().insert(label);
+    await LabelModel.query(trx).insert(label);
   }
   async insertAnnotation(
     annotation: CRAnnotation,
     trx?: Transaction
   ): Promise<void> {
-    if (trx !== undefined) await AnnotationModel.query(trx).insert(annotation);
-    else await AnnotationModel.query().insert(annotation);
+    await AnnotationModel.query(trx).insert(annotation);
   }
   async insertTexts(texts: CRText[]): Promise<void> {
     await TextModel.transaction(async (trx) => {
