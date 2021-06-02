@@ -1,51 +1,51 @@
 import { Link } from 'react-router-dom';
-import logo from './logo.svg';
-import {
-  Flex,
-  Image,
-  keyframes,
-  usePrefersReducedMotion,
-} from '@chakra-ui/react';
+import { Button, ButtonProps, Flex, Text } from '@chakra-ui/react';
+import Logo from '../../components/Logo';
 
-const spin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+type MainLinkBoxProps = {
+  text: string;
+  icon?: string;
+  href: string;
+};
+
+function MainLink(props: MainLinkBoxProps & ButtonProps): JSX.Element {
+  return (
+    <Button
+      as={Link}
+      to={props.href}
+      variant="outline"
+      p={10}
+      fontSize={24}
+      gridGap={4}
+      w="full"
+      {...props}
+    >
+      {props.icon ? <Text>{props.icon}</Text> : <></>}
+      <Text>{props.text}</Text>
+    </Button>
+  );
+}
 
 function Home(): JSX.Element {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const animation = prefersReducedMotion
-    ? undefined
-    : `${spin} infinite 20s linear`;
   return (
     <Flex
-      textAlign="center"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      fontSize="2xl"
+      gridGap={2}
+      h="full"
+      w="full"
     >
-      <Image
-        src={logo}
-        alt="logo"
-        height="sm"
-        animation={animation}
-        pointerEvents="none"
-      />
-      <p>
-        Edit <code>src/Home.tsx</code> and save to reload.
-      </p>
-      <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-        Learn React
-      </a>
-      <ul>
-        <li>
-          <Link to="/upload">Upload a file</Link>
-        </li>
-        <li>
-          <Link to="/texts">View texts</Link>
-        </li>
-      </ul>
+      <Logo maxW="sm" />
+      <Flex
+        textAlign="center"
+        justifyContent="center"
+        gridGap={2}
+        fontSize="2xl"
+      >
+        <MainLink icon={'🚀'} text="New Project" href="/upload" />
+        <MainLink icon={'📤'} text="Load Project" href="#" />
+      </Flex>
     </Flex>
   );
 }
