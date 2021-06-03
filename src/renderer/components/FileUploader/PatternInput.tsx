@@ -9,6 +9,7 @@ const createOption = (label: string) => ({
 
 type PatternInputProps = {
   placeholder?: string;
+  onChange?: (value: string[]) => void;
 };
 
 function PatternInput(props: PatternInputProps): JSX.Element {
@@ -16,7 +17,7 @@ function PatternInput(props: PatternInputProps): JSX.Element {
   const [value, setValue] = useState<OptionsType<OptionTypeBase>>([]);
 
   const acceptInput = () => {
-    if (inputValue.trim().length > 0) {
+    if (inputValue.length > 0) {
       setValue([...value, createOption(inputValue.trim())]);
       setInputValue('');
     }
@@ -24,15 +25,21 @@ function PatternInput(props: PatternInputProps): JSX.Element {
 
   const handleChange = (value: OptionsType<OptionTypeBase>) => {
     setValue(value);
+    if (props.onChange !== undefined)
+      props.onChange(value.map((option) => option.label));
   };
   const handleInputChange = (inputValue: string) => {
     setInputValue(inputValue);
+    if (props.onChange !== undefined)
+      props.onChange(value.map((option) => option.label));
   };
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (['Enter', 'Tab'].includes(event.key)) {
+    if (['Enter', 'Tab'].includes(event.key) && inputValue.length > 0) {
       event.preventDefault();
       acceptInput();
     }
+    if (props.onChange !== undefined)
+      props.onChange(value.map((option) => option.label));
   };
 
   return (

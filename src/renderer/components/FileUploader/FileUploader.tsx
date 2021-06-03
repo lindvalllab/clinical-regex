@@ -11,16 +11,20 @@ import {
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import Papa from 'papaparse';
 import { ApiContext } from '../../api';
-import { CRLabel } from '../../../types';
 import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 import PatternInput from './PatternInput';
+
+type Label = {
+  name: string;
+  patterns: string[];
+};
 
 type FormData = {
   isGrouped: boolean;
   idColIndex: number;
   textColIndex: number;
-  labels: CRLabel[];
+  labels: Label[];
 };
 
 function FileUploader(): JSX.Element {
@@ -51,7 +55,14 @@ function FileUploader(): JSX.Element {
     if (csv) {
       await api.clearDb();
       await api.loadCsv(csv.path, values.idColIndex, values.textColIndex);
-      await api.insertLabels(values.labels);
+      await api.insertLabels(
+        values.labels.flatMap((label) =>
+          label.patterns.map((pattern) => ({
+            name: label.name,
+            pattern: pattern,
+          }))
+        )
+      );
     }
     helpers.setSubmitting(false);
   };
@@ -65,13 +76,15 @@ function FileUploader(): JSX.Element {
   return (
     <Box width="90vw">
       <Formik
-        initialValues={{
-          isGrouped: true,
-          idColIndex: -1,
-          textColIndex: -1,
-          labels: [{ name: '', pattern: '' }],
-        }}
         onSubmit={sendData}
+        initialValues={
+          {
+            isGrouped: true,
+            idColIndex: -1,
+            textColIndex: -1,
+            labels: [{ name: '', patterns: [] }],
+          } as FormData
+        }
         validationSchema={validationSchema}
       >
         {(props) => (
@@ -133,7 +146,7 @@ function FileUploader(): JSX.Element {
                       <Button
                         type="button"
                         onClick={() =>
-                          arrayHelpers.push({ name: '', pattern: '' })
+                          arrayHelpers.push({ name: '', patterns: [] })
                         }
                       >
                         +
@@ -165,12 +178,18 @@ function FileUploader(): JSX.Element {
                           >
                             <LabelWithError
                               text={`Pattern ${index + 1}`}
-                              name={`labels.${index}.pattern`}
+                              name={`labels.${index}.patterns`}
                             />
                             <Field
-                              name={`labels.${index}.pattern`}
+                              name={`labels.${index}.patterns`}
                               as={PatternInput}
                               placeholder="pall(iative)? (care|medicine)"
+                              onChange={(value: string[]) =>
+                                props.setFieldValue(
+                                  `labels.${index}.patterns`,
+                                  value
+                                )
+                              }
                             />
                           </FormControl>
                           <Button
