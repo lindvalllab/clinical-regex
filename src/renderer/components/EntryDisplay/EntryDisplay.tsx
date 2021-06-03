@@ -41,10 +41,13 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
 
   // Temporary solution to color palette: cycle through three different colors.
   const palette: Record<string, string> = {};
-  for (let i = 0; i < props.labels.length; i++) {
-    if (i % 3 === 0) palette[props.labels[i].name] = '#4089ff';
-    else if (i % 3 === 1) palette[props.labels[i].name] = '#f302fe';
-    else palette[props.labels[i].name] = '#ffd900';
+  const uniqueLabelNames = Array.from(
+    new Set(props.labels.map((label) => label.name))
+  );
+  for (let i = 0; i < uniqueLabelNames.length; i++) {
+    if (i % 3 === 0) palette[uniqueLabelNames[i]] = '#4089ff';
+    else if (i % 3 === 1) palette[uniqueLabelNames[i]] = '#f302fe';
+    else palette[uniqueLabelNames[i]] = '#ffd900';
   }
 
   return (
