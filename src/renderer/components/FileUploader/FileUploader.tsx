@@ -184,7 +184,12 @@ function FileUploader(): JSX.Element {
                               name={`labels.${index}.patterns`}
                               as={PatternInput}
                               placeholder="pall(iative)? (care|medicine)"
-                              onChange={(value: string[]) =>
+                              onBlur={() =>
+                                props.setFieldTouched(
+                                  `labels.${index}.patterns`
+                                )
+                              }
+                              onAddition={(value: string[]) =>
                                 props.setFieldValue(
                                   `labels.${index}.patterns`,
                                   value

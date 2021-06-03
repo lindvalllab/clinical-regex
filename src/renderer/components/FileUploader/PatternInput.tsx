@@ -9,7 +9,8 @@ const createOption = (label: string) => ({
 
 type PatternInputProps = {
   placeholder?: string;
-  onChange?: (value: string[]) => void;
+  onAddition?: (value: string[]) => void;
+  onBlur?: () => void;
 };
 
 function PatternInput(props: PatternInputProps): JSX.Element {
@@ -17,36 +18,41 @@ function PatternInput(props: PatternInputProps): JSX.Element {
   const [value, setValue] = useState<OptionsType<OptionTypeBase>>([]);
 
   const acceptInput = () => {
-    if (inputValue.length > 0) {
-      setValue([...value, createOption(inputValue.trim())]);
-      setInputValue('');
-    }
+    const newValue =
+      inputValue.length > 0
+        ? [...value, createOption(inputValue.trim())]
+        : value;
+    setValue(newValue);
+    setInputValue('');
+    if (props.onAddition !== undefined)
+      props.onAddition(newValue.map((option) => option.label));
   };
 
   const handleChange = (value: OptionsType<OptionTypeBase>) => {
     setValue(value);
-    if (props.onChange !== undefined)
-      props.onChange(value.map((option) => option.label));
+    if (props.onAddition !== undefined)
+      props.onAddition(value.map((option) => option.label));
   };
   const handleInputChange = (inputValue: string) => {
     setInputValue(inputValue);
-    if (props.onChange !== undefined)
-      props.onChange(value.map((option) => option.label));
   };
   const handleKeyDown = (event: KeyboardEvent) => {
     if (['Enter', 'Tab'].includes(event.key) && inputValue.length > 0) {
       event.preventDefault();
       acceptInput();
     }
-    if (props.onChange !== undefined)
-      props.onChange(value.map((option) => option.label));
+    if (props.onAddition !== undefined)
+      props.onAddition(value.map((option) => option.label));
+  };
+  const onBlur = () => {
+    acceptInput();
+    if (props.onBlur !== undefined) props.onBlur();
   };
 
   return (
     <ChakraReactSelect
       components={{ DropdownIndicator: null, ClearIndicator: null }}
       inputValue={inputValue}
-      // options={groupedOptions}
       isClearable
       closeMenuOnSelect={false}
       isMulti
@@ -54,7 +60,7 @@ function PatternInput(props: PatternInputProps): JSX.Element {
       onChange={handleChange}
       onInputChange={handleInputChange}
       onKeyDown={handleKeyDown}
-      onBlur={acceptInput}
+      onBlur={onBlur}
       placeholder={props.placeholder}
       value={value}
     />
