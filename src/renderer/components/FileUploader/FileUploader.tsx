@@ -5,8 +5,8 @@ import {
   Checkbox,
   FormControl,
   FormLabel,
+  Input,
   Select,
-  Textarea,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import Papa from 'papaparse';
@@ -63,8 +63,7 @@ function FileUploader(): JSX.Element {
   ));
 
   return (
-    <Box>
-      <PatternInput />
+    <Box width="90vw">
       <Formik
         initialValues={{
           isGrouped: true,
@@ -143,22 +142,26 @@ function FileUploader(): JSX.Element {
 
                     {props.values.labels.map((_label, index) => (
                       <Box key={index}>
-                        <Box display="flex" alignItems="center">
-                          <FormControl marginInlineEnd="0.5em" minWidth="20em">
+                        <Box
+                          display="flex"
+                          alignItems="flex-end"
+                          justifyContent="space-around"
+                        >
+                          <FormControl marginInlineEnd="0.5em" flex="1">
                             <LabelWithError
                               text={`Label ${index + 1}`}
                               name={`labels.${index}.name`}
                             />
                             <Field
                               name={`labels.${index}.name`}
-                              as={Textarea}
+                              as={Input}
                               placeholder="Palliative Care"
                             />
                           </FormControl>
                           <FormControl
                             marginInlineStart="0.5em"
                             marginInlineEnd="0.5em"
-                            minWidth="20em"
+                            flex="3"
                           >
                             <LabelWithError
                               text={`Pattern ${index + 1}`}
@@ -166,7 +169,7 @@ function FileUploader(): JSX.Element {
                             />
                             <Field
                               name={`labels.${index}.pattern`}
-                              as={Textarea}
+                              as={PatternInput}
                               placeholder="pall(iative)? (care|medicine)"
                             />
                           </FormControl>
@@ -185,7 +188,12 @@ function FileUploader(): JSX.Element {
                 )}
               />
             </FormControl>
-            <Button type="submit" isLoading={props.isSubmitting}>
+            <Button
+              type="submit"
+              isLoading={props.isSubmitting}
+              margin="1em auto"
+              display="block"
+            >
               Send
             </Button>
           </Form>
