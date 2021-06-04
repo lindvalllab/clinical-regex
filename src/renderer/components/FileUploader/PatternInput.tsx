@@ -9,7 +9,7 @@ const createOption = (label: string) => ({
 
 type PatternInputProps = {
   placeholder?: string;
-  onAddition?: (value: string[]) => void;
+  onChange?: (value: string[]) => void;
   onBlur?: () => void;
 };
 
@@ -24,14 +24,13 @@ function PatternInput(props: PatternInputProps): JSX.Element {
         : value;
     setValue(newValue);
     setInputValue('');
-    if (props.onAddition !== undefined)
-      props.onAddition(newValue.map((option) => option.label));
+    if (props.onChange !== undefined)
+      props.onChange(newValue.map((option) => option.label));
   };
-
   const handleChange = (value: OptionsType<OptionTypeBase>) => {
     setValue(value);
-    if (props.onAddition !== undefined)
-      props.onAddition(value.map((option) => option.label));
+    if (props.onChange !== undefined)
+      props.onChange(value.map((option) => option.label));
   };
   const handleInputChange = (inputValue: string) => {
     setInputValue(inputValue);
@@ -41,8 +40,6 @@ function PatternInput(props: PatternInputProps): JSX.Element {
       event.preventDefault();
       acceptInput();
     }
-    if (props.onAddition !== undefined)
-      props.onAddition(value.map((option) => option.label));
   };
   const onBlur = () => {
     acceptInput();

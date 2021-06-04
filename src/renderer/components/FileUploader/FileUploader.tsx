@@ -189,7 +189,7 @@ function FileUploader(): JSX.Element {
                                   `labels.${index}.patterns`
                                 )
                               }
-                              onAddition={(value: string[]) =>
+                              onChange={(value: string[]) =>
                                 props.setFieldValue(
                                   `labels.${index}.patterns`,
                                   value
