@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
-import { CRLabel, Entry } from '../../../types';
+import { Entry, LabelEntity } from '../../../types';
 import {
   Button,
   ButtonGroup,
@@ -20,7 +20,7 @@ function AnnotationInterface(): JSX.Element {
   const bg = useColorModeValue('white', 'gray.800');
   const [page, setPage] = useState<number>(0);
   const [groupIds, setGroupIds] = useState<string[]>([]);
-  const [labels, setLabels] = useState<CRLabel[]>([]);
+  const [labels, setLabels] = useState<LabelEntity[]>([]);
   const [entry, setEntry] = useState<Entry>();
 
   function clipPage(index: number) {

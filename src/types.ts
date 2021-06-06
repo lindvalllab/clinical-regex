@@ -7,14 +7,14 @@ export interface CRText {
 }
 export interface CRLabel {
   name: string;
-  pattern: string;
+  patterns: string[];
 }
 export interface CRAnnotation {
   group_id: string;
   label_id: number;
   value: number;
 }
-// The three types below are like the ones above but require an ID field.
+// The three types below correspond to rows in the database.
 export type TextEntity = ModelObject<TextModel>;
 export type LabelEntity = ModelObject<LabelModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;

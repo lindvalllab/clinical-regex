@@ -1,5 +1,5 @@
 import HighlightedText from '../HighlightedText';
-import { CRLabel, Entry, SpanWithTag } from '../../../types';
+import { Entry, LabelEntity, SpanWithTag } from '../../../types';
 import { useState } from 'react';
 import { Box, Stack, VStack, Radio, RadioGroup } from '@chakra-ui/react';
 import {
@@ -14,7 +14,7 @@ import {
 
 type EntryDisplayProps = {
   entry: Entry;
-  labels: CRLabel[];
+  labels: LabelEntity[];
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {

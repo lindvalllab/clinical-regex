@@ -14,17 +14,13 @@ import { ApiContext } from '../../api';
 import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 import PatternInput from './PatternInput';
-
-type Label = {
-  name: string;
-  patterns: string[];
-};
+import { CRLabel } from '../../../types';
 
 type FormData = {
   isGrouped: boolean;
   idColIndex: number;
   textColIndex: number;
-  labels: Label[];
+  labels: CRLabel[];
 };
 
 function FileUploader(): JSX.Element {
@@ -56,12 +52,10 @@ function FileUploader(): JSX.Element {
       await api.clearDb();
       await api.loadCsv(csv.path, values.idColIndex, values.textColIndex);
       await api.insertLabels(
-        values.labels.flatMap((label) =>
-          label.patterns.map((pattern) => ({
-            name: label.name,
-            pattern: pattern,
-          }))
-        )
+        values.labels.map((label) => ({
+          name: label.name,
+          patterns: label.patterns,
+        }))
       );
     }
     helpers.setSubmitting(false);
