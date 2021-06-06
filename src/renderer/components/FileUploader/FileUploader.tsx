@@ -5,15 +5,16 @@ import {
   Checkbox,
   FormControl,
   FormLabel,
+  Input,
   Select,
-  Textarea,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import Papa from 'papaparse';
 import { ApiContext } from '../../api';
-import { CRLabel } from '../../../types';
 import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
+import PatternInput from './PatternInput';
+import { CRLabel } from '../../../types';
 
 type FormData = {
   isGrouped: boolean;
@@ -50,7 +51,12 @@ function FileUploader(): JSX.Element {
     if (csv) {
       await api.clearDb();
       await api.loadCsv(csv.path, values.idColIndex, values.textColIndex);
-      await api.insertLabels(values.labels);
+      await api.insertLabels(
+        values.labels.map((label) => ({
+          name: label.name,
+          patterns: label.patterns,
+        }))
+      );
     }
     helpers.setSubmitting(false);
   };
@@ -62,129 +68,156 @@ function FileUploader(): JSX.Element {
   ));
 
   return (
-    <Formik
-      initialValues={{
-        isGrouped: true,
-        idColIndex: -1,
-        textColIndex: -1,
-        labels: [{ name: '', pattern: '' }],
-      }}
-      onSubmit={sendData}
-      validationSchema={validationSchema}
-    >
-      {(props) => (
-        <Form>
-          <FormControl>
-            <FormLabel>Upload a file.</FormLabel>
-            <input
-              type="file"
-              name="file"
-              accept=".csv"
-              onChange={readHeader}
-            />
-          </FormControl>
-          <FormControl marginBlock="1em">
-            <Field
-              name="isGrouped"
-              as={Checkbox}
-              defaultIsChecked
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                props.setFieldValue('idColIndex', -1);
-                props.handleChange(e);
-              }}
-            >
-              Group notes by ID column?
-            </Field>
-          </FormControl>
-          <FormControl marginBlock="1em">
-            <LabelWithError text="Select group ID column." name="idColIndex" />
-            <Field
-              name="idColIndex"
-              as={Select}
-              disabled={!props.values.isGrouped}
-            >
-              <option value={-1}>Select a column</option>
-              {headerList}
-            </Field>
-          </FormControl>
-          <FormControl marginBlock="1em">
-            <LabelWithError text="Select text column." name="textColIndex" />
-            <Field name="textColIndex" as={Select}>
-              <option value={-1}>Select a column</option>
-              {headerList}
-            </Field>
-          </FormControl>
-          <FormControl marginBlockStart="1em">
-            <FieldArray
-              name="labels"
-              render={(arrayHelpers) => (
-                <Box>
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <FormLabel>Labels and patterns</FormLabel>
-                    <Button
-                      type="button"
-                      onClick={() =>
-                        arrayHelpers.push({ name: '', pattern: '' })
-                      }
+    <Box width="90vw">
+      <Formik
+        onSubmit={sendData}
+        initialValues={
+          {
+            isGrouped: true,
+            idColIndex: -1,
+            textColIndex: -1,
+            labels: [{ name: '', patterns: [] }],
+          } as FormData
+        }
+        validationSchema={validationSchema}
+      >
+        {(props) => (
+          <Form>
+            <FormControl>
+              <FormLabel>Upload a file.</FormLabel>
+              <input
+                type="file"
+                name="file"
+                accept=".csv"
+                onChange={readHeader}
+              />
+            </FormControl>
+            <FormControl marginBlock="1em">
+              <Field
+                name="isGrouped"
+                as={Checkbox}
+                defaultIsChecked
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  props.setFieldValue('idColIndex', -1);
+                  props.handleChange(e);
+                }}
+              >
+                Group notes by ID column?
+              </Field>
+            </FormControl>
+            <FormControl marginBlock="1em">
+              <LabelWithError
+                text="Select group ID column."
+                name="idColIndex"
+              />
+              <Field
+                name="idColIndex"
+                as={Select}
+                disabled={!props.values.isGrouped}
+              >
+                <option value={-1}>Select a column</option>
+                {headerList}
+              </Field>
+            </FormControl>
+            <FormControl marginBlock="1em">
+              <LabelWithError text="Select text column." name="textColIndex" />
+              <Field name="textColIndex" as={Select}>
+                <option value={-1}>Select a column</option>
+                {headerList}
+              </Field>
+            </FormControl>
+            <FormControl marginBlockStart="1em">
+              <FieldArray
+                name="labels"
+                render={(arrayHelpers) => (
+                  <Box>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
                     >
-                      +
-                    </Button>
-                  </Box>
-
-                  {props.values.labels.map((_label, index) => (
-                    <Box key={index}>
-                      <Box display="flex" alignItems="center">
-                        <FormControl marginInlineEnd="0.5em" minWidth="20em">
-                          <LabelWithError
-                            text={`Label ${index + 1}`}
-                            name={`labels.${index}.name`}
-                          />
-                          <Field
-                            name={`labels.${index}.name`}
-                            as={Textarea}
-                            placeholder="Palliative Care"
-                          />
-                        </FormControl>
-                        <FormControl
-                          marginInlineStart="0.5em"
-                          marginInlineEnd="0.5em"
-                          minWidth="20em"
-                        >
-                          <LabelWithError
-                            text={`Pattern ${index + 1}`}
-                            name={`labels.${index}.pattern`}
-                          />
-                          <Field
-                            name={`labels.${index}.pattern`}
-                            as={Textarea}
-                            placeholder="pall(iative)? (care|medicine)"
-                          />
-                        </FormControl>
-                        <Button
-                          type="button"
-                          marginInlineStart="0.5em"
-                          onClick={() => arrayHelpers.remove(index)}
-                          disabled={props.values.labels.length === 1}
-                        >
-                          -
-                        </Button>
-                      </Box>
+                      <FormLabel>Labels and patterns</FormLabel>
+                      <Button
+                        type="button"
+                        onClick={() =>
+                          arrayHelpers.push({ name: '', patterns: [] })
+                        }
+                      >
+                        +
+                      </Button>
                     </Box>
-                  ))}
-                </Box>
-              )}
-            />
-          </FormControl>
-          <Button type="submit" isLoading={props.isSubmitting}>
-            Send
-          </Button>
-        </Form>
-      )}
-    </Formik>
+
+                    {props.values.labels.map((_label, index) => (
+                      <Box key={index}>
+                        <Box
+                          display="flex"
+                          alignItems="flex-end"
+                          justifyContent="space-around"
+                        >
+                          <FormControl marginInlineEnd="0.5em" flex="1">
+                            <LabelWithError
+                              text={`Label ${index + 1}`}
+                              name={`labels.${index}.name`}
+                            />
+                            <Field
+                              name={`labels.${index}.name`}
+                              as={Input}
+                              placeholder="Palliative Care"
+                            />
+                          </FormControl>
+                          <FormControl
+                            marginInlineStart="0.5em"
+                            marginInlineEnd="0.5em"
+                            flex="3"
+                          >
+                            <LabelWithError
+                              text={`Pattern ${index + 1}`}
+                              name={`labels.${index}.patterns`}
+                            />
+                            <Field
+                              name={`labels.${index}.patterns`}
+                              as={PatternInput}
+                              placeholder="pall(iative)? (care|medicine)"
+                              onBlur={() =>
+                                props.setFieldTouched(
+                                  `labels.${index}.patterns`
+                                )
+                              }
+                              onChange={(value: string[]) =>
+                                props.setFieldValue(
+                                  `labels.${index}.patterns`,
+                                  value
+                                )
+                              }
+                            />
+                          </FormControl>
+                          <Button
+                            type="button"
+                            marginInlineStart="0.5em"
+                            onClick={() => arrayHelpers.remove(index)}
+                            disabled={props.values.labels.length === 1}
+                          >
+                            -
+                          </Button>
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              isLoading={props.isSubmitting}
+              margin="1em auto"
+              display="block"
+            >
+              Send
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </Box>
   );
 }
 

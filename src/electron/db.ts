@@ -76,7 +76,7 @@ const initDb = (): void => {
     if (!(await db.schema.hasTable('labels'))) {
       await db.schema.createTable('labels', (table) => {
         table.increments('id').primary();
-        table.string('name').unique().notNullable();
+        table.string('name').notNullable();
         table.text('pattern').notNullable();
       });
     }

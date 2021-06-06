@@ -64,7 +64,12 @@ export default class ElectronApi extends BaseApi {
     }
   }
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
-    await LabelModel.query(trx).insert(label);
+    for (const pattern of label.patterns) {
+      await LabelModel.query(trx).insert({
+        name: label.name,
+        pattern: pattern,
+      });
+    }
   }
   async insertAnnotation(
     annotation: CRAnnotation,
