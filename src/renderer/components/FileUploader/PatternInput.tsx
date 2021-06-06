@@ -1,6 +1,7 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState, ClipboardEvent, KeyboardEvent } from 'react';
 import { OptionTypeBase, OptionsType } from 'react-select';
 import ChakraReactSelect from './ChakraReactSelect';
+import { Box } from '@chakra-ui/react';
 
 const createOption = (label: string) => ({
   label,
@@ -45,22 +46,38 @@ function PatternInput(props: PatternInputProps): JSX.Element {
     acceptInput();
     if (props.onBlur !== undefined) props.onBlur();
   };
+  const handlePaste = (e: ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').split('\n');
+    // The first element of the pasted text will be combined with the already existing input.
+    pasted[0] = inputValue + pasted[0];
+    // The last element of the paste is handled differently:
+    // it is set as the inputValue instead of the value.
+    const last = pasted.pop();
+    if (last !== undefined) {
+      setValue([...value, ...pasted.map(createOption)]);
+      setInputValue(last);
+    }
+  };
 
   return (
-    <ChakraReactSelect
-      components={{ DropdownIndicator: null, ClearIndicator: null }}
-      inputValue={inputValue}
-      isClearable
-      closeMenuOnSelect={false}
-      isMulti
-      menuIsOpen={false}
-      onChange={handleChange}
-      onInputChange={handleInputChange}
-      onKeyDown={handleKeyDown}
-      onBlur={onBlur}
-      placeholder={props.placeholder}
-      value={value}
-    />
+    // react-select doesn't handle onPaste, so wrap in a Box
+    <Box onPaste={handlePaste}>
+      <ChakraReactSelect
+        components={{ DropdownIndicator: null, ClearIndicator: null }}
+        inputValue={inputValue}
+        isClearable
+        closeMenuOnSelect={false}
+        isMulti
+        menuIsOpen={false}
+        onChange={handleChange}
+        onInputChange={handleInputChange}
+        onKeyDown={handleKeyDown}
+        onBlur={onBlur}
+        placeholder={props.placeholder}
+        value={value}
+      />
+    </Box>
   );
 }
 
