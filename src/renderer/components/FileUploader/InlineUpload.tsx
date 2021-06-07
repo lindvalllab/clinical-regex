@@ -1,5 +1,5 @@
 import { Box, FormLabel, Text } from '@chakra-ui/react';
-import { HTMLProps } from 'react';
+import { HTMLProps, KeyboardEvent, useRef } from 'react';
 
 interface InlineUploadProps {
   id: string;
@@ -9,9 +9,25 @@ interface InlineUploadProps {
 function InlineUpload(
   props: Omit<HTMLProps<HTMLInputElement>, 'type'> & InlineUploadProps
 ): JSX.Element {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleEnter(event: KeyboardEvent<HTMLLabelElement>) {
+    // For accessibility, allow the user to activate the upload by focusing it and pressing enter.
+    if (event.key === 'Enter') {
+      if (fileInputRef.current !== null) fileInputRef.current.click();
+    }
+  }
+
   return (
     <>
-      <FormLabel htmlFor={props.id} display="inline" p={0} m={0}>
+      <FormLabel
+        htmlFor={props.id}
+        display="inline"
+        p={0}
+        m={0}
+        color={props.color}
+        onKeyDown={handleEnter}
+      >
         <Text
           role="button"
           aria-controls={props.id}
@@ -22,7 +38,7 @@ function InlineUpload(
         </Text>
       </FormLabel>
       <Box sx={{ display: 'none' }}>
-        <input type="file" {...props} />
+        <input type="file" ref={fileInputRef} {...props} />
       </Box>
     </>
   );
