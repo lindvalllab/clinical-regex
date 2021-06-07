@@ -8,6 +8,7 @@ import {
   FormLabel,
   Input,
   Select,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
 import Papa from 'papaparse';
@@ -15,6 +16,7 @@ import { ApiContext } from '../../api';
 import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 import PatternInput from './PatternInput';
+import InlineUpload from './InlineUpload';
 import { CRLabel } from '../../../types';
 
 type FormData = {
@@ -73,6 +75,8 @@ function FileUploader(): JSX.Element {
     </option>
   ));
 
+  const linkColor = useColorModeValue('blue', 'lightblue');
+
   return (
     <Box width="90vw">
       <Formik
@@ -97,6 +101,15 @@ function FileUploader(): JSX.Element {
                 accept=".csv"
                 onChange={readHeader}
               />
+            </FormControl>
+            <FormControl>
+              Please choose your project configuration. You can also{' '}
+              <InlineUpload
+                id="jsonUpload"
+                text="upload a saved configuration"
+                color={linkColor}
+              />
+              .
             </FormControl>
             <FormControl marginBlock="1em">
               <Field
