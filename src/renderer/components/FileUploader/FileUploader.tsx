@@ -17,6 +17,8 @@ import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 import PatternInput from './PatternInput';
 import InlineUpload from './InlineUpload';
+import handleUploadConfig from './uploadConfig/handleUploadConfig';
+import ConfigWarningDialog from './uploadConfig/WarningDialog';
 import { CRLabel } from '../../../types';
 
 type FormData = {
@@ -29,6 +31,8 @@ type FormData = {
 function FileUploader(): JSX.Element {
   const [headers, setHeaders] = useState<string[]>([]); // List of all header names
   const [csv, setCsv] = useState<File>(); // The uploaded file.
+  const [configWarnings, setConfigWarnings] = useState<string[]>([]);
+  const [configErrors, setConfigErrors] = useState<string[]>([]);
   const api = useContext(ApiContext);
 
   const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +112,13 @@ function FileUploader(): JSX.Element {
                 id="jsonUpload"
                 text="upload a saved configuration"
                 color={linkColor}
+                accept=".json"
+                onChange={handleUploadConfig(
+                  headers,
+                  props.setFieldValue,
+                  setConfigErrors,
+                  setConfigWarnings
+                )}
               />
               .
             </FormControl>
@@ -115,7 +126,7 @@ function FileUploader(): JSX.Element {
               <Field
                 name="isGrouped"
                 as={Checkbox}
-                defaultIsChecked
+                isChecked={props.values.isGrouped}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   props.setFieldValue('idColIndex', -1);
                   props.handleChange(e);
@@ -208,6 +219,7 @@ function FileUploader(): JSX.Element {
                                   value
                                 )
                               }
+                              value={props.values.labels[index].patterns}
                             />
                           </FormControl>
                           <Button
@@ -230,6 +242,18 @@ function FileUploader(): JSX.Element {
                 Send
               </Button>
             </Flex>
+            <ConfigWarningDialog
+              title="Warning"
+              status="warning"
+              warnings={configWarnings}
+              setWarnings={setConfigWarnings}
+            />
+            <ConfigWarningDialog
+              title="Error"
+              status="error"
+              warnings={configErrors}
+              setWarnings={setConfigErrors}
+            />
           </Form>
         )}
       </Formik>
