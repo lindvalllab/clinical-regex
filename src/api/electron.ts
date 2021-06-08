@@ -52,7 +52,12 @@ export default class ElectronApi extends BaseApi {
     if (results.length > 1)
       throw Error('Multiple settings found. Something is wrong!');
 
-    return results[0];
+    const settings = results[0];
+
+    // sqlite doesn't have a bool type
+    settings.IS_GROUPED = Boolean(Number(settings.IS_GROUPED));
+
+    return settings;
   }
   async insertText(
     text: Omit<CRText, 'group_id'> & Partial<CRText>,

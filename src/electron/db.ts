@@ -33,7 +33,7 @@ export class AnnotationModel extends Model {
 
 export class SettingsModel extends Model {
   id!: number;
-  IS_GROUPED!: boolean;
+  IS_GROUPED!: number | boolean;
   GROUP_ID_FIELD!: string | null;
   TEXT_ID_FIELD!: string;
   static get tableName(): string {
@@ -111,7 +111,7 @@ const initDb = (): void => {
     if (!(await db.schema.hasTable('settings'))) {
       await db.schema.createTable('settings', (table) => {
         table.increments('id').primary();
-        table.boolean('IS_GROUPED').notNullable();
+        table.integer('IS_GROUPED').notNullable();
         table.string('GROUP_ID_FIELD');
         table.string('TEXT_ID_FIELD').notNullable();
       });

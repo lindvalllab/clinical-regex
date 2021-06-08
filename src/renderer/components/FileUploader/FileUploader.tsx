@@ -59,7 +59,7 @@ function FileUploader(): JSX.Element {
       );
       await api.insertSettings(
         values.isGrouped,
-        headers[values.idColIndex],
+        values.idColIndex === -1 ? headers[values.idColIndex] : null,
         headers[values.textColIndex]
       );
     }
