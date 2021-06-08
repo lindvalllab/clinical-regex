@@ -1,18 +1,15 @@
 import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
-import { Entry, LabelEntity } from '../../../types';
+import { Entry, LabelEntity, SettingsEntity } from '../../../types';
 import {
-  Button,
-  ButtonGroup,
   Center,
   Flex,
-  Grid,
   Spacer,
   Spinner,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import AnnotationFooter from './AnnotationFooter';
 
 function AnnotationInterface(): JSX.Element {
   const api = useContext(ApiContext);
@@ -21,6 +18,7 @@ function AnnotationInterface(): JSX.Element {
   const [page, setPage] = useState<number>(0);
   const [groupIds, setGroupIds] = useState<string[]>([]);
   const [labels, setLabels] = useState<LabelEntity[]>([]);
+  const [settings, setSettings] = useState<SettingsEntity>();
   const [entry, setEntry] = useState<Entry>();
 
   function clipPage(index: number) {
@@ -51,6 +49,12 @@ function AnnotationInterface(): JSX.Element {
         setLabels(labels);
       })
       .catch((e) => console.error(e));
+    api
+      .getSettings()
+      .then((settings) => {
+        setSettings(settings);
+      })
+      .catch((e) => console.error(e));
   }, [api]);
 
   // Get the next set of texts when the page changes.
@@ -61,9 +65,6 @@ function AnnotationInterface(): JSX.Element {
       setEntry(entry);
     });
   }, [api, groupIds, page]);
-
-  // this will have to be changed later
-  const groupIdField = 'SUBJECT_ID';
 
   return (
     <Flex flexDirection="column" height="100%">
@@ -81,53 +82,14 @@ function AnnotationInterface(): JSX.Element {
         </Center>
       )}
       <Spacer />
-      <Flex
-        w="100%"
-        justify="space-between"
-        position="sticky"
-        bottom={0}
-        bg={bg}
-        py={4}
-        px={6}
-        borderTopWidth={1}
-      >
-        <Flex>
-          <Grid
-            templateColumns="repeat(2, 1fr)"
-            templateRows="repeat(2, 1fr)"
-            columnGap={4}
-          >
-            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-              Entry
-            </Text>
-            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-              Group ID [{groupIdField}]
-            </Text>
-            <Text fontSize="md" fontWeight="extrabold">
-              {page + 1} / {groupIds !== undefined ? groupIds.length : ''}
-            </Text>
-            <Text fontSize="md" fontWeight="extrabold">
-              {groupIds !== undefined ? groupIds[page] : '?'}
-            </Text>
-          </Grid>
-        </Flex>
-        <ButtonGroup isAttached>
-          <Button
-            colorScheme="gray"
-            onClick={incrementPage(-1)}
-            disabled={page === 0}
-          >
-            Prev
-          </Button>
-          <Button
-            colorScheme="gray"
-            onClick={incrementPage(1)}
-            disabled={page === groupIds.length - 1}
-          >
-            Next
-          </Button>
-        </ButtonGroup>
-      </Flex>
+      <AnnotationFooter
+        page={page}
+        totalPages={groupIds.length}
+        groupId={groupIds[page]}
+        groupIdField={settings?.GROUP_ID_FIELD}
+        onPrevPage={incrementPage(-1)}
+        onNextPage={incrementPage(1)}
+      />
     </Flex>
   );
 }

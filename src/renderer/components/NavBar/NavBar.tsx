@@ -42,6 +42,9 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
     console.log('Annotations');
     const annotations = await api.getAllAnnotations();
     console.log(annotations);
+    console.log('Settings');
+    const settings = await api.getSettings();
+    console.log(settings);
   };
 
   return (
