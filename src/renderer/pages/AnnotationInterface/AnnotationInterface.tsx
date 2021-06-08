@@ -3,16 +3,13 @@ import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
 import { Entry, LabelEntity } from '../../../types';
 import {
-  Button,
-  ButtonGroup,
   Center,
   Flex,
-  Grid,
   Spacer,
   Spinner,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import AnnotationFooter from './AnnotationFooter';
 
 function AnnotationInterface(): JSX.Element {
   const api = useContext(ApiContext);
@@ -81,53 +78,14 @@ function AnnotationInterface(): JSX.Element {
         </Center>
       )}
       <Spacer />
-      <Flex
-        w="100%"
-        justify="space-between"
-        position="sticky"
-        bottom={0}
-        bg={bg}
-        py={4}
-        px={6}
-        borderTopWidth={1}
-      >
-        <Flex>
-          <Grid
-            templateColumns="repeat(2, 1fr)"
-            templateRows="repeat(2, 1fr)"
-            columnGap={4}
-          >
-            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-              Entry
-            </Text>
-            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-              Group ID [{groupIdField}]
-            </Text>
-            <Text fontSize="md" fontWeight="extrabold">
-              {page + 1} / {groupIds !== undefined ? groupIds.length : ''}
-            </Text>
-            <Text fontSize="md" fontWeight="extrabold">
-              {groupIds !== undefined ? groupIds[page] : '?'}
-            </Text>
-          </Grid>
-        </Flex>
-        <ButtonGroup isAttached>
-          <Button
-            colorScheme="gray"
-            onClick={incrementPage(-1)}
-            disabled={page === 0}
-          >
-            Prev
-          </Button>
-          <Button
-            colorScheme="gray"
-            onClick={incrementPage(1)}
-            disabled={page === groupIds.length - 1}
-          >
-            Next
-          </Button>
-        </ButtonGroup>
-      </Flex>
+      <AnnotationFooter
+        page={page}
+        totalPages={groupIds.length}
+        groupId={groupIds[page]}
+        groupIdField={groupIdField}
+        onPrevPage={incrementPage(-1)}
+        onNextPage={incrementPage(1)}
+      />
     </Flex>
   );
 }
