@@ -57,6 +57,11 @@ function FileUploader(): JSX.Element {
           patterns: label.patterns,
         }))
       );
+      await api.insertSettings(
+        values.isGrouped,
+        headers[values.idColIndex],
+        headers[values.textColIndex]
+      );
     }
     helpers.setSubmitting(false);
   };

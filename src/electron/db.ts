@@ -31,6 +31,16 @@ export class AnnotationModel extends Model {
   }
 }
 
+export class SettingsModel extends Model {
+  id!: number;
+  is_grouped!: boolean;
+  group_id_field!: string | null;
+  text_id_field!: string;
+  static get tableName(): string {
+    return 'settings';
+  }
+}
+
 const getDbPath = async (): Promise<string> => {
   let userDataPath;
 
@@ -95,6 +105,15 @@ const initDb = (): void => {
           .inTable('labels')
           .notNullable();
         table.integer('value').notNullable();
+      });
+    }
+
+    if (!(await db.schema.hasTable('settings'))) {
+      await db.schema.createTable('settings', (table) => {
+        table.increments('id').primary();
+        table.boolean('is_grouped').notNullable();
+        table.string('group_id_field');
+        table.string('text_id_field').notNullable();
       });
     }
   }

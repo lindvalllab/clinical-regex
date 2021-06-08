@@ -5,6 +5,7 @@ import {
   AnnotationModel,
   LabelModel,
   TextModel,
+  SettingsModel,
 } from '../electron/db';
 import {
   AnnotationEntity,
@@ -13,6 +14,7 @@ import {
   CRText,
   Entry,
   LabelEntity,
+  SettingsEntity,
   TextEntity,
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
@@ -44,6 +46,14 @@ export default class ElectronApi extends BaseApi {
       annotations: annotations,
     };
   }
+  async getSettings(): Promise<SettingsEntity> {
+    const results = await SettingsModel.query();
+
+    if (results.length > 1)
+      throw Error('Multiple settings found. Something is wrong!');
+
+    return results[0];
+  }
   async insertText(
     text: Omit<CRText, 'group_id'> & Partial<CRText>,
     trx?: Transaction
@@ -70,6 +80,22 @@ export default class ElectronApi extends BaseApi {
         pattern: pattern,
       });
     }
+  }
+  async insertSettings(
+    isGrouped: boolean,
+    groupIdField: string | null,
+    textIdField: string,
+    trx?: Transaction
+  ): Promise<void> {
+    if (!isGrouped && groupIdField) {
+      groupIdField = null;
+    }
+
+    await SettingsModel.query(trx).insert({
+      is_grouped: isGrouped,
+      group_id_field: groupIdField,
+      text_id_field: textIdField,
+    });
   }
   async insertAnnotation(
     annotation: CRAnnotation,
@@ -113,6 +139,7 @@ export default class ElectronApi extends BaseApi {
     await AnnotationModel.query().delete();
     await TextModel.query().delete();
     await LabelModel.query().delete();
+    await SettingsModel.query().delete();
   }
 
   async saveDb(): Promise<string | undefined> {

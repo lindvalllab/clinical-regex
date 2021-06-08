@@ -1,5 +1,10 @@
 import { ModelObject } from 'objection';
-import { AnnotationModel, LabelModel, TextModel } from './electron/db';
+import {
+  AnnotationModel,
+  LabelModel,
+  SettingsModel,
+  TextModel,
+} from './electron/db';
 
 export interface CRText {
   group_id: string;
@@ -18,6 +23,7 @@ export interface CRAnnotation {
 export type TextEntity = ModelObject<TextModel>;
 export type LabelEntity = ModelObject<LabelModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;
+export type SettingsEntity = ModelObject<SettingsModel>;
 export interface Entry {
   texts: TextEntity[];
   annotations: AnnotationEntity[];
