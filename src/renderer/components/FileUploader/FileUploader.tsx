@@ -60,7 +60,7 @@ function FileUploader(): JSX.Element {
       );
       await api.insertSettings(
         values.isGrouped,
-        values.idColIndex === -1 ? headers[values.idColIndex] : null,
+        values.idColIndex !== -1 ? headers[values.idColIndex] : null,
         headers[values.textColIndex]
       );
     }
