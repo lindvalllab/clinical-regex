@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
-import { Entry, LabelEntity } from '../../../types';
+import { Entry, LabelEntity, SettingsEntity } from '../../../types';
 import {
   Center,
   Flex,
@@ -18,6 +18,7 @@ function AnnotationInterface(): JSX.Element {
   const [page, setPage] = useState<number>(0);
   const [groupIds, setGroupIds] = useState<string[]>([]);
   const [labels, setLabels] = useState<LabelEntity[]>([]);
+  const [settings, setSettings] = useState<SettingsEntity>();
   const [entry, setEntry] = useState<Entry>();
 
   function clipPage(index: number) {
@@ -48,6 +49,12 @@ function AnnotationInterface(): JSX.Element {
         setLabels(labels);
       })
       .catch((e) => console.error(e));
+    api
+      .getSettings()
+      .then((settings) => {
+        setSettings(settings);
+      })
+      .catch((e) => console.error(e));
   }, [api]);
 
   // Get the next set of texts when the page changes.
@@ -58,9 +65,6 @@ function AnnotationInterface(): JSX.Element {
       setEntry(entry);
     });
   }, [api, groupIds, page]);
-
-  // this will have to be changed later
-  const groupIdField = 'SUBJECT_ID';
 
   return (
     <Flex flexDirection="column" height="100%">
@@ -82,7 +86,7 @@ function AnnotationInterface(): JSX.Element {
         page={page}
         totalPages={groupIds.length}
         groupId={groupIds[page]}
-        groupIdField={groupIdField}
+        groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={incrementPage(-1)}
         onNextPage={incrementPage(1)}
       />

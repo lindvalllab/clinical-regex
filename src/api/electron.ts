@@ -92,9 +92,9 @@ export default class ElectronApi extends BaseApi {
     }
 
     await SettingsModel.query(trx).insert({
-      is_grouped: isGrouped,
-      group_id_field: groupIdField,
-      text_id_field: textIdField,
+      IS_GROUPED: isGrouped,
+      GROUP_ID_FIELD: groupIdField,
+      TEXT_ID_FIELD: textIdField,
     });
   }
   async insertAnnotation(

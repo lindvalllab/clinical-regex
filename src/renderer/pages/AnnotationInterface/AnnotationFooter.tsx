@@ -11,7 +11,7 @@ type AnnotationFooterProps = {
   page: number;
   totalPages: number;
   groupId: string;
-  groupIdField: string;
+  groupIdField?: string | null;
   onPrevPage: () => void;
   onNextPage: () => void;
 };
@@ -48,9 +48,17 @@ function AnnotationFooter({
           <Text fontSize="xs" color="gray.500" textTransform="uppercase">
             Entry
           </Text>
-          <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-            Group ID [{groupIdField}]
-          </Text>
+          {groupId !== null ? (
+            <Text fontSize="xs" color="gray.500" textTransform="uppercase">
+              Group ID [
+              {groupIdField
+                ? `${groupIdField}`
+                : 'No Group ID Field identified'}
+              ]
+            </Text>
+          ) : (
+            <></>
+          )}
           <Text fontSize="md" fontWeight="extrabold">
             {page + 1} / {totalPages}
           </Text>

@@ -33,9 +33,9 @@ export class AnnotationModel extends Model {
 
 export class SettingsModel extends Model {
   id!: number;
-  is_grouped!: boolean;
-  group_id_field!: string | null;
-  text_id_field!: string;
+  IS_GROUPED!: boolean;
+  GROUP_ID_FIELD!: string | null;
+  TEXT_ID_FIELD!: string;
   static get tableName(): string {
     return 'settings';
   }
@@ -111,25 +111,16 @@ const initDb = (): void => {
     if (!(await db.schema.hasTable('settings'))) {
       await db.schema.createTable('settings', (table) => {
         table.increments('id').primary();
-        table.boolean('is_grouped').notNullable();
-        table.string('group_id_field');
-        table.string('text_id_field').notNullable();
+        table.boolean('IS_GROUPED').notNullable();
+        table.string('GROUP_ID_FIELD');
+        table.string('TEXT_ID_FIELD').notNullable();
       });
     }
   }
 
-  async function createDummyData() {
-    await TextModel.query().insert({
-      group_id: 0,
-      text: 'this is an example text',
-    });
-  }
-
-  createSchema()
-    .then(() => createDummyData())
-    .catch((err) => {
-      console.error(err);
-    });
+  createSchema().catch((err) => {
+    console.error(err);
+  });
 };
 
 export { getDbPath, initDb };
