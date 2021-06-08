@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ApiContext } from '../../api';
 import { NavLink } from 'react-router-dom';
 import { useViewportScroll } from 'framer-motion';
@@ -16,19 +16,7 @@ const activeStyle: React.CSSProperties = {
   fontWeight: 'bold',
 };
 
-function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
-  // For color mode toggle
-  const bg = useColorModeValue('white', 'gray.800');
-
-  const ref = React.useRef<HTMLHeadingElement>(null);
-  const [y, setY] = React.useState(0);
-  const { height = 0 } = ref.current?.getBoundingClientRect() ?? {};
-  const { scrollY } = useViewportScroll();
-
-  React.useEffect(() => {
-    return scrollY.onChange(() => setY(scrollY.get()));
-  }, [scrollY]);
-
+function NavBarContent(): JSX.Element {
   const api = useContext(ApiContext);
 
   const onClickLog = async () => {
@@ -48,35 +36,55 @@ function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
   };
 
   return (
+    <Flex justifyContent="space-between" p={6} align="center" w="100%">
+      <Flex align="center" w="100%">
+        <NavBarMenu />
+      </Flex>
+      <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
+        <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
+          <NavLink to="/" exact={true} activeStyle={activeStyle}>
+            Home
+          </NavLink>
+          <NavLink to="/dashboard" activeStyle={activeStyle}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/annotation-interface" activeStyle={activeStyle}>
+            Annotate
+          </NavLink>
+          <Button onClick={onClickLog}>Log</Button>
+        </HStack>
+      </Flex>
+    </Flex>
+  );
+}
+
+function NavBar(props: HTMLChakraProps<'header'>): JSX.Element {
+  // For color mode toggle
+  const bg = useColorModeValue('white', 'gray.800');
+
+  const ref = React.useRef<HTMLHeadingElement>(null);
+  const [y, setY] = React.useState(0);
+  const { height = 0 } = ref.current?.getBoundingClientRect() ?? {};
+  const { scrollY } = useViewportScroll();
+
+  useEffect(() => {
+    return scrollY.onChange(() => setY(scrollY.get()));
+  }, [scrollY]);
+
+  return (
     <chakra.header
       ref={ref}
+      shadow={y > height ? 'sm' : undefined}
       pos="sticky"
       top="0"
       zIndex="3"
       bg={bg}
-      shadow={y > height ? 'sm' : undefined}
+      left="0"
+      right="0"
       w="full"
       {...props}
     >
-      <Flex justifyContent="space-between" p={6} align="center" w="100%">
-        <Flex align="center" w="100%">
-          <NavBarMenu />
-        </Flex>
-        <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
-          <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
-            <NavLink to="/" exact={true} activeStyle={activeStyle}>
-              Home
-            </NavLink>
-            <NavLink to="/dashboard" activeStyle={activeStyle}>
-              Dashboard
-            </NavLink>
-            <NavLink to="/annotation-interface" activeStyle={activeStyle}>
-              Annotate
-            </NavLink>
-            <Button onClick={onClickLog}>Log All Texts</Button>
-          </HStack>
-        </Flex>
-      </Flex>
+      <NavBarContent />
     </chakra.header>
   );
 }

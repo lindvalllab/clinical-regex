@@ -67,7 +67,7 @@ function AnnotationInterface(): JSX.Element {
   }, [api, groupIds, page]);
 
   return (
-    <Flex flexDirection="column" height="100%">
+    <Flex flexDirection="column" h="full">
       {entry ? (
         <EntryDisplay entry={entry} labels={labels} />
       ) : (
