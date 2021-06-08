@@ -17,9 +17,9 @@ type PatternInputProps = {
 
 function PatternInput(props: PatternInputProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>('');
-  const defaultValue =
-    props.value !== undefined ? props.value.map(createOption) : [];
-  const [value, setValue] = useState<OptionsType<OptionTypeBase>>(defaultValue);
+  const [value, setValue] = useState<OptionsType<OptionTypeBase>>(
+    props.value !== undefined ? props.value.map(createOption) : []
+  );
 
   useEffect(() => {
     setValue(props.value.map(createOption));
