@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -211,14 +212,11 @@ function FileUploader(): JSX.Element {
                 )}
               />
             </FormControl>
-            <Button
-              type="submit"
-              isLoading={props.isSubmitting}
-              margin="1em auto"
-              display="block"
-            >
-              Send
-            </Button>
+            <Flex justifyContent="center" mt={4}>
+              <Button type="submit" isLoading={props.isSubmitting}>
+                Send
+              </Button>
+            </Flex>
           </Form>
         )}
       </Formik>
