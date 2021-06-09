@@ -109,17 +109,20 @@ function FileUploader(): JSX.Element {
             <FormControl>
               Please choose your project configuration. You can also{' '}
               <InlineUpload
-                id="jsonUpload"
-                text="upload a saved configuration"
+                inputProps={{
+                  accept: '.json',
+                  onChange: handleUploadConfig(
+                    headers,
+                    props.setFieldValue,
+                    setConfigErrors,
+                    setConfigWarnings
+                  ),
+                }}
+                fontWeight="bold"
                 color={linkColor}
-                accept=".json"
-                onChange={handleUploadConfig(
-                  headers,
-                  props.setFieldValue,
-                  setConfigErrors,
-                  setConfigWarnings
-                )}
-              />
+              >
+                upload from a configuration file
+              </InlineUpload>
               .
             </FormControl>
             <FormControl marginBlock="1em">
