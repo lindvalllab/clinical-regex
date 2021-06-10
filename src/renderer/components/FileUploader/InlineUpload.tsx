@@ -26,7 +26,7 @@ function InlineUpload(props: InlineUploadProps): JSX.Element {
       onClick={clickInput}
       onKeyDown={handleEnter}
       tabIndex={0}
-      display="inline-block"
+      display="inline"
       m={0}
       cursor="pointer"
       {...labelProps}
