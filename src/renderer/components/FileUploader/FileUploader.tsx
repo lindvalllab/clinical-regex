@@ -98,10 +98,11 @@ function FileUploader(): JSX.Element {
         {(props) => (
           <Form>
             <FormControl>
-              <FormLabel>Upload a file.</FormLabel>
+              <FormLabel htmlFor="csvUpload">Upload a file.</FormLabel>
               <input
                 type="file"
-                name="file"
+                name="csvUpload"
+                id="csvUpload"
                 accept=".csv"
                 onChange={readHeader}
               />
