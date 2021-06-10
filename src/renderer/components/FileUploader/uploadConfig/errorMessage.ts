@@ -6,29 +6,29 @@ interface YupError {
 const validationErrorMessage = (headers: string[]) => {
   // Convert the Yup validation error into a human-readable error message.
   return (error: YupError): string => {
-    if (error.path === 'idCol')
+    if (error.path === 'idField')
       return (
-        'The ID column "idCol" is invalid. Please specify one of [' +
+        'The ID column "idField" is invalid. Please specify one of [' +
         headers.join(', ') +
         '] (case sensitive).'
       );
-    else if (error.path === 'textCol')
+    else if (error.path === 'textField')
       return (
-        'The text column "textCol" is invalid. Please specify one of [' +
+        'The text column "textField" is invalid. Please specify one of [' +
         headers.join(', ') +
         '] (case sensitive).'
       );
     else if (error.path === 'labels')
       return 'The labels must consist of a JSON list.';
-    else if (error.path.startsWith('labels') && error.path.endsWith('title'))
+    else if (error.path.startsWith('labels') && error.path.endsWith('name'))
       return (
-        'One of the label titles "' +
+        'One of the label names "' +
         error.path +
         '" is invalid. It must be a string.'
       );
-    else if (error.path.startsWith('labels') && error.path.includes('keywords'))
+    else if (error.path.startsWith('labels') && error.path.includes('patterns'))
       return (
-        'One of the label keywords "' +
+        'One of the label patterns "' +
         error.path +
         '" is invalid. It must be a list of strings.'
       );
@@ -38,8 +38,8 @@ const validationErrorMessage = (headers: string[]) => {
         error.path +
         `" is invalid. It must be of the form
           {
-            "title": "label name"
-            "keywords": ["list", "of", "keywords"]
+            "name": "label name"
+            "patterns": ["list", "of", "patterns"]
           }.`
       );
     return 'Unknown error (' + error.path + '): ' + error.message;

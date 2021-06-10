@@ -26,13 +26,13 @@ const handleUploadConfig = (
   setWarnings: (warnings: string[]) => void
 ): ((event: ChangeEvent<HTMLInputElement>) => Promise<void>) => {
   const label = Yup.object({
-    title: Yup.string(),
-    keywords: Yup.array().of(Yup.string()),
+    name: Yup.string(),
+    patterns: Yup.array().of(Yup.string()),
   });
 
   const schema = Yup.object({
-    idCol: Yup.string().oneOf(headers),
-    textCol: Yup.string().oneOf(headers),
+    groupIdField: Yup.string().oneOf(headers),
+    textField: Yup.string().oneOf(headers),
     labels: Yup.array().of(label),
   });
 
@@ -44,26 +44,30 @@ const handleUploadConfig = (
       schema
         .validate(configuration, { abortEarly: false })
         .then(() => {
-          if (![null, undefined].includes(configuration.idCol)) {
+          if (![null, undefined].includes(configuration.groupIdField)) {
             setFieldValue(
               'idColIndex',
-              findHeader(headers, configuration.idCol, validationWarnings)
+              findHeader(
+                headers,
+                configuration.groupIdField,
+                validationWarnings
+              )
             );
           }
-          if (![null, undefined].includes(configuration.textCol)) {
+          if (![null, undefined].includes(configuration.textField)) {
             setFieldValue(
               'textColIndex',
-              findHeader(headers, configuration.textCol, validationWarnings)
+              findHeader(headers, configuration.textField, validationWarnings)
             );
           }
           if (![null, undefined].includes(configuration.labels)) {
             for (let i = 0; i < configuration.labels.length; i++) {
               // Insert dummy data to ensure labels[i] has the right type at all times.
               setFieldValue(`labels.${i}`, { name: '', patterns: [] });
-              setFieldValue(`labels.${i}.name`, configuration.labels[i].title);
+              setFieldValue(`labels.${i}.name`, configuration.labels[i].name);
               setFieldValue(
                 `labels.${i}.patterns`,
-                configuration.labels[i].keywords
+                configuration.labels[i].patterns
               );
             }
           }
