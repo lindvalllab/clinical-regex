@@ -10,6 +10,7 @@ import {
   AlertDialogOverlay,
   AlertIcon,
   Button,
+  Flex,
 } from '@chakra-ui/react';
 
 interface WarningDialogProps {
@@ -22,14 +23,7 @@ interface WarningDialogProps {
 function WarningDialog(props: WarningDialogProps): JSX.Element {
   const okRef = useRef<HTMLButtonElement>(null);
   const onClose = () => props.setWarnings([]);
-  function createAlert(message: string) {
-    return (
-      <Alert status={props.status} mb={5} borderRadius={30}>
-        <AlertIcon />
-        <AlertDescription whiteSpace="pre-wrap">{message}</AlertDescription>
-      </Alert>
-    );
-  }
+
   return (
     <AlertDialog
       isOpen={props.warnings.length > 0}
@@ -43,7 +37,21 @@ function WarningDialog(props: WarningDialogProps): JSX.Element {
             {props.title}
           </AlertDialogHeader>
           <AlertDialogCloseButton />
-          {props.warnings.map(createAlert)}
+          <Flex flexDirection="column" px={6} gridGap={4}>
+            {props.warnings.map((message, index) => (
+              <Alert
+                key={index}
+                status={props.status}
+                borderRadius="base"
+                fontSize="xs"
+              >
+                <AlertIcon />
+                <AlertDescription whiteSpace="pre-wrap">
+                  {message}
+                </AlertDescription>
+              </Alert>
+            ))}
+          </Flex>
           <AlertDialogFooter>
             <Button onClick={onClose} ref={okRef}>
               OK
