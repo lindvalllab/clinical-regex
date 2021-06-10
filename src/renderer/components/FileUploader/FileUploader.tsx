@@ -117,6 +117,7 @@ function FileUploader(): JSX.Element {
                     setConfigErrors,
                     setConfigWarnings
                   ),
+                  disabled: !csv,
                 }}
                 fontWeight="bold"
                 color={linkColor}
