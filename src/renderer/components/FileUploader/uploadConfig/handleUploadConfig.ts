@@ -64,11 +64,13 @@ const handleUploadConfig = (
             for (let i = 0; i < configuration.labels.length; i++) {
               // Insert dummy data to ensure labels[i] has the right type at all times.
               setFieldValue(`labels.${i}`, { name: '', patterns: [] });
-              setFieldValue(`labels.${i}.name`, configuration.labels[i].name);
-              setFieldValue(
-                `labels.${i}.patterns`,
-                configuration.labels[i].patterns
-              );
+              if (configuration.labels[i].name !== undefined)
+                setFieldValue(`labels.${i}.name`, configuration.labels[i].name);
+              if (configuration.labels[i].patterns !== undefined)
+                setFieldValue(
+                  `labels.${i}.patterns`,
+                  configuration.labels[i].patterns
+                );
             }
           }
           if (![null, undefined].includes(configuration.isGrouped)) {
@@ -77,7 +79,6 @@ const handleUploadConfig = (
           setWarnings(validationWarnings);
         })
         .catch((errors) => {
-          console.log(errors.inner.map(validationErrorMessage(headers)));
           setErrors(errors.inner.map(validationErrorMessage(headers)));
         });
       event.target.value = '';
