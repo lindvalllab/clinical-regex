@@ -12,12 +12,15 @@ const renderError = (msg: string): JSX.Element => {
 type LabelProps = {
   text: string;
   name: string;
+  htmlFor?: string;
 };
 
 const LabelWithError = (props: LabelProps): JSX.Element => {
   return (
     <Box display="flex" alignItems="flex-end" justifyContent="space-between">
-      <FormLabel>{props.text}</FormLabel>
+      <FormLabel htmlFor={props.htmlFor ? props.htmlFor : undefined}>
+        {props.text}
+      </FormLabel>
       <ErrorMessage name={props.name} render={renderError} />
     </Box>
   );

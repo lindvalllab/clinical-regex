@@ -207,9 +207,11 @@ function FileUploader(): JSX.Element {
                             <LabelWithError
                               text={`Pattern ${index + 1}`}
                               name={`labels.${index}.patterns`}
+                              htmlFor={`labels.${index}.patterns`}
                             />
                             <Field
                               name={`labels.${index}.patterns`}
+                              inputId={`labels.${index}.patterns`}
                               as={PatternInput}
                               placeholder="pall(iative)? (care|medicine)"
                               onBlur={() =>
