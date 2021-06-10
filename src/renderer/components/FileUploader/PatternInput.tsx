@@ -1,4 +1,4 @@
-import { useState, ClipboardEvent, KeyboardEvent } from 'react';
+import { useEffect, useState, ClipboardEvent, KeyboardEvent } from 'react';
 import { OptionTypeBase, OptionsType } from 'react-select';
 import ChakraReactSelect from './ChakraReactSelect';
 import { Box } from '@chakra-ui/react';
@@ -12,11 +12,18 @@ type PatternInputProps = {
   placeholder?: string;
   onChange?: (value: string[]) => void;
   onBlur?: () => void;
+  value: string[];
 };
 
 function PatternInput(props: PatternInputProps): JSX.Element {
   const [inputValue, setInputValue] = useState<string>('');
-  const [value, setValue] = useState<OptionsType<OptionTypeBase>>([]);
+  const [value, setValue] = useState<OptionsType<OptionTypeBase>>(
+    props.value !== undefined ? props.value.map(createOption) : []
+  );
+
+  useEffect(() => {
+    setValue(props.value.map(createOption));
+  }, [props.value]);
 
   const acceptInput = () => {
     const newValue =
