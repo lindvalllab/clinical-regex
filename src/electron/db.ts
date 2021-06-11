@@ -41,7 +41,7 @@ export class SettingsModel extends Model {
   }
 }
 
-const getDbPath = async (): Promise<string> => {
+const getTempDbPath = async (): Promise<string> => {
   let userDataPath;
 
   // app is not available in renderer process,
@@ -62,7 +62,7 @@ const initDb = (filename?: string): void => {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: async () => {
-      if (filename === undefined) filename = await getDbPath();
+      if (filename === undefined) filename = await getTempDbPath();
       console.info(`Connected to database: ${filename}`);
 
       return {
@@ -123,4 +123,4 @@ const initDb = (filename?: string): void => {
   });
 };
 
-export { getDbPath, initDb };
+export { getTempDbPath, initDb };

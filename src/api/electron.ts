@@ -1,7 +1,7 @@
 import fs from 'fs';
 import BaseApi from './base';
 import {
-  getDbPath,
+  getTempDbPath,
   initDb,
   AnnotationModel,
   LabelModel,
@@ -143,7 +143,7 @@ export default class ElectronApi extends BaseApi {
   }
   async deleteTempDb(): Promise<void> {
     const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
-    const tempDbPath = await getDbPath();
+    const tempDbPath = await getTempDbPath();
     const currDbPath = (await db.client.config.connection()).filename;
     if (currDbPath === tempDbPath) db.destroy();
     fs.unlinkSync(tempDbPath);
