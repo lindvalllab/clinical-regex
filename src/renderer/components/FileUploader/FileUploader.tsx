@@ -56,6 +56,7 @@ function FileUploader(): JSX.Element {
     helpers: FormikHelpers<FormData>
   ) => {
     if (csv) {
+      await api.loadDbFromPath(); // Connect to the database in the user data directory.
       await api.clearDb();
       await api.loadCsv(csv.path, values.idColIndex, values.textColIndex);
       await api.insertLabels(
