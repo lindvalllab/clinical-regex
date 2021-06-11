@@ -20,7 +20,6 @@ export default abstract class BaseApi {
     page: number,
     pageSize: number
   ): Promise<{ results: TextEntity[]; total: number }>;
-  public abstract clearDb(): Promise<void>;
   public abstract deleteTempDb(): Promise<void>;
   public abstract saveDb(): Promise<string | undefined>;
   public abstract loadDb(): Promise<string | undefined>;

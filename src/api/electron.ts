@@ -149,13 +149,6 @@ export default class ElectronApi extends BaseApi {
     fs.unlinkSync(tempDbPath);
   }
 
-  async clearDb(): Promise<void> {
-    await AnnotationModel.query().delete();
-    await TextModel.query().delete();
-    await LabelModel.query().delete();
-    await SettingsModel.query().delete();
-  }
-
   async saveDb(): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Save File',
