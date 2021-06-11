@@ -1,6 +1,7 @@
 import fs from 'fs';
 import BaseApi from './base';
 import {
+  getDbPath,
   initDb,
   AnnotationModel,
   LabelModel,
@@ -140,6 +141,14 @@ export default class ElectronApi extends BaseApi {
   ): Promise<{ results: TextEntity[]; total: number }> {
     return TextModel.query().groupBy('group_id').page(page, pageSize);
   }
+  async deleteTempDb(): Promise<void> {
+    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+    const tempDbPath = await getDbPath();
+    const currDbPath = (await db.client.config.connection()).filename;
+    if (currDbPath === tempDbPath) db.destroy();
+    fs.unlinkSync(tempDbPath);
+  }
+
   async clearDb(): Promise<void> {
     await AnnotationModel.query().delete();
     await TextModel.query().delete();
