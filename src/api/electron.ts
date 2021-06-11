@@ -1,7 +1,7 @@
 import fs from 'fs';
 import BaseApi from './base';
 import {
-  getDbPath,
+  initDb,
   AnnotationModel,
   LabelModel,
   TextModel,
@@ -159,12 +159,40 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
-      const source = await getDbPath();
+      const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+      const source = (await db.client.config.connection()).filename;
       fs.copyFileSync(source, destination);
+      this.loadDbFromPath(destination);
       return destination;
     } else {
       // TO-DO: figure out a better way to handle this.
       console.error(`Destination ${destination} not valid.`);
+      return;
+    }
+  }
+
+  async loadDbFromPath(source?: string): Promise<void> {
+    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+    db.destroy();
+    initDb(source);
+  }
+
+  async loadDb(): Promise<string | undefined> {
+    const source = dialog.showOpenDialogSync({
+      title: 'Load File',
+      filters: [
+        {
+          name: 'Clinical Regex Save File',
+          extensions: ['cr'], // TO-DO: decide on actual extension
+        },
+      ],
+    });
+
+    if (source !== undefined && source.length > 0) {
+      this.loadDbFromPath(source[0]);
+      return source[0];
+    } else {
+      console.log('No source selected');
       return;
     }
   }
