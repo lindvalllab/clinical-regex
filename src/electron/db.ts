@@ -57,7 +57,7 @@ const getTempDbPath = async (): Promise<string> => {
   return path.join(userDataPath, 'temp.cr');
 };
 
-const initDb = (filename?: string): void => {
+const initDb = async (filename?: string): Promise<void> => {
   const db = knex({
     client: 'sqlite3',
     useNullAsDefault: true,
@@ -118,9 +118,11 @@ const initDb = (filename?: string): void => {
     }
   }
 
-  createSchema().catch((err) => {
+  try {
+    await createSchema();
+  } catch (err) {
     console.error(err);
-  });
+  }
 };
 
 export { getTempDbPath, initDb };

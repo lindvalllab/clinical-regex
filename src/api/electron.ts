@@ -183,7 +183,7 @@ export default class ElectronApi extends BaseApi {
   async loadDbFromPath(source?: string): Promise<void> {
     const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
     db.destroy();
-    initDb(source);
+    await initDb(source);
   }
 
   async loadDb(): Promise<string | undefined> {
