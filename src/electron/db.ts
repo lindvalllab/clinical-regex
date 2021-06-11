@@ -54,15 +54,15 @@ const getDbPath = async (): Promise<string> => {
     userDataPath = await ipcRenderer.invoke('electron:userDataPath');
   }
 
-  return path.join(userDataPath, 'db.sqlite');
+  return path.join(userDataPath, 'temp.cr');
 };
 
-const initDb = (): void => {
+const initDb = (filename?: string): void => {
   const db = knex({
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: async () => {
-      const filename = await getDbPath();
+      if (filename === undefined) filename = await getDbPath();
       console.info(`Connected to database: ${filename}`);
 
       return {
