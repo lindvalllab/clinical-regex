@@ -98,10 +98,11 @@ function FileUploader(): JSX.Element {
         {(props) => (
           <Form>
             <FormControl>
-              <FormLabel>Upload a file.</FormLabel>
+              <FormLabel htmlFor="csvUpload">Upload a file.</FormLabel>
               <input
                 type="file"
-                name="file"
+                name="csvUpload"
+                id="csvUpload"
                 accept=".csv"
                 onChange={readHeader}
               />
@@ -207,9 +208,11 @@ function FileUploader(): JSX.Element {
                             <LabelWithError
                               text={`Pattern ${index + 1}`}
                               name={`labels.${index}.patterns`}
+                              htmlFor={`labels.${index}.patterns`}
                             />
                             <Field
                               name={`labels.${index}.patterns`}
+                              inputId={`labels.${index}.patterns`}
                               as={PatternInput}
                               placeholder="pall(iative)? (care|medicine)"
                               onBlur={() =>
