@@ -24,8 +24,8 @@ export class LabelModel extends Model {
 export class AnnotationModel extends Model {
   id!: number;
   group_id!: string;
-  label_id!: string;
-  value!: string;
+  label!: string;
+  value!: number;
   static get tableName(): string {
     return 'annotations';
   }
@@ -100,8 +100,8 @@ const initDb = (): void => {
           .inTable('texts')
           .notNullable();
         table
-          .integer('label_id')
-          .references('id')
+          .string('label')
+          .references('name')
           .inTable('labels')
           .notNullable();
         table.integer('value').notNullable();
