@@ -146,7 +146,7 @@ function DataTable<T extends Record<string, unknown>>({
           <Text fontSize="xs">
             {loading
               ? 'Loading...'
-              : `Showing ${pageSize * pageIndex} -
+              : `Showing ${pageSize * pageIndex + 1} -
               ${pageSize * pageIndex + page.length} of ${totalCount} results`}
           </Text>
         </Flex>
