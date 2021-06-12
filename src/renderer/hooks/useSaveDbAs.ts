@@ -2,12 +2,12 @@ import { useToast } from '@chakra-ui/toast';
 import { useContext } from 'react';
 import { ApiContext } from '../api';
 
-export default function useSaveDb(): () => void {
+export default function useSaveDbAs(): () => void {
   const api = useContext(ApiContext);
   const toast = useToast();
-  const saveDb = () => {
+  const saveDbAs = () => {
     api
-      .saveDb()
+      .saveDbAs()
       .then((result) => {
         if (result) {
           toast({
@@ -34,5 +34,5 @@ export default function useSaveDb(): () => void {
       });
   };
 
-  return saveDb;
+  return saveDbAs;
 }
