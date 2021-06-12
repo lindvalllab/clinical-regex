@@ -1,5 +1,9 @@
 {
   "name": "clinical-regex",
+  "author": {
+    "name": "lindvalllab",
+    "email": "lindvalllab@gmail.com"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -38,9 +42,15 @@
   "homepage": "./",
   "main": "./build/electron/main.js",
   "build": {
+    "productName": "Clinical Regex",
     "extraMetadata": {
       "main": "build/electron/main.js"
-    }
+    },
+    "fileAssociations": [{
+      "ext": "cr",
+      "name": "Clinical Regex File",
+      "mimeType": "application/x-sqlite3"
+    }]
   },
   "scripts": {
     "start:react": "react-scripts start",

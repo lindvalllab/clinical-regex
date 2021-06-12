@@ -154,7 +154,7 @@ export default class ElectronApi extends BaseApi {
       title: 'Save File',
       filters: [
         {
-          name: 'Clinical Regex Save File',
+          name: 'Clinical Regex File',
           extensions: ['cr'], // TO-DO: decide on actual extension
         },
       ],
@@ -184,7 +184,7 @@ export default class ElectronApi extends BaseApi {
       title: 'Load File',
       filters: [
         {
-          name: 'Clinical Regex Save File',
+          name: 'Clinical Regex File',
           extensions: ['cr'], // TO-DO: decide on actual extension
         },
       ],
