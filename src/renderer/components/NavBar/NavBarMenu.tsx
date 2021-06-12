@@ -20,12 +20,12 @@ import {
 } from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import useLoadDb from '../../hooks/useLoadDb';
-import useSaveDb from '../../hooks/useSaveDb';
+import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
 
 function NavBarMenu(): JSX.Element {
   const history = useHistory();
-  const saveDb = useSaveDb();
+  const saveDbAs = useSaveDbAs();
   const loadDb = useLoadDb();
   const disclosure = useDisclosure();
   const preferences = { ...disclosure, onClick: () => disclosure.onOpen() };
@@ -35,8 +35,8 @@ function NavBarMenu(): JSX.Element {
       history.push('/upload');
     },
   };
-  const saveProject = {
-    onClick: saveDb,
+  const saveProjectAs = {
+    onClick: saveDbAs,
   };
   const openProject = {
     onClick: loadDb,
@@ -65,10 +65,10 @@ function NavBarMenu(): JSX.Element {
           </MenuItem>
           <MenuItem
             icon={<FaSave />}
-            onClick={saveProject.onClick}
-            command="⌘S"
+            onClick={saveProjectAs.onClick}
+            command="⌘⇧S"
           >
-            Save Project
+            Save Project As
           </MenuItem>
           <MenuItem icon={<FaDownload />} command="⌘E">
             Export

@@ -149,9 +149,9 @@ export default class ElectronApi extends BaseApi {
     fs.unlinkSync(tempDbPath);
   }
 
-  async saveDb(): Promise<string | undefined> {
+  async saveDbAs(): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
-      title: 'Save File',
+      title: 'Save File As',
       filters: [
         {
           name: 'Clinical Regex File',
