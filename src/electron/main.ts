@@ -112,6 +112,19 @@ app.on('activate', () => {
   }
 });
 
+app.on('open-file', (event, path) => {
+  event.preventDefault();
+
+  // https://github.com/electron/electron/blob/main/docs/api/app.md#event-open-file-macos
+  // It's not totally clear to me from the docs whether the 'open-file' event would be emitted on
+  // Windows... if not, the following "if" block will have to be moved somewhere else
+  if (process.platform.startsWith('win') && process.argv.length >= 2) {
+    path = process.argv[1];
+  }
+
+  initDb(path);
+});
+
 // For interacting with the database
 // See also: preload.ts
 
