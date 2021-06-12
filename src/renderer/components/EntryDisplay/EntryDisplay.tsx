@@ -51,44 +51,42 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
   }
 
   return (
-    <>
-      <VStack spacing={4} p={8}>
-        <FormControl as="fieldset">
-          <FormLabel as="legend">Context Window</FormLabel>
-          <RadioGroup
-            onChange={(value) => {
-              setContextWindow(Number(value));
-            }}
-            value={contextWindow}
-          >
-            <Stack direction="row">
-              {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
-                ([name, value]) => (
-                  <Radio key={value} value={value}>
-                    {name}
-                  </Radio>
-                )
-              )}
-            </Stack>
-          </RadioGroup>
-          <FormHelperText>
-            Number of words of context to show around highlights.
-          </FormHelperText>
-        </FormControl>
-        {props.entry.texts.map((textObj) => (
-          <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
-            <HighlightedText
-              text={textObj.text}
-              highlights={highlights(textObj.text)}
-              palette={palette}
-              contextWindow={
-                contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
-              }
-            />
-          </Box>
-        ))}
-      </VStack>
-    </>
+    <VStack spacing={4} p={8}>
+      <FormControl as="fieldset">
+        <FormLabel as="legend">Context Window</FormLabel>
+        <RadioGroup
+          onChange={(value) => {
+            setContextWindow(Number(value));
+          }}
+          value={contextWindow}
+        >
+          <Stack direction="row">
+            {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
+              ([name, value]) => (
+                <Radio key={value} value={value}>
+                  {name}
+                </Radio>
+              )
+            )}
+          </Stack>
+        </RadioGroup>
+        <FormHelperText>
+          Number of words of context to show around highlights.
+        </FormHelperText>
+      </FormControl>
+      {props.entry.texts.map((textObj) => (
+        <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
+          <HighlightedText
+            text={textObj.text}
+            highlights={highlights(textObj.text)}
+            palette={palette}
+            contextWindow={
+              contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
+            }
+          />
+        </Box>
+      ))}
+    </VStack>
   );
 }
 

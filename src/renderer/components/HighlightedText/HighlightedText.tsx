@@ -1,12 +1,12 @@
 import flattenSpans from './flattenSpans';
 import { SpanWithTag } from '../../../types';
 import {
+  Badge,
   Box,
   Button,
   ButtonGroup,
   Checkbox,
   Flex,
-  Icon,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
@@ -22,7 +22,6 @@ import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from './constants';
-import { FaCircle } from 'react-icons/fa';
 
 const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS['Tiny'];
 
@@ -150,36 +149,34 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     );
   });
   return (
-    <Box p={4}>
-      <Flex justifyContent="flex-end" alignItems="center" gridGap={2}>
+    <Box p={isHidden ? 1 : 4} maxW="100%">
+      <Flex
+        justifyContent={isHidden ? 'space-between' : 'flex-end'}
+        alignItems="center"
+        gridGap={2}
+        maxW="100%"
+      >
         {isHidden ? (
-          <>
+          <Flex alignItems="center" gridGap={1} maxW="75%">
             {uniqueTags.map((tag) => (
               <Tooltip key={tag} label={tag}>
-                {/* From https://chakra-ui.com/docs/overlay/tooltip:
-                Note 🚨: If you're wrapping an icon from react-icons,
-                you need to also wrap the icon in a span element as
-                react-icons icons do not use forwardRef. */}
-                <span>
-                  <Icon
-                    as={FaCircle}
-                    boxSize={2}
-                    color={props.palette[tag]}
-                    cursor="pointer"
-                  />
-                </span>
+                <Badge bg={props.palette[tag]} cursor="pointer" boxSize={2} />
               </Tooltip>
             ))}
             <Text
               isTruncated
-              fontSize="sm"
+              fontSize="xs"
               fontFamily="mono"
               color="darkgray"
+              textOverflow="ellipsis"
+              overflow="hidden"
+              whiteSpace="nowrap"
               px={4}
+              maxW="100%"
             >
               {props.text}
             </Text>
-          </>
+          </Flex>
         ) : (
           <></>
         )}

@@ -3,12 +3,15 @@ import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
 import { Entry, LabelEntity, SettingsEntity } from '../../../types';
 import {
+  Box,
   Center,
   Flex,
+  HStack,
   Spacer,
   Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
+import AnnotationSidebar from './AnnotationSidebar';
 import AnnotationFooter from './AnnotationFooter';
 
 function AnnotationInterface(): JSX.Element {
@@ -67,9 +70,14 @@ function AnnotationInterface(): JSX.Element {
   }, [api, groupIds, page]);
 
   return (
-    <Flex flexDirection="column" height="100%">
-      {entry ? (
-        <EntryDisplay entry={entry} labels={labels} />
+    <Flex flexDirection="column" h="full" w="full">
+      {entry && labels ? (
+        <HStack alignItems="start" maxW="100vw">
+          <Box w="80vw">
+            <EntryDisplay entry={entry} labels={labels} />
+          </Box>
+          <AnnotationSidebar entry={entry} labels={labels} />
+        </HStack>
       ) : (
         <Center w="full" h="full" bg={bg}>
           <Spinner

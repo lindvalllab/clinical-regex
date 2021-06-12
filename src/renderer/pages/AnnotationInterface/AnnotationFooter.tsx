@@ -30,7 +30,7 @@ function AnnotationFooter({
 
   return (
     <Flex
-      w="100%"
+      w="full"
       justify="space-between"
       position="sticky"
       bottom={0}
