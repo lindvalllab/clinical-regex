@@ -20,8 +20,10 @@ export default abstract class BaseApi {
     page: number,
     pageSize: number
   ): Promise<{ results: TextEntity[]; total: number }>;
-  public abstract clearDb(): Promise<void>;
+  public abstract deleteTempDb(): Promise<void>;
   public abstract saveDb(): Promise<string | undefined>;
+  public abstract loadDb(): Promise<string | undefined>;
+  public abstract loadDbFromPath(source?: string): Promise<void>;
   public abstract insertAnnotation(text: CRAnnotation): Promise<void>;
   public abstract insertLabel(text: CRLabel): Promise<void>;
   public abstract insertText(text: CRText): Promise<void>;

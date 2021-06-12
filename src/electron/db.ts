@@ -41,7 +41,7 @@ export class SettingsModel extends Model {
   }
 }
 
-const getDbPath = async (): Promise<string> => {
+const getTempDbPath = async (): Promise<string> => {
   let userDataPath;
 
   // app is not available in renderer process,
@@ -54,15 +54,15 @@ const getDbPath = async (): Promise<string> => {
     userDataPath = await ipcRenderer.invoke('electron:userDataPath');
   }
 
-  return path.join(userDataPath, 'db.sqlite');
+  return path.join(userDataPath, 'temp.cr');
 };
 
-const initDb = (): void => {
+const initDb = async (filename?: string): Promise<void> => {
   const db = knex({
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: async () => {
-      const filename = await getDbPath();
+      if (filename === undefined) filename = await getTempDbPath();
       console.info(`Connected to database: ${filename}`);
 
       return {
@@ -118,9 +118,11 @@ const initDb = (): void => {
     }
   }
 
-  createSchema().catch((err) => {
+  try {
+    await createSchema();
+  } catch (err) {
     console.error(err);
-  });
+  }
 };
 
-export { getDbPath, initDb };
+export { getTempDbPath, initDb };

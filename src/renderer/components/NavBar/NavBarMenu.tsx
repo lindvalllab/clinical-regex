@@ -19,12 +19,14 @@ import {
   FaSave,
 } from 'react-icons/fa';
 import { useHistory } from 'react-router';
+import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDb from '../../hooks/useSaveDb';
 import PreferencesModal from '../PreferencesModal';
 
 function NavBarMenu(): JSX.Element {
   const history = useHistory();
   const saveDb = useSaveDb();
+  const loadDb = useLoadDb();
   const disclosure = useDisclosure();
   const preferences = { ...disclosure, onClick: () => disclosure.onOpen() };
 
@@ -34,14 +36,10 @@ function NavBarMenu(): JSX.Element {
     },
   };
   const saveProject = {
-    onClick: () => {
-      saveDb();
-    },
+    onClick: saveDb,
   };
   const openProject = {
-    onClick: () => {
-      console.log('Clicked "Open Project');
-    },
+    onClick: loadDb,
   };
 
   return (

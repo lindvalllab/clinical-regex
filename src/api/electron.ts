@@ -1,7 +1,8 @@
 import fs from 'fs';
 import BaseApi from './base';
 import {
-  getDbPath,
+  getTempDbPath,
+  initDb,
   AnnotationModel,
   LabelModel,
   TextModel,
@@ -140,11 +141,12 @@ export default class ElectronApi extends BaseApi {
   ): Promise<{ results: TextEntity[]; total: number }> {
     return TextModel.query().groupBy('group_id').page(page, pageSize);
   }
-  async clearDb(): Promise<void> {
-    await AnnotationModel.query().delete();
-    await TextModel.query().delete();
-    await LabelModel.query().delete();
-    await SettingsModel.query().delete();
+  async deleteTempDb(): Promise<void> {
+    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+    const tempDbPath = await getTempDbPath();
+    const currDbPath = (await db.client.config.connection()).filename;
+    if (currDbPath === tempDbPath) db.destroy();
+    fs.unlinkSync(tempDbPath);
   }
 
   async saveDb(): Promise<string | undefined> {
@@ -159,12 +161,40 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
-      const source = await getDbPath();
+      const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+      const source = (await db.client.config.connection()).filename;
       fs.copyFileSync(source, destination);
+      this.loadDbFromPath(destination);
       return destination;
     } else {
       // TO-DO: figure out a better way to handle this.
       console.error(`Destination ${destination} not valid.`);
+      return;
+    }
+  }
+
+  async loadDbFromPath(source?: string): Promise<void> {
+    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+    db.destroy();
+    await initDb(source);
+  }
+
+  async loadDb(): Promise<string | undefined> {
+    const source = dialog.showOpenDialogSync({
+      title: 'Load File',
+      filters: [
+        {
+          name: 'Clinical Regex Save File',
+          extensions: ['cr'], // TO-DO: decide on actual extension
+        },
+      ],
+    });
+
+    if (source !== undefined && source.length > 0) {
+      this.loadDbFromPath(source[0]);
+      return source[0];
+    } else {
+      console.log('No source selected');
       return;
     }
   }

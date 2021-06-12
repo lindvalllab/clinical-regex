@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button, ButtonProps, Flex, Text } from '@chakra-ui/react';
 import Logo from '../../components/Logo';
+import useLoadDb from '../../hooks/useLoadDb';
 
 type MainLinkBoxProps = {
   text: string;
@@ -27,6 +28,7 @@ function MainLink(props: MainLinkBoxProps & ButtonProps): JSX.Element {
 }
 
 function Home(): JSX.Element {
+  const loadDb = useLoadDb();
   return (
     <Flex
       flexDirection="column"
@@ -44,7 +46,7 @@ function Home(): JSX.Element {
         fontSize="2xl"
       >
         <MainLink icon={'🚀'} text="New Project" href="/upload" />
-        <MainLink icon={'📤'} text="Load Project" href="#" />
+        <MainLink icon={'📤'} text="Load Project" href="#" onClick={loadDb} />
       </Flex>
     </Flex>
   );
