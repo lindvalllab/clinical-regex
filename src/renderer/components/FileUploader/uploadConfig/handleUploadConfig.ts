@@ -26,8 +26,8 @@ const handleUploadConfig = (
   setWarnings: (warnings: string[]) => void
 ): ((event: ChangeEvent<HTMLInputElement>) => Promise<void>) => {
   const label = Yup.object({
-    name: Yup.string(),
-    patterns: Yup.array().of(Yup.string()),
+    name: Yup.string().required(),
+    patterns: Yup.array().of(Yup.string()).required(),
   });
 
   const schema = Yup.object({
@@ -61,17 +61,7 @@ const handleUploadConfig = (
             );
           }
           if (![null, undefined].includes(configuration.labels)) {
-            for (let i = 0; i < configuration.labels.length; i++) {
-              // Insert dummy data to ensure labels[i] has the right type at all times.
-              setFieldValue(`labels.${i}`, { name: '', patterns: [] });
-              if (configuration.labels[i].name !== undefined)
-                setFieldValue(`labels.${i}.name`, configuration.labels[i].name);
-              if (configuration.labels[i].patterns !== undefined)
-                setFieldValue(
-                  `labels.${i}.patterns`,
-                  configuration.labels[i].patterns
-                );
-            }
+            setFieldValue(`labels`, configuration.labels);
           }
           if (![null, undefined].includes(configuration.isGrouped)) {
             setFieldValue('isGrouped', Boolean(configuration.isGrouped));
