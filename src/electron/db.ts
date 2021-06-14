@@ -105,6 +105,7 @@ const initDb = async (filename?: string): Promise<void> => {
           .inTable('labels')
           .notNullable();
         table.integer('value').notNullable();
+        table.unique(['group_id', 'label']);
       });
     }
 

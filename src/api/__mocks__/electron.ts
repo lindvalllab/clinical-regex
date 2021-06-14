@@ -15,6 +15,7 @@ export default class ElectronApi {
   async getEntry(groupId: string): Promise<Entry> {
     if (groupId === '0123') {
       return new Promise(() => ({
+        groupId: '0123',
         texts: [
           { id: 0, group_id: '0123', text: 'hello' },
           { id: 2, group_id: '0123', text: 'ipsum' },
@@ -23,11 +24,13 @@ export default class ElectronApi {
       }));
     } else if (groupId === '1345') {
       return new Promise(() => ({
+        groupId: '1345',
         texts: [{ id: 1, group_id: '1345', text: 'lorem' }],
         annotations: [],
       }));
     }
     return {
+      groupId: groupId,
       texts: [],
       annotations: [],
     };

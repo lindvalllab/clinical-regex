@@ -11,8 +11,10 @@ import {
   NumberDecrementStepper,
   VStack,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { FaArrowAltCircleRight } from 'react-icons/fa';
-import { Entry, LabelEntity } from '../../../types';
+import { CRAnnotation, Entry, LabelEntity } from '../../../types';
 import { getUnique } from '../../components/HighlightedText/utils';
 
 type AnnotationSidebarProps = {
@@ -20,11 +22,62 @@ type AnnotationSidebarProps = {
   labels: LabelEntity[];
 };
 
+const initialAnnotations = (entry: Entry, labels: LabelEntity[]) => {
+  const uniqueLabels = getUnique(
+    labels.sort((e) => e.id).map((label) => label.name)
+  );
+
+  return uniqueLabels.map((name) => {
+    const annotationCandidates = entry.annotations.filter(
+      (annotation) => annotation.label === name
+    );
+
+    let annotation: CRAnnotation;
+
+    if (annotationCandidates.length > 1) {
+      // TO-DO: handle better
+      throw Error(`More than one annotation found for label with name ${name}`);
+    } else if (annotationCandidates.length === 1) {
+      const { id, ...rest } = annotationCandidates[0];
+      annotation = rest;
+    } else {
+      annotation = {
+        group_id: entry.groupId,
+        label: name,
+        value: 0,
+      };
+    }
+
+    return annotation;
+  });
+};
+
 function AnnotationSidebar({
   entry,
   labels,
 }: AnnotationSidebarProps): JSX.Element {
-  const uniqueLabels = getUnique(labels.map((e) => e.name));
+  const [annotations, setAnnotations] = useState(
+    initialAnnotations(entry, labels)
+  );
+
+  useEffect(() => {
+    setAnnotations(initialAnnotations(entry, labels));
+  }, [entry, labels]);
+
+  const setAnnotationValue = (labelName: string, newValue: number) => {
+    const newAnnotations = [...annotations];
+    const index = newAnnotations.findIndex(
+      (annotation) => annotation.label === labelName
+    );
+
+    newAnnotations[index].value = newValue;
+
+    setAnnotations(newAnnotations);
+  };
+
+  const onSubmit = () => {
+    console.log(annotations);
+  };
 
   return (
     <Flex
@@ -39,18 +92,24 @@ function AnnotationSidebar({
     >
       <Box overflowY="scroll" px={4} pt={6}>
         <VStack spacing={4} px={2}>
-          {uniqueLabels.map((label) => {
+          {annotations.map((annotation) => {
             return (
-              <FormControl key={label}>
+              <FormControl key={annotation.label}>
                 <FormLabel
                   fontSize="xs"
                   fontFamily="heading"
                   textTransform="uppercase"
                   mb={1}
                 >
-                  {label}
+                  {annotation.label}
                 </FormLabel>
-                <NumberInput defaultValue={0} size="md">
+                <NumberInput
+                  onChange={(value) =>
+                    setAnnotationValue(annotation.label, parseInt(value))
+                  }
+                  value={annotation.value}
+                  size="md"
+                >
                   <NumberInputField />
                   <NumberInputStepper>
                     <NumberIncrementStepper />
@@ -67,6 +126,7 @@ function AnnotationSidebar({
         flexShrink={0}
         colorScheme="green"
         rightIcon={<FaArrowAltCircleRight />}
+        onClick={onSubmit}
       >
         Submit
       </Button>

@@ -43,6 +43,7 @@ export default class ElectronApi extends BaseApi {
     });
 
     return {
+      groupId: groupId,
       texts: texts,
       annotations: annotations,
     };
