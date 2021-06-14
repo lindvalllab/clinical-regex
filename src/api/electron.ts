@@ -243,6 +243,39 @@ export default class ElectronApi extends BaseApi {
     }
   }
 
+  async exportAnnotations(): Promise<string | undefined> {
+    const destination = dialog.showSaveDialogSync({
+      title: 'Export File As',
+      filters: [
+        {
+          name: 'Comma-separated values',
+          extensions: ['csv'],
+        },
+      ],
+    });
+
+    if (destination) {
+      const annotations = await this.getAllAnnotations();
+      const settings = await this.getSettings();
+      const groupIdField =
+        settings.GROUP_ID_FIELD !== null ? settings.GROUP_ID_FIELD : 'id';
+      const csv = Papa.unparse({
+        fields: [groupIdField, 'label', 'value'],
+        data: annotations.map((annotation) => [
+          annotation.group_id,
+          annotation.label,
+          annotation.value,
+        ]),
+      });
+      fs.writeFileSync(destination, csv);
+      return destination;
+    } else {
+      // TO-DO: figure out a better way to handle this.
+      console.error(`Destination ${destination} not valid.`);
+      return;
+    }
+  }
+
   private static allMethodNames(): string[] {
     const self = this.prototype;
     const parent = Object.getPrototypeOf(self);
