@@ -16,7 +16,7 @@ export interface CRLabel {
 }
 export interface CRAnnotation {
   group_id: string;
-  label_id: number;
+  label: string;
   value: number;
 }
 // The three types below correspond to rows in the database.
@@ -25,6 +25,7 @@ export type LabelEntity = ModelObject<LabelModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;
 export type SettingsEntity = ModelObject<SettingsModel>;
 export interface Entry {
+  groupId: string;
   texts: TextEntity[];
   annotations: AnnotationEntity[];
 }
