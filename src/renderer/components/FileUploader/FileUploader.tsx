@@ -20,6 +20,7 @@ import InlineUpload from './InlineUpload';
 import handleUploadConfig from './uploadConfig/handleUploadConfig';
 import ConfigWarningDialog from './uploadConfig/WarningDialog';
 import { CRLabel } from '../../../types';
+import { useHistory } from 'react-router-dom';
 
 type FormData = {
   isGrouped: boolean;
@@ -34,6 +35,7 @@ function FileUploader(): JSX.Element {
   const [configWarnings, setConfigWarnings] = useState<string[]>([]);
   const [configErrors, setConfigErrors] = useState<string[]>([]);
   const api = useContext(ApiContext);
+  const history = useHistory();
 
   const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -72,6 +74,7 @@ function FileUploader(): JSX.Element {
       );
     }
     helpers.setSubmitting(false);
+    history.push('/dashboard');
   };
 
   const headerList = headers.map((h, i) => (
