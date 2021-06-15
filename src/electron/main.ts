@@ -3,6 +3,7 @@ import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 import { initDb } from './db';
 import { URL } from 'url';
+import createMenu from './menu';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -27,6 +28,8 @@ function createWindow() {
       webSecurity: true,
     },
   });
+
+  createMenu();
 
   if (app.isPackaged) {
     // Disable dev tools menu option if in production.
