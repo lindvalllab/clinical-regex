@@ -1,6 +1,6 @@
-import { Menu, MenuItem } from 'electron';
+import { BrowserWindow, Menu, MenuItem } from 'electron';
 
-function createMenu(): void {
+function createMenu(mainWindow: BrowserWindow): void {
   const menu = Menu.getApplicationMenu();
   if (menu === null) return;
 
@@ -10,22 +10,22 @@ function createMenu(): void {
   const newProject = new MenuItem({
     label: 'New Project',
     accelerator: 'CmdOrCtrl+n',
-    click: () => console.log('New project'),
+    click: () => mainWindow.webContents.send('new-project'),
   });
   const loadProject = new MenuItem({
     label: 'Load Project...',
     accelerator: 'CmdOrCtrl+o',
-    click: () => console.log('Opening'),
+    click: () => mainWindow.webContents.send('load-project'),
   });
   const saveAs = new MenuItem({
     label: 'Save As...',
     accelerator: 'CmdOrCtrl+Shift+s',
-    click: () => console.log('Saving'),
+    click: () => mainWindow.webContents.send('save-as'),
   });
   const exportProject = new MenuItem({
     label: 'Export Project...',
     accelerator: 'CmdOrCtrl+e',
-    click: () => console.log('Exporting'),
+    click: () => mainWindow.webContents.send('export-project'),
   });
   const separator = new MenuItem({
     type: 'separator',
@@ -44,7 +44,7 @@ function createMenu(): void {
   const preferences = new MenuItem({
     label: 'Preferences',
     accelerator: 'CmdOrCtrl+,',
-    click: () => console.log('Preferences'),
+    click: () => mainWindow.webContents.send('preferences'),
   });
   if (editMenu !== undefined && editMenu.submenu !== undefined) {
     editMenu.submenu.append(separator);

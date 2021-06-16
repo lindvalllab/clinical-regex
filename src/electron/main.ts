@@ -29,7 +29,7 @@ function createWindow() {
     },
   });
 
-  createMenu();
+  createMenu(mainWindow);
 
   if (app.isPackaged) {
     // Disable dev tools menu option if in production.
