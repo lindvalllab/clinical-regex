@@ -131,6 +131,23 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
+  async updateAnnotation(
+    annotation: CRAnnotation,
+    trx?: Transaction
+  ): Promise<void> {
+    const existing = AnnotationModel.query(trx)
+      .where('group_id', annotation.group_id)
+      .where('label', annotation.label);
+    if ((await existing).length > 0) await existing.update(annotation);
+    else await this.insertAnnotation(annotation, trx);
+  }
+  async updateAnnotations(annotations: CRAnnotation[]): Promise<void> {
+    await AnnotationModel.transaction(async (trx) => {
+      for (const annotation of annotations) {
+        await this.updateAnnotation(annotation, trx);
+      }
+    });
+  }
   async getAllGroupIds(): Promise<string[]> {
     const groupIds = await TextModel.query().distinct('group_id');
 
