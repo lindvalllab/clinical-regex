@@ -11,10 +11,11 @@ import {
   NumberDecrementStepper,
   VStack,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { FaArrowAltCircleRight } from 'react-icons/fa';
 import { CRAnnotation, Entry, LabelEntity } from '../../../types';
+import { ApiContext } from '../../api';
 import { getUnique } from '../../components/HighlightedText/utils';
 
 type AnnotationSidebarProps = {
@@ -59,6 +60,7 @@ function AnnotationSidebar({
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
   );
+  const api = useContext(ApiContext);
 
   useEffect(() => {
     setAnnotations(initialAnnotations(entry, labels));
@@ -76,7 +78,7 @@ function AnnotationSidebar({
   };
 
   const onSubmit = () => {
-    console.log(annotations);
+    api.updateAnnotations(annotations);
   };
 
   return (
