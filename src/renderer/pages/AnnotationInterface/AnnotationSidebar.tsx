@@ -84,9 +84,9 @@ function AnnotationSidebar({
       borderWidth={1}
       pos="fixed"
       top="6.5rem"
-      right="2em"
-      w="calc(20vw - 2rem)"
-      h="calc(100vh - 13rem)"
+      right="1.2em"
+      w="calc(20vw - 1.8rem)"
+      h="calc(100vh - 12.5rem)"
       flexDirection="column"
       justifyContent="space-between"
     >
