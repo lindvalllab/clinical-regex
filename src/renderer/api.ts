@@ -11,3 +11,6 @@ declare global {
 }
 
 export const ApiContext = React.createContext<BaseApi>(window.api);
+export const HandleMenuEntryContext = React.createContext<
+  { [entry in MenuEntry]: MenuEntryHandler }
+>(window.handleMenuEntry);
