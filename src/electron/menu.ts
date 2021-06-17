@@ -1,6 +1,6 @@
 import { BrowserWindow, Menu, MenuItem } from 'electron';
 
-function createMenu(mainWindow: BrowserWindow): void {
+export function createMenu(mainWindow: BrowserWindow): void {
   const menu = Menu.getApplicationMenu();
   if (menu === null) return;
 
@@ -73,4 +73,28 @@ function createMenu(mainWindow: BrowserWindow): void {
 
   Menu.setApplicationMenu(menu);
 }
-export default createMenu;
+
+export function disableDevTools(): void {
+  const menu = Menu.getApplicationMenu();
+  if (menu !== null) {
+    // Find View menu.
+    // Typescript expects the role to be 'viewMenu', but in reality it is 'viewmenu'.
+    // Convert to lowercase to resolve ambiguity.
+    const viewMenu = menu.items.find(
+      (item) =>
+        item.role !== undefined && item.role.toLowerCase() === 'viewmenu'
+    );
+    if (viewMenu !== undefined && viewMenu.submenu !== undefined) {
+      // Find 'Toggle Dev Tools' menu item and disable it.
+      const toggleDevTools = viewMenu.submenu.items.find(
+        (item) =>
+          item.role !== undefined &&
+          item.role.toLowerCase() === 'toggledevtools'
+      );
+      if (toggleDevTools !== undefined) {
+        toggleDevTools.enabled = false;
+        toggleDevTools.visible = false;
+      }
+    }
+  }
+}

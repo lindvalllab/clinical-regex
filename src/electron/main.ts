@@ -3,7 +3,7 @@ import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import path from 'path';
 import { initDb } from './db';
 import { URL } from 'url';
-import createMenu from './menu';
+import { createMenu, disableDevTools } from './menu';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -33,28 +33,7 @@ function createWindow() {
 
   if (app.isPackaged) {
     // Disable dev tools menu option if in production.
-    const menu = Menu.getApplicationMenu();
-    if (menu !== null) {
-      // Find View menu.
-      // Typescript expects the role to be 'viewMenu', but in reality it is 'viewmenu'.
-      // Convert to lowercase to resolve ambiguity.
-      const viewMenu = menu.items.find(
-        (item) =>
-          item.role !== undefined && item.role.toLowerCase() === 'viewmenu'
-      );
-      if (viewMenu !== undefined && viewMenu.submenu !== undefined) {
-        // Find 'Toggle Dev Tools' menu item and disable it.
-        const toggleDevTools = viewMenu.submenu.items.find(
-          (item) =>
-            item.role !== undefined &&
-            item.role.toLowerCase() === 'toggledevtools'
-        );
-        if (toggleDevTools !== undefined) {
-          toggleDevTools.enabled = false;
-          toggleDevTools.visible = false;
-        }
-      }
-    }
+    disableDevTools();
   } else {
     // Use react developer tools.
     // "Dynamic imports" allow us to only perform the import in development.
