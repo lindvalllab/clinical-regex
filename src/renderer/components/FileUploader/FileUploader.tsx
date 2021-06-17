@@ -8,6 +8,7 @@ import {
   FormLabel,
   Input,
   Select,
+  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
@@ -36,6 +37,7 @@ function FileUploader(): JSX.Element {
   const [configErrors, setConfigErrors] = useState<string[]>([]);
   const api = useContext(ApiContext);
   const history = useHistory();
+  const tipColor = useColorModeValue('gray.500', 'whiteAlpha.700');
 
   const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -185,6 +187,12 @@ function FileUploader(): JSX.Element {
                         +
                       </Button>
                     </Box>
+                    <Text fontSize="sm" color={tipColor} my={2}>
+                      Tip: to match whole words, use the word boundary regular
+                      expression <code>\b</code>. For example,{' '}
+                      <code>\bliver\b</code> will match <code>liver</code>, but
+                      not <code>deliver</code> or <code>livers</code>.
+                    </Text>
 
                     {props.values.labels.map((_label, index) => (
                       <Box key={index}>
