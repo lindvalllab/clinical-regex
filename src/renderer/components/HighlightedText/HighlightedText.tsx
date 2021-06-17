@@ -24,6 +24,7 @@ import {
 import HighlightedTextChunk from './HighlightedTextChunk';
 
 const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS.Tiny;
+const MAX_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS.All;
 
 type HighlightedTextProps = {
   text: string;
@@ -167,8 +168,10 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             Collapse All
           </Button>
           <Button
-            onClick={() => setContextWindow(fillContextWindowArray(-1))}
-            disabled={contextWindow.every((v) => v === -1)}
+            onClick={() =>
+              setContextWindow(fillContextWindowArray(MAX_CONTEXT_WINDOW_SIZE))
+            }
+            disabled={contextWindow.every((v) => v === MAX_CONTEXT_WINDOW_SIZE)}
           >
             Expand All
           </Button>
