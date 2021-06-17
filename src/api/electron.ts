@@ -170,6 +170,7 @@ export default class ElectronApi extends BaseApi {
   async saveDbAs(): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Save File As',
+      defaultPath: 'Untitled.cr',
       filters: [
         {
           name: 'Clinical Regex File',
@@ -263,6 +264,7 @@ export default class ElectronApi extends BaseApi {
   async exportAnnotations(): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Export File As',
+      defaultPath: 'Untitled.csv',
       filters: [
         {
           name: 'Comma-separated values',
