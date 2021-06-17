@@ -1,4 +1,5 @@
-import { BrowserWindow, Menu, MenuItem } from 'electron';
+import { BrowserWindow, IpcRenderer, Menu, MenuItem } from 'electron';
+import { menuEntries, MenuEntryHandler } from '../menu';
 
 export function createMenu(mainWindow: BrowserWindow): void {
   const menu = Menu.getApplicationMenu();
@@ -97,4 +98,20 @@ export function disableDevTools(): void {
       }
     }
   }
+}
+
+// Handle the application menu.
+// 'entry' below should be typed as MenuEntry, but typescript won't understand.
+export function handleMenuEntry(ipcRenderer: IpcRenderer): {
+  [entry: string]: MenuEntryHandler;
+} {
+  return Object.fromEntries(
+    Object.values(menuEntries).map((entry) => [
+      entry,
+      (listener) => {
+        ipcRenderer.removeAllListeners(entry);
+        ipcRenderer.on(entry, listener);
+      },
+    ])
+  );
 }

@@ -19,6 +19,7 @@ import {
   FaSave,
 } from 'react-icons/fa';
 import { useHistory } from 'react-router';
+import { menuEntries } from '../../../menu';
 import { HandleMenuEntryContext } from '../../api';
 import useExportAnnotations from '../../hooks/useExportAnnotations';
 import useLoadDb from '../../hooks/useLoadDb';
@@ -51,19 +52,19 @@ function NavBarMenu(): JSX.Element {
 
   // Associate menu actions to the electron menu.
   useEffect(() => {
-    handleMenuEntry['new-project'](newProject.onClick);
+    handleMenuEntry[menuEntries.NEW_PROJECT](newProject.onClick);
   }, [handleMenuEntry, newProject.onClick]);
   useEffect(() => {
-    handleMenuEntry['load-project'](openProject.onClick);
+    handleMenuEntry[menuEntries.LOAD_PROJECT](openProject.onClick);
   }, [handleMenuEntry, openProject.onClick]);
   useEffect(() => {
-    handleMenuEntry['save-as'](saveProjectAs.onClick);
+    handleMenuEntry[menuEntries.SAVE_AS](saveProjectAs.onClick);
   }, [handleMenuEntry, saveProjectAs.onClick]);
   useEffect(() => {
-    handleMenuEntry['export-project'](exportProject.onClick);
+    handleMenuEntry[menuEntries.EXPORT_PROJECT](exportProject.onClick);
   }, [exportProject.onClick, handleMenuEntry]);
   useEffect(() => {
-    handleMenuEntry['preferences'](preferences.onClick);
+    handleMenuEntry[menuEntries.PREFERENCES](preferences.onClick);
   }, [handleMenuEntry, preferences.onClick]);
 
   return (
