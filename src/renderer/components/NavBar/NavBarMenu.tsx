@@ -8,7 +8,7 @@ import {
   MenuDivider,
   useDisclosure,
 } from '@chakra-ui/react';
-
+import { useContext, useEffect } from 'react';
 import {
   FaCog,
   FaPlus,
@@ -19,6 +19,8 @@ import {
   FaSave,
 } from 'react-icons/fa';
 import { useHistory } from 'react-router';
+import { menuEntries } from '../../../menu';
+import { HandleMenuEntryContext } from '../../api';
 import useExportAnnotations from '../../hooks/useExportAnnotations';
 import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDbAs from '../../hooks/useSaveDbAs';
@@ -30,7 +32,8 @@ function NavBarMenu(): JSX.Element {
   const loadDb = useLoadDb();
   const exportAnnotations = useExportAnnotations();
   const disclosure = useDisclosure();
-  const preferences = { ...disclosure, onClick: () => disclosure.onOpen() };
+  const preferences = { ...disclosure, onClick: disclosure.onToggle };
+  const handleMenuEntry = useContext(HandleMenuEntryContext);
 
   const newProject = {
     onClick: () => {
@@ -46,6 +49,23 @@ function NavBarMenu(): JSX.Element {
   const exportProject = {
     onClick: exportAnnotations,
   };
+
+  // Associate menu actions to the electron menu.
+  useEffect(() => {
+    handleMenuEntry[menuEntries.NEW_PROJECT](newProject.onClick);
+  }, [handleMenuEntry, newProject.onClick]);
+  useEffect(() => {
+    handleMenuEntry[menuEntries.LOAD_PROJECT](openProject.onClick);
+  }, [handleMenuEntry, openProject.onClick]);
+  useEffect(() => {
+    handleMenuEntry[menuEntries.SAVE_AS](saveProjectAs.onClick);
+  }, [handleMenuEntry, saveProjectAs.onClick]);
+  useEffect(() => {
+    handleMenuEntry[menuEntries.EXPORT_PROJECT](exportProject.onClick);
+  }, [exportProject.onClick, handleMenuEntry]);
+  useEffect(() => {
+    handleMenuEntry[menuEntries.PREFERENCES](preferences.onClick);
+  }, [handleMenuEntry, preferences.onClick]);
 
   return (
     <>
