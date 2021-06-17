@@ -6,5 +6,5 @@ export const CONTEXT_WINDOW_SIZE_OPTIONS = {
   Small: 10,
   Medium: 50,
   Large: 100,
-  'Show entire text': -1,
+  All: -1,
 };

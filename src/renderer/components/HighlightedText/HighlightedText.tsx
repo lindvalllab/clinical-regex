@@ -10,8 +10,7 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import { ReactNode, useCallback, useEffect, useState } from 'react';
-import DividerClamp from './DividerClamp';
+import { useCallback, useEffect, useState } from 'react';
 import {
   getColor,
   getTooltip,
@@ -22,8 +21,10 @@ import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from './constants';
+import HighlightedTextChunk from './HighlightedTextChunk';
 
-const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS['Tiny'];
+const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS.Tiny;
+const MAX_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS.All;
 
 type HighlightedTextProps = {
   text: string;
@@ -78,59 +79,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   };
 
   const toDisplay = resolvedSpans.map((span, index) => {
-    const isFirstSpan = index === 0;
-    const isLastSpan = index === resolvedSpans.length - 1;
-    const isHighlight = span.tags.length !== 0;
-    const textContent = props.text.slice(span.start, span.start + span.length);
-
-    const format = (text: string): ReactNode => {
-      // split() will return the delimiters as odd array items
-      // if wrapped in parentheses
-      const words = text.split(/(\s+)/);
-
-      // divide by 2 to avoid counting delimiter elements
-      // first and last spans only get truncated from one side
-      const numHidden =
-        (words.length + (words.length % 2)) / 2 -
-        (isFirstSpan || isLastSpan ? 1 : 2) * contextWindow[index];
-
-      if (isHighlight || numHidden <= 0 || contextWindow[index] <= 0) {
-        return text;
-      } else {
-        const startChunk = words.slice(0, 2 * contextWindow[index]).join('');
-        const endChunk = words
-          .slice(words.length - 2 * contextWindow[index] + 1, words.length)
-          .join('');
-
-        return (
-          <>
-            {!isFirstSpan || hasNoHighlights ? `${startChunk} ...` : ''}
-            <DividerClamp
-              number={numHidden}
-              onClickLess={() =>
-                updateContextWindow(
-                  index,
-                  contextWindow[index] - CONTEXT_INCREMENT_SIZE
-                )
-              }
-              onClickMore={() =>
-                updateContextWindow(
-                  index,
-                  contextWindow[index] + CONTEXT_INCREMENT_SIZE
-                )
-              }
-              isDisabledLess={
-                !isValidContextWindowValue(
-                  contextWindow[index] - CONTEXT_INCREMENT_SIZE
-                )
-              }
-            />
-            {/* Only truncate on one side if at end of text */}
-            {!isLastSpan ? `... ${endChunk}` : ''}
-          </>
-        );
-      }
-    };
+    const isHighlight = span.tags.length > 0;
 
     return (
       <Tooltip hasArrow key={span.start} label={getTooltip(span)}>
@@ -143,18 +92,40 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             cursor: isHighlight ? 'pointer' : undefined,
           }}
         >
-          {format(textContent)}
+          <HighlightedTextChunk
+            isFirstSpan={index === 0}
+            isLastSpan={index === resolvedSpans.length - 1}
+            isHighlight={isHighlight}
+            text={props.text.slice(span.start, span.start + span.length)}
+            contextWindow={contextWindow[index]}
+            onClickLess={() =>
+              updateContextWindow(
+                index,
+                contextWindow[index] - CONTEXT_INCREMENT_SIZE
+              )
+            }
+            onClickMore={() =>
+              updateContextWindow(
+                index,
+                contextWindow[index] + CONTEXT_INCREMENT_SIZE
+              )
+            }
+            isDisabledLess={
+              !isValidContextWindowValue(
+                contextWindow[index] - CONTEXT_INCREMENT_SIZE
+              )
+            }
+          />
         </Text>
       </Tooltip>
     );
   });
   return (
-    <Box p={isHidden ? 1 : 4} maxW="100%">
+    <Box p={isHidden ? 1 : 4}>
       <Flex
         justifyContent={isHidden ? 'space-between' : 'flex-end'}
         alignItems="center"
-        gridGap={2}
-        maxW="100%"
+        gridGap={4}
       >
         {isHidden ? (
           <Flex alignItems="center" gridGap={1} maxW="75%">
@@ -165,13 +136,13 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             ))}
             <Text
               isTruncated
-              fontSize="xs"
+              fontSize="sm"
               fontFamily="mono"
               color="darkgray"
               textOverflow="ellipsis"
               overflow="hidden"
               whiteSpace="nowrap"
-              px={4}
+              px={2}
               maxW="100%"
             >
               {props.text}
@@ -195,8 +166,10 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             Collapse All
           </Button>
           <Button
-            onClick={() => setContextWindow(fillContextWindowArray(-1))}
-            disabled={contextWindow.every((v) => v === -1)}
+            onClick={() =>
+              setContextWindow(fillContextWindowArray(MAX_CONTEXT_WINDOW_SIZE))
+            }
+            disabled={contextWindow.every((v) => v === MAX_CONTEXT_WINDOW_SIZE)}
           >
             Expand All
           </Button>
