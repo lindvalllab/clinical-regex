@@ -321,7 +321,7 @@ const ChakraReactSelect = <
   children,
   styles = {},
   components = {},
-  theme = (theme) => theme,
+  theme = undefined,
   size = 'md',
   ...props
 }: SelectProps<OptionType, IsMulti, GroupType>) => {
@@ -368,11 +368,11 @@ const ChakraReactSelect = <
           ...baseTheme.colors,
           neutral50: placeholderColor, // placeholder text color
           neutral40: placeholderColor, // noOptionsMessage color
-          ...propTheme.colors,
+          ...(propTheme ? propTheme.colors : {}),
         },
         spacing: {
           ...baseTheme.spacing,
-          ...propTheme.spacing,
+          ...(propTheme ? propTheme.spacing : {}),
         },
       };
     },
