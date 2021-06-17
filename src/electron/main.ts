@@ -29,8 +29,6 @@ function createWindow() {
     },
   });
 
-  createMenu(mainWindow);
-
   if (app.isPackaged) {
     // Disable dev tools menu option if in production.
     const menu = Menu.getApplicationMenu();
@@ -101,6 +99,7 @@ app.on('web-contents-created', (event, contents) => {
 app.on('ready', () => {
   createWindow();
   initDb();
+  if (mainWindow !== null) createMenu(mainWindow);
 });
 
 app.on('window-all-closed', () => {
