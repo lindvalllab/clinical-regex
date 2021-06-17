@@ -30,12 +30,25 @@ function createMenu(mainWindow: BrowserWindow): void {
   const separator = new MenuItem({
     type: 'separator',
   });
+
+  // On macOS, we might have menu items that were created the last time the window was opened.
+  // However, the 'click' handlers will be associated to the old window, which has been destroyed.
+  // So if the menu items already exist, we need to update their 'click' properties.
+  const fileMenuEntries = [newProject, loadProject, saveAs, exportProject];
   if (fileMenu !== undefined && fileMenu.submenu !== undefined) {
-    fileMenu.submenu.insert(0, newProject);
-    fileMenu.submenu.insert(1, loadProject);
-    fileMenu.submenu.insert(2, saveAs);
-    fileMenu.submenu.insert(3, exportProject);
-    fileMenu.submenu.insert(4, separator);
+    let inserted = false; // Did we insert new entries in the file menu?
+    for (const i in fileMenuEntries) {
+      const foundEntry = fileMenu.submenu.items.find(
+        (item) => item.label === fileMenuEntries[i].label
+      );
+      if (foundEntry !== undefined) {
+        foundEntry.click = fileMenuEntries[i].click;
+      } else {
+        fileMenu.submenu.insert(Number(i), fileMenuEntries[i]);
+        inserted = true;
+      }
+    }
+    if (inserted) fileMenu.submenu.insert(4, separator);
   }
 
   const editMenu = menu.items.find(
@@ -47,8 +60,15 @@ function createMenu(mainWindow: BrowserWindow): void {
     click: () => mainWindow.webContents.send('preferences'),
   });
   if (editMenu !== undefined && editMenu.submenu !== undefined) {
-    editMenu.submenu.append(separator);
-    editMenu.submenu.append(preferences);
+    const foundPreferences = editMenu.submenu.items.find(
+      (item) => item.label === preferences.label
+    );
+    if (foundPreferences !== undefined) {
+      foundPreferences.click = preferences.click;
+    } else {
+      editMenu.submenu.append(separator);
+      editMenu.submenu.append(preferences);
+    }
   }
 
   Menu.setApplicationMenu(menu);
