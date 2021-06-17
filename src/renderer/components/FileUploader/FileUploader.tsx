@@ -5,10 +5,10 @@ import {
   Checkbox,
   Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Select,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik';
@@ -37,7 +37,6 @@ function FileUploader(): JSX.Element {
   const [configErrors, setConfigErrors] = useState<string[]>([]);
   const api = useContext(ApiContext);
   const history = useHistory();
-  const tipColor = useColorModeValue('gray.500', 'whiteAlpha.700');
 
   const readHeader = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -187,69 +186,66 @@ function FileUploader(): JSX.Element {
                         +
                       </Button>
                     </Box>
-                    <Text fontSize="sm" color={tipColor} my={2}>
+                    <FormHelperText my={2}>
                       Tip: to match whole words, use the word boundary regular
                       expression <code>\b</code>. For example,{' '}
                       <code>\bliver\b</code> will match <code>liver</code>, but
                       not <code>deliver</code> or <code>livers</code>.
-                    </Text>
+                    </FormHelperText>
 
                     {props.values.labels.map((_label, index) => (
-                      <Box key={index}>
-                        <Box
-                          display="flex"
-                          alignItems="flex-end"
-                          justifyContent="space-around"
+                      <Box
+                        key={index}
+                        display="flex"
+                        alignItems="flex-end"
+                        justifyContent="space-around"
+                      >
+                        <FormControl marginInlineEnd="0.5em" flex="1">
+                          <LabelWithError
+                            text={`Label ${index + 1}`}
+                            name={`labels.${index}.name`}
+                          />
+                          <Field
+                            name={`labels.${index}.name`}
+                            as={Input}
+                            placeholder="Palliative Care"
+                          />
+                        </FormControl>
+                        <FormControl
+                          marginInlineStart="0.5em"
+                          marginInlineEnd="0.5em"
+                          flex="3"
                         >
-                          <FormControl marginInlineEnd="0.5em" flex="1">
-                            <LabelWithError
-                              text={`Label ${index + 1}`}
-                              name={`labels.${index}.name`}
-                            />
-                            <Field
-                              name={`labels.${index}.name`}
-                              as={Input}
-                              placeholder="Palliative Care"
-                            />
-                          </FormControl>
-                          <FormControl
-                            marginInlineStart="0.5em"
-                            marginInlineEnd="0.5em"
-                            flex="3"
-                          >
-                            <LabelWithError
-                              text={`Pattern ${index + 1}`}
-                              name={`labels.${index}.patterns`}
-                              htmlFor={`labels.${index}.patterns`}
-                            />
-                            <Field
-                              name={`labels.${index}.patterns`}
-                              inputId={`labels.${index}.patterns`}
-                              as={PatternInput}
-                              placeholder="pall(iative)? (care|medicine)"
-                              onBlur={() =>
-                                props.setFieldTouched(
-                                  `labels.${index}.patterns`
-                                )
-                              }
-                              onChange={(value: string[]) =>
-                                props.setFieldValue(
-                                  `labels.${index}.patterns`,
-                                  value
-                                )
-                              }
-                              value={props.values.labels[index].patterns}
-                            />
-                          </FormControl>
-                          <Button
-                            type="button"
-                            marginInlineStart="0.5em"
-                            onClick={() => arrayHelpers.remove(index)}
-                            disabled={props.values.labels.length === 1}
-                          >
-                            -
-                          </Button>
-                        </Box>
+                          <LabelWithError
+                            text={`Pattern ${index + 1}`}
+                            name={`labels.${index}.patterns`}
+                            htmlFor={`labels.${index}.patterns`}
+                          />
+                          <Field
+                            name={`labels.${index}.patterns`}
+                            inputId={`labels.${index}.patterns`}
+                            as={PatternInput}
+                            placeholder="pall(iative)? (care|medicine)"
+                            onBlur={() =>
+                              props.setFieldTouched(`labels.${index}.patterns`)
+                            }
+                            onChange={(value: string[]) =>
+                              props.setFieldValue(
+                                `labels.${index}.patterns`,
+                                value
+                              )
+                            }
+                            value={props.values.labels[index].patterns}
+                          />
+                        </FormControl>
+                        <Button
+                          type="button"
+                          marginInlineStart="0.5em"
+                          onClick={() => arrayHelpers.remove(index)}
+                          disabled={props.values.labels.length === 1}
+                        >
+                          -
+                        </Button>
                       </Box>
                     ))}
                   </Box>
