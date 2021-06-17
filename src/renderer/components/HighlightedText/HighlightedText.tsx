@@ -97,7 +97,6 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             isLastSpan={index === resolvedSpans.length - 1}
             isHighlight={isHighlight}
             text={props.text.slice(span.start, span.start + span.length)}
-            isOnlySpan={hasNoHighlights}
             contextWindow={contextWindow[index]}
             onClickLess={() =>
               updateContextWindow(

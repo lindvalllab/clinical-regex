@@ -6,10 +6,10 @@ type HighlightedTextChunkProps = {
   isLastSpan: boolean;
   isHighlight: boolean;
   contextWindow: number;
-  isOnlySpan: boolean;
   onClickLess: () => void;
   onClickMore: () => void;
   isDisabledLess: boolean;
+  clamp?: string;
 };
 
 const HighlightedTextChunk = ({
@@ -18,12 +18,18 @@ const HighlightedTextChunk = ({
   isLastSpan,
   isHighlight,
   contextWindow,
-  isOnlySpan,
   onClickLess,
   onClickMore,
   isDisabledLess,
+  clamp,
 }: HighlightedTextChunkProps): JSX.Element => {
   if (isHighlight || contextWindow <= 0) return <>{text}</>;
+
+  if (clamp === undefined) {
+    clamp = '...';
+  }
+
+  const isOnlySpan = isFirstSpan && isLastSpan;
 
   // split() will return the delimiters as odd array items
   // if wrapped in parentheses
@@ -46,7 +52,7 @@ const HighlightedTextChunk = ({
 
   return (
     <>
-      {!isFirstSpan || isOnlySpan ? `${startChunk} ...` : ''}
+      {!isFirstSpan || isOnlySpan ? `${startChunk} ${clamp}` : ''}
       <DividerClamp
         number={numWordsHidden}
         onClickLess={onClickLess}
@@ -55,7 +61,7 @@ const HighlightedTextChunk = ({
         m={4}
       />
       {/* Only truncate on one side if at end of text */}
-      {!isLastSpan ? `... ${endChunk}` : ''}
+      {!isLastSpan ? `${clamp} ${endChunk}` : ''}
     </>
   );
 };
