@@ -1,5 +1,5 @@
 import ElectronApi from '../api/electron';
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { initDb } from './db';
 import { URL } from 'url';
