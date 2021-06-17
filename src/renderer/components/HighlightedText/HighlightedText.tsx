@@ -121,12 +121,11 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
     );
   });
   return (
-    <Box p={isHidden ? 1 : 4} maxW="100%">
+    <Box p={isHidden ? 1 : 4}>
       <Flex
         justifyContent={isHidden ? 'space-between' : 'flex-end'}
         alignItems="center"
-        gridGap={2}
-        maxW="100%"
+        gridGap={4}
       >
         {isHidden ? (
           <Flex alignItems="center" gridGap={1} maxW="75%">
@@ -137,13 +136,13 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
             ))}
             <Text
               isTruncated
-              fontSize="xs"
+              fontSize="sm"
               fontFamily="mono"
               color="darkgray"
               textOverflow="ellipsis"
               overflow="hidden"
               whiteSpace="nowrap"
-              px={4}
+              px={2}
               maxW="100%"
             >
               {props.text}
