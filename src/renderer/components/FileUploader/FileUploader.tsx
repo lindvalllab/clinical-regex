@@ -253,8 +253,8 @@ function FileUploader(): JSX.Element {
               />
             </FormControl>
             <Flex justifyContent="center" mt={4}>
-              <Button type="submit" isLoading={props.isSubmitting}>
-                Send
+              <Button size="lg" type="submit" isLoading={props.isSubmitting}>
+                Submit
               </Button>
             </Flex>
             <ConfigWarningDialog
