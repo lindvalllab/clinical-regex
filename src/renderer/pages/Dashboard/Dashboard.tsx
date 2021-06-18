@@ -1,5 +1,5 @@
 import { useContext, useState, useMemo, useRef, useCallback } from 'react';
-import { Column } from 'react-table';
+import { Column, Row } from 'react-table';
 import { ApiContext } from '../../api';
 import { Box, Heading, Icon, Tag, Text } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
@@ -75,6 +75,9 @@ function Dashboard(): JSX.Element {
         loading={loading}
         pageCount={pageCount}
         totalCount={totalCount}
+        rowProps={(row: Row) => ({
+          onClick: () => console.log(row),
+        })}
         p={4}
       />
     </Box>

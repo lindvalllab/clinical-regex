@@ -44,6 +44,7 @@ function DataTable<T extends Record<string, unknown>>({
   loading,
   pageCount: controlledPageCount,
   totalCount,
+  rowProps,
   ...props
 }: DataTableProps<T>): JSX.Element {
   const {
@@ -168,14 +169,7 @@ function DataTable<T extends Record<string, unknown>>({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <Tr
-                {...row.getRowProps()}
-                onClick={() =>
-                  history.push(
-                    `/annotation-interface?page=${pageSize * pageIndex + i}`
-                  )
-                }
-              >
+              <Tr {...row.getRowProps(rowProps(row))}>
                 {row.cells.map((cell) => {
                   return (
                     <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
