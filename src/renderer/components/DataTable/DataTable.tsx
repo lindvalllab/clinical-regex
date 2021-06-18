@@ -27,6 +27,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { useHistory } from 'react-router-dom';
 
 const PAGE_SIZE_OPTIONS = [10, 20, 30, 40, 50];
 
@@ -84,6 +85,8 @@ function DataTable<T extends Record<string, unknown>>({
   }, [onFetchDataDebounced, pageIndex, pageSize]);
 
   const displayPage = pageIndex + 1;
+
+  const history = useHistory();
 
   return (
     <Box {...props}>
@@ -165,7 +168,14 @@ function DataTable<T extends Record<string, unknown>>({
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <Tr {...row.getRowProps()}>
+              <Tr
+                {...row.getRowProps()}
+                onClick={() =>
+                  history.push(
+                    `/annotation-interface?page=${pageSize * pageIndex + i}`
+                  )
+                }
+              >
                 {row.cells.map((cell) => {
                   return (
                     <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
