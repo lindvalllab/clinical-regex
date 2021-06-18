@@ -48,7 +48,7 @@ function NavBarContent(): JSX.Element {
           <NavLink to="/dashboard" activeStyle={activeStyle}>
             Dashboard
           </NavLink>
-          <NavLink to="/annotation-interface" activeStyle={activeStyle}>
+          <NavLink to="/annotation-interface?page=0" activeStyle={activeStyle}>
             Annotate
           </NavLink>
           <Button onClick={onClickLog}>Log</Button>
