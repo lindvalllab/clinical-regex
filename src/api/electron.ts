@@ -149,7 +149,9 @@ export default class ElectronApi extends BaseApi {
     });
   }
   async getAllGroupIds(): Promise<string[]> {
-    const groupIds = await TextModel.query().distinct('group_id');
+    const groupIds = await TextModel.query()
+      .distinct('group_id')
+      .orderBy('group_id');
 
     return groupIds.map((model) => model.group_id);
   }
