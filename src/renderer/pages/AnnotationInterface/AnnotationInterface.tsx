@@ -100,10 +100,10 @@ function AnnotationInterface(): JSX.Element {
         groupId={groupIds[page]}
         groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={() =>
-          history.push(`/annotation-interface?page=${page - 1}`)
+          history.push(`/annotation-interface?page=${clipPage(page - 1)}`)
         }
         onNextPage={() =>
-          history.push(`/annotation-interface?page=${page + 1}`)
+          history.push(`/annotation-interface?page=${clipPage(page + 1)}`)
         }
       />
     </Flex>
