@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Button, ButtonProps, Flex, Text } from '@chakra-ui/react';
-import Logo from '../../components/Logo';
+import { Button, ButtonProps, Flex, Heading, Text } from '@chakra-ui/react';
 import useLoadDb from '../../hooks/useLoadDb';
+import { FaPlus, FaUpload } from 'react-icons/fa';
 
 type MainLinkBoxProps = {
   text: string;
-  icon?: string;
+  icon?: ButtonProps['leftIcon'];
   href: string;
 };
 
@@ -14,14 +14,14 @@ function MainLink(props: MainLinkBoxProps & ButtonProps): JSX.Element {
     <Button
       as={Link}
       to={props.href}
-      variant="outline"
+      leftIcon={props.icon}
       p={10}
       fontSize={24}
       gridGap={4}
+      variant="ghost"
       w="full"
       {...props}
     >
-      {props.icon ? <Text>{props.icon}</Text> : <></>}
       <Text>{props.text}</Text>
     </Button>
   );
@@ -34,19 +34,24 @@ function Home(): JSX.Element {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      gridGap={2}
+      gridGap={8}
       h="full"
       w="full"
     >
-      <Logo maxW="sm" />
+      <Heading size="3xl">✨ Clinical Regex</Heading>
       <Flex
         textAlign="center"
         justifyContent="center"
         gridGap={2}
         fontSize="2xl"
       >
-        <MainLink icon={'🚀'} text="New Project" href="/upload" />
-        <MainLink icon={'📤'} text="Load Project" href="#" onClick={loadDb} />
+        <MainLink icon={<FaPlus />} text="New Project" href="/upload" />
+        <MainLink
+          icon={<FaUpload />}
+          text="Load Project"
+          href="#"
+          onClick={loadDb}
+        />
       </Flex>
     </Flex>
   );
