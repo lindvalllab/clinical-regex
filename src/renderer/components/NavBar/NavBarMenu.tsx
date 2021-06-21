@@ -106,7 +106,9 @@ function NavBarMenu(): JSX.Element {
           <MenuItem icon={<FaCog />} onClick={preferences.onClick} command="⌘,">
             Preferences
           </MenuItem>
-          <MenuItem icon={<FaQuestionCircle />}>Help</MenuItem>
+          <MenuItem icon={<FaQuestionCircle />} isDisabled>
+            Help
+          </MenuItem>
         </MenuList>
       </Menu>
       <PreferencesModal

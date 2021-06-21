@@ -1,6 +1,6 @@
 import { useEffect, useState, ClipboardEvent, KeyboardEvent } from 'react';
 import { OptionTypeBase, OptionsType } from 'react-select';
-import ChakraReactSelect from './ChakraReactSelect';
+import ChakraReactSelect from '../ChakraReactSelect';
 import { Box } from '@chakra-ui/react';
 
 const createOption = (label: string) => ({

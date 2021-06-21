@@ -7,7 +7,6 @@ import ReactSelect, {
   GroupTypeBase,
   OptionTypeBase,
   Theme,
-  ValueContainerProps,
 } from 'react-select';
 import AsyncReactSelect from 'react-select/async';
 import {
@@ -17,7 +16,6 @@ import {
   TagLabel,
   Divider,
   CloseButton,
-  CSSWithMultiValues,
   Center,
   Box,
   Portal,
@@ -29,45 +27,13 @@ import {
   useColorModeValue,
   createIcon,
 } from '@chakra-ui/react';
-import { NoticeProps } from 'react-select/src/components/Menu';
-import { MultiValueRemoveProps } from 'react-select/src/components/MultiValue';
-
-interface ItemProps extends CSSWithMultiValues {
-  _disabled: CSSWithMultiValues;
-  _focus: CSSWithMultiValues;
-}
-
-interface HasSize {
-  size: string;
-}
-
-type HasSelectProps = {
-  selectProps: HasSize;
-};
-
-interface ReactSelectOption {
-  label: string;
-  value: string;
-}
-
-type CustomValueContainerProps = ValueContainerProps<
+import {
+  CustomValueContainerProps,
+  CustomNoticeProps,
+  CustomMultiValueRemoveProps,
+  ItemProps,
   ReactSelectOption,
-  false,
-  GroupTypeBase<ReactSelectOption>
-> &
-  HasSelectProps;
-
-type CustomNoticeProps = NoticeProps<
-  ReactSelectOption,
-  false,
-  GroupTypeBase<ReactSelectOption>
-> &
-  HasSelectProps;
-
-type CustomMultiValueRemoveProps = MultiValueRemoveProps<
-  ReactSelectOption,
-  GroupTypeBase<ReactSelectOption>
-> & { isFocused: boolean };
+} from './types';
 
 // Taken from the @chakra-ui/icons package to prevent needing it as a dependency
 // https://github.com/chakra-ui/chakra-ui/blob/main/packages/icons/src/ChevronDown.tsx
@@ -408,4 +374,5 @@ const AsyncSelect = <
   </ChakraReactSelect>
 );
 
-export { Select as default, AsyncSelect };
+export default Select;
+export { AsyncSelect, AsyncReactSelect };
