@@ -43,6 +43,7 @@ function DataTable<T extends Record<string, unknown>>({
   loading,
   pageCount: controlledPageCount,
   totalCount,
+  rowProps,
   ...props
 }: DataTableProps<T>): JSX.Element {
   const {
@@ -164,8 +165,12 @@ function DataTable<T extends Record<string, unknown>>({
         <Tbody {...getTableBodyProps()}>
           {page.map((row, i) => {
             prepareRow(row);
+            const data = {
+              pageSize: pageSize,
+              pageIndex: pageIndex,
+            };
             return (
-              <Tr {...row.getRowProps()}>
+              <Tr {...row.getRowProps(rowProps(row, data))}>
                 {row.cells.map((cell) => {
                   return (
                     <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>

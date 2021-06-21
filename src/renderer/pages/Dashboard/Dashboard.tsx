@@ -1,13 +1,27 @@
 import { useContext, useState, useMemo, useRef, useCallback } from 'react';
-import { Column } from 'react-table';
+import { Column, Row } from 'react-table';
 import { ApiContext } from '../../api';
-import { Box, Heading, Icon, Tag, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Icon,
+  Tag,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { TextEntity } from '../../../types';
 import DataTable from '../../components/DataTable';
+import { useHistory } from 'react-router-dom';
+
+interface RowData {
+  pageSize: number;
+  pageIndex: number;
+}
 
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
+  const history = useHistory();
   const columns = useMemo<Column<TextEntity>[]>(
     () => [
       {
@@ -65,6 +79,17 @@ function Dashboard(): JSX.Element {
     [api]
   );
 
+  const rowHoverColor = useColorModeValue('gray.100', 'gray.700');
+  const onRowClick = (row: Row, data: RowData) => {
+    return () => {
+      history.push(
+        `/annotation-interface?page=${
+          data.pageSize * data.pageIndex + row.index
+        }`
+      );
+    };
+  };
+
   return (
     <Box px={8} py={4}>
       <Heading size="sm">Entries</Heading>
@@ -75,6 +100,13 @@ function Dashboard(): JSX.Element {
         loading={loading}
         pageCount={pageCount}
         totalCount={totalCount}
+        rowProps={(row: Row, data: RowData) => ({
+          onClick: onRowClick(row, data),
+          cursor: 'pointer',
+          _hover: {
+            background: rowHoverColor,
+          },
+        })}
         p={4}
       />
     </Box>
