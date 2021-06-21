@@ -1,9 +1,9 @@
 import { Flex, FormControl } from '@chakra-ui/react';
-import { FormikProps } from 'formik';
+import { useFormikContext } from 'formik';
 import { LabelFormData } from './types';
 
-function LabelForm(props: FormikProps<LabelFormData>): JSX.Element {
-  const { values, setFieldValue } = props;
+function LabelForm(): JSX.Element {
+  const { values, setFieldValue } = useFormikContext<LabelFormData>();
 
   return (
     <Flex flexDirection="column" gridGap={4}>

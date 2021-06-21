@@ -4,7 +4,3 @@ export interface DatasetFormData {
   groupIdField: number;
   textField: number;
 }
-
-export interface DatasetFormProps {
-  initialValues: Partial<DatasetFormData>;
-}

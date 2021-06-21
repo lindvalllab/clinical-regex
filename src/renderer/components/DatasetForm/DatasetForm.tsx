@@ -4,15 +4,16 @@ import {
   Checkbox,
   Flex,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Select,
 } from '@chakra-ui/react';
-import { FormikProps } from 'formik';
+import { useFormikContext } from 'formik';
 import { DatasetFormData } from './types';
+import FormErrorWithSpace from '../FormErrorWithSpace';
 
-function DatasetForm(props: FormikProps<DatasetFormData>): JSX.Element {
-  const { values, setFieldValue } = props;
+function DatasetForm(): JSX.Element {
+  const { values, setFieldValue, handleBlur, errors, touched } =
+    useFormikContext<DatasetFormData>();
   const [fields, setFields] = useState<string[]>([]);
 
   // For these we'll use the indices within the header
@@ -62,43 +63,65 @@ function DatasetForm(props: FormikProps<DatasetFormData>): JSX.Element {
   ));
 
   return (
-    <Flex flexDirection="column" gridGap={4}>
-      <FormControl>
+    <Flex flexDirection="column">
+      <FormControl mb={6}>
         <FormLabel>Dataset File</FormLabel>
         <input
           type="file"
           name="dataset"
           accept=".csv"
           onChange={onChangeFile}
+          onBlur={handleBlur}
         />
       </FormControl>
-      <FormControl>
+      <FormControl
+        isInvalid={errors.textField !== undefined && touched.textField}
+      >
         <FormLabel>Text Field</FormLabel>
-        <Select onChange={onChangeTextField} value={values.textField}>
+        <Select
+          onChange={onChangeTextField}
+          onBlur={handleBlur}
+          value={values.textField}
+          name="textField"
+        >
           <option value={-1} disabled>
             Select the field which has your texts
           </option>
           {fieldOptions}
         </Select>
-        <FormErrorMessage></FormErrorMessage>
+        <FormErrorWithSpace>{errors.textField || '&nbsp;'}</FormErrorWithSpace>
       </FormControl>
-      <FormControl>
-        <Checkbox isChecked={values.isGrouped} onChange={onChangeIsGrouped}>
+      <FormControl my={4}>
+        <Checkbox
+          isChecked={values.isGrouped}
+          onChange={onChangeIsGrouped}
+          onBlur={handleBlur}
+          name="isGrouped"
+        >
           Group texts by another field?
         </Checkbox>
       </FormControl>
-      <FormControl hidden={!values.isGrouped}>
+      <FormControl
+        isDisabled={!values.isGrouped}
+        isInvalid={errors.groupIdField !== undefined && touched.groupIdField}
+        mb={4}
+      >
         <FormLabel>Group ID Field</FormLabel>
         <Select
           disabled={!values.isGrouped}
           onChange={onChangeGroupIdField}
+          onBlur={handleBlur}
           value={values.groupIdField}
+          name="groupIdField"
         >
           <option value={-1} disabled>
             Select a field to group by
           </option>
           {fieldOptions}
         </Select>
+        <FormErrorWithSpace>
+          {errors.groupIdField || '&nbsp;'}
+        </FormErrorWithSpace>
       </FormControl>
     </Flex>
   );

@@ -2,19 +2,13 @@ import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
   isGrouped: Yup.boolean(),
-  idColIndex: Yup.number().when('isGrouped', {
+  groupIdField: Yup.number().when('isGrouped', {
     is: true,
-    then: Yup.number().min(0, 'Required'),
+    then: Yup.number()
+      .min(0, 'Required')
+      .notOneOf([Yup.ref('textField')], 'Must be different from Text Field'),
   }),
-  textColIndex: Yup.number()
-    .min(0, 'Required')
-    .when('isGrouped', {
-      is: true,
-      then: Yup.number().notOneOf(
-        [Yup.ref('idColIndex')],
-        'Must be different from Group ID'
-      ),
-    }),
+  textField: Yup.number().min(0, 'Required'),
 });
 
 export default validationSchema;
