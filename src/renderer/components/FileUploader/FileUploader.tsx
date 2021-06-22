@@ -17,7 +17,7 @@ import { ApiContext } from '../../api';
 import validationSchema from './validationSchema';
 import LabelWithError from './LabelWithError';
 import PatternInput from './PatternInput';
-import InlineUpload from './InlineUpload';
+import InlineUpload from '../InlineUpload/InlineUpload';
 import handleUploadConfig from './uploadConfig/handleUploadConfig';
 import ConfigWarningDialog from './uploadConfig/WarningDialog';
 import { CRLabel } from '../../../types';

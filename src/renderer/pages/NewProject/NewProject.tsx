@@ -1,13 +1,36 @@
-import { Box, Button, Container, Heading, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import DatasetForm from '../../components/DatasetForm';
 import LabelForm from '../../components/LabelForm';
 import validationDataset from '../../components/DatasetForm/validationSchema';
 import validationLabels from '../../components/LabelForm/validationSchema';
+import InlineUpload from '../../components/InlineUpload';
 
 function NewProject(): JSX.Element {
   return (
     <Container maxW="container.lg">
+      <Box mb={4}>
+        <Heading size="lg">New Project</Heading>
+        Alternatively, you can fill in this form by{' '}
+        <InlineUpload
+          inputProps={{
+            accept: '.json',
+            onChange: console.log,
+          }}
+        >
+          <Text as="span" fontWeight="bold">
+            loading a configuration file
+          </Text>
+        </InlineUpload>
+        .
+      </Box>
       <Formik
         initialValues={{
           file: undefined,
