@@ -4,12 +4,12 @@ import {
   Checkbox,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Select,
 } from '@chakra-ui/react';
 import { useFormikContext } from 'formik';
 import { DatasetFormData } from './types';
-import FormErrorWithSpace from '../FormErrorWithSpace';
 
 function DatasetForm(): JSX.Element {
   const { values, setFieldValue, handleBlur, errors, touched } =
@@ -63,21 +63,34 @@ function DatasetForm(): JSX.Element {
   ));
 
   return (
-    <Flex flexDirection="column">
-      <FormControl mb={6}>
-        <FormLabel>Dataset File</FormLabel>
-        <input
-          type="file"
-          name="dataset"
-          accept=".csv"
-          onChange={onChangeFile}
-          onBlur={handleBlur}
-        />
+    <Flex flexDirection="column" gridGap={4}>
+      <FormControl
+        isInvalid={errors.file !== undefined && touched.file !== undefined}
+      >
+        <FormLabel htmlFor="dataset-file">Dataset File</FormLabel>
+        <Flex justifyContent="space-between" alignItems="center" gridGap={6}>
+          <input
+            type="file"
+            name="file"
+            id="dataset-file"
+            accept=".csv"
+            onChange={onChangeFile}
+            onBlur={handleBlur}
+          />
+          <FormErrorMessage my={0} textAlign="right" flexShrink={6}>
+            {errors.file}
+          </FormErrorMessage>
+        </Flex>
       </FormControl>
       <FormControl
         isInvalid={errors.textField !== undefined && touched.textField}
       >
-        <FormLabel>Text Field</FormLabel>
+        <Flex justifyContent="space-between" py={1}>
+          <FormLabel my={0} alignSelf="center">
+            Text Field
+          </FormLabel>
+          <FormErrorMessage my={0}>{errors.textField}</FormErrorMessage>
+        </Flex>
         <Select
           onChange={onChangeTextField}
           onBlur={handleBlur}
@@ -89,9 +102,8 @@ function DatasetForm(): JSX.Element {
           </option>
           {fieldOptions}
         </Select>
-        <FormErrorWithSpace>{errors.textField || '&nbsp;'}</FormErrorWithSpace>
       </FormControl>
-      <FormControl my={4}>
+      <FormControl>
         <Checkbox
           isChecked={values.isGrouped}
           onChange={onChangeIsGrouped}
@@ -104,9 +116,13 @@ function DatasetForm(): JSX.Element {
       <FormControl
         isDisabled={!values.isGrouped}
         isInvalid={errors.groupIdField !== undefined && touched.groupIdField}
-        mb={4}
       >
-        <FormLabel>Group ID Field</FormLabel>
+        <Flex justifyContent="space-between" py={1}>
+          <FormLabel my={0} alignSelf="center">
+            Group ID Field
+          </FormLabel>
+          <FormErrorMessage my={0}>{errors.groupIdField}</FormErrorMessage>
+        </Flex>
         <Select
           disabled={!values.isGrouped}
           onChange={onChangeGroupIdField}
@@ -119,9 +135,6 @@ function DatasetForm(): JSX.Element {
           </option>
           {fieldOptions}
         </Select>
-        <FormErrorWithSpace>
-          {errors.groupIdField || '&nbsp;'}
-        </FormErrorWithSpace>
       </FormControl>
     </Flex>
   );
