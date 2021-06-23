@@ -1,7 +1,8 @@
 import ElectronApi from '../api/electron';
-import { app, BrowserWindow, ipcMain } from 'electron';
+import fs from 'fs';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
-import { initDb } from './db';
+import { db, getTempDbPath, initDb } from './db';
 import { URL } from 'url';
 import { createMenu, disableDevTools } from './menu';
 
@@ -43,7 +44,37 @@ function createWindow() {
       .catch((err) => console.log('An error occurred: ', err));
   }
   mainWindow.loadURL(windowUrl);
-  mainWindow.on('closed', () => (mainWindow = null));
+  mainWindow.on('closed', async () => {
+    mainWindow = null;
+    if (db) db.destroy();
+    const tempDbPath = await getTempDbPath();
+    if (fs.existsSync(tempDbPath)) {
+      fs.unlinkSync(tempDbPath);
+    }
+  });
+
+  const electronApi = new ElectronApi();
+  const currWindow = mainWindow;
+  // Make user confirm if data will be lost on closing.
+  mainWindow.on('close', async (event) => {
+    event.preventDefault();
+    if (
+      (await electronApi.connectedToTempDb()) &&
+      (await electronApi.projectStarted())
+    ) {
+      const choice = dialog.showMessageBoxSync(currWindow, {
+        type: 'question',
+        buttons: ['Cancel', 'Quit'],
+        message:
+          'Are you sure you want to quit? Unsaved progress will be lost.',
+        defaultId: 0,
+      });
+      console.log(choice);
+      if (choice === 1) {
+        currWindow.destroy();
+      }
+    } else currWindow.destroy();
+  });
 }
 
 app.on('web-contents-created', (event, contents) => {
@@ -91,6 +122,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
+    initDb();
   }
 });
 

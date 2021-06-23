@@ -8,7 +8,7 @@ import {
   MenuDivider,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   FaCog,
   FaPlus,
@@ -20,11 +20,12 @@ import {
 } from 'react-icons/fa';
 import { useHistory } from 'react-router';
 import { menuEntries } from '../../../menu';
-import { HandleMenuEntryContext } from '../../api';
+import { ApiContext, HandleMenuEntryContext } from '../../api';
 import useExportAnnotations from '../../hooks/useExportAnnotations';
 import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
+import UnsavedProgressDialog from './UnsavedProgressDialog';
 
 function NavBarMenu(): JSX.Element {
   const history = useHistory();
@@ -34,17 +35,29 @@ function NavBarMenu(): JSX.Element {
   const disclosure = useDisclosure();
   const preferences = { ...disclosure, onClick: disclosure.onToggle };
   const handleMenuEntry = useContext(HandleMenuEntryContext);
+  const api = useContext(ApiContext);
+
+  const [newProjectDialogVisible, setNewProjectDialogVisible] =
+    useState<boolean>(false);
+  const [openProjectDialogVisible, setOpenProjectDialogVisible] =
+    useState<boolean>(false);
 
   const newProject = {
     onClick: () => {
-      history.push('/upload');
+      if (api.connectedToTempDb() && api.projectStarted()) {
+        setNewProjectDialogVisible(true);
+      } else history.push('/upload');
     },
   };
   const saveProjectAs = {
     onClick: saveDbAs,
   };
   const openProject = {
-    onClick: loadDb,
+    onClick: () => {
+      if (api.connectedToTempDb() && api.projectStarted()) {
+        setOpenProjectDialogVisible(true);
+      } else loadDb();
+    },
   };
   const exportProject = {
     onClick: exportAnnotations,
@@ -112,6 +125,26 @@ function NavBarMenu(): JSX.Element {
       <PreferencesModal
         isOpen={preferences.isOpen}
         onClose={preferences.onClose}
+      />
+      <UnsavedProgressDialog // New project dialog
+        isOpen={newProjectDialogVisible}
+        onClose={() => setNewProjectDialogVisible(false)}
+        header="New Project"
+        onConfirm={async () => {
+          await api.deleteTempDb();
+          await api.loadDbFromPath(); // Connect to a new temporary database.
+          setNewProjectDialogVisible(false);
+          history.push('/upload');
+        }}
+      />
+      <UnsavedProgressDialog // Open project dialog
+        isOpen={openProjectDialogVisible}
+        onClose={() => setOpenProjectDialogVisible(false)}
+        header="Load Project"
+        onConfirm={async () => {
+          setOpenProjectDialogVisible(false);
+          loadDb();
+        }}
       />
     </>
   );
