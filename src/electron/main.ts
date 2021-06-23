@@ -2,7 +2,7 @@ import ElectronApi from '../api/electron';
 import fs from 'fs';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
-import { db, getTempDbPath, initDb } from './db';
+import { getKnexDb, getTempDbPath, initDb } from './db';
 import { URL } from 'url';
 import { createMenu, disableDevTools } from './menu';
 
@@ -46,7 +46,7 @@ function createWindow() {
   mainWindow.loadURL(windowUrl);
   mainWindow.on('closed', async () => {
     mainWindow = null;
-    if (db) db.destroy();
+    getKnexDb().destroy();
     const tempDbPath = await getTempDbPath();
     if (fs.existsSync(tempDbPath)) {
       fs.unlinkSync(tempDbPath);
@@ -108,8 +108,19 @@ app.on('web-contents-created', (event, contents) => {
   });
 });
 
-app.on('ready', () => {
+app.on('ready', async () => {
   createWindow();
+  const tempDbPath = await getTempDbPath();
+  if (mainWindow !== null && fs.existsSync(tempDbPath)) {
+    const choice = dialog.showMessageBoxSync(mainWindow, {
+      type: 'question',
+      buttons: ['Open it', 'Delete it'],
+      message:
+        'There is unsaved progress from a previous session. Would you like to open it?',
+      defaultId: 0,
+    });
+    if (choice === 1) fs.unlinkSync(tempDbPath);
+  }
   initDb();
 });
 
