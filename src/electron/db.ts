@@ -1,5 +1,5 @@
 import { app, ipcRenderer } from 'electron';
-import { knex } from 'knex';
+import { Knex, knex } from 'knex';
 import { Model } from 'objection';
 import path from 'path';
 
@@ -125,5 +125,7 @@ const initDb = async (filename?: string): Promise<void> => {
     console.error(err);
   }
 };
+
+export const getKnexDb = (): Knex => Model.knex();
 
 export { getTempDbPath, initDb };

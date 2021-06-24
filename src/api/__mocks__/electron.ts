@@ -38,4 +38,7 @@ export default class ElectronApi {
   async insertText(_text: CRText): Promise<void> {
     return new Promise(() => undefined);
   }
+  async projectStarted(): Promise<boolean> {
+    return new Promise(() => false);
+  }
 }

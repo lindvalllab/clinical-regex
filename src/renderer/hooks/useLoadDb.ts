@@ -12,6 +12,7 @@ export default function useLoadDb(): () => void {
       .loadDb()
       .then((result) => {
         if (result) {
+          api.deleteTempDb();
           history.push('/dashboard');
           history.go(0);
         } else {

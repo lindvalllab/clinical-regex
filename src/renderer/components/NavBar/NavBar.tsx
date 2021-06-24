@@ -42,9 +42,6 @@ function NavBarContent(): JSX.Element {
       </Flex>
       <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
         <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
-          <NavLink to="/" exact={true} activeStyle={activeStyle}>
-            Home
-          </NavLink>
           <NavLink to="/dashboard" activeStyle={activeStyle}>
             Dashboard
           </NavLink>

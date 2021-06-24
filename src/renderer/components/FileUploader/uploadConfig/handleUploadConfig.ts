@@ -40,37 +40,47 @@ const handleUploadConfig = (
     if (event.target.files) {
       const validationWarnings: string[] = [];
       const file = event.target.files[0];
-      const configuration = JSON.parse(await file.text());
-      schema
-        .validate(configuration, { abortEarly: false })
-        .then(() => {
-          if (![null, undefined].includes(configuration.groupIdField)) {
-            setFieldValue(
-              'idColIndex',
-              findHeader(
-                headers,
-                configuration.groupIdField,
-                validationWarnings
-              )
-            );
-          }
-          if (![null, undefined].includes(configuration.textField)) {
-            setFieldValue(
-              'textColIndex',
-              findHeader(headers, configuration.textField, validationWarnings)
-            );
-          }
-          if (![null, undefined].includes(configuration.labels)) {
-            setFieldValue(`labels`, configuration.labels);
-          }
-          if (![null, undefined].includes(configuration.isGrouped)) {
-            setFieldValue('isGrouped', Boolean(configuration.isGrouped));
-          }
-          setWarnings(validationWarnings);
-        })
-        .catch((errors) => {
-          setErrors(errors.inner.map(validationErrorMessage(headers)));
-        });
+      try {
+        const configuration = JSON.parse(await file.text());
+        schema
+          .validate(configuration, { abortEarly: false })
+          .then(() => {
+            if (![null, undefined].includes(configuration.groupIdField)) {
+              setFieldValue(
+                'idColIndex',
+                findHeader(
+                  headers,
+                  configuration.groupIdField,
+                  validationWarnings
+                )
+              );
+            }
+            if (![null, undefined].includes(configuration.textField)) {
+              setFieldValue(
+                'textColIndex',
+                findHeader(headers, configuration.textField, validationWarnings)
+              );
+            }
+            if (![null, undefined].includes(configuration.labels)) {
+              setFieldValue(`labels`, configuration.labels);
+            }
+            if (![null, undefined].includes(configuration.isGrouped)) {
+              setFieldValue('isGrouped', Boolean(configuration.isGrouped));
+            }
+            setWarnings(validationWarnings);
+          })
+          .catch((errors) => {
+            if (errors instanceof Yup.ValidationError) {
+              setErrors(errors.inner.map(validationErrorMessage(headers)));
+            } else console.error(errors);
+          });
+      } catch (error) {
+        if (error instanceof SyntaxError) {
+          setErrors(['The uploaded json file was invalid:\n' + error]);
+        } else {
+          console.error(error);
+        }
+      }
       event.target.value = '';
     }
   };
