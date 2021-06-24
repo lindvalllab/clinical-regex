@@ -69,7 +69,6 @@ function createWindow() {
           'Are you sure you want to quit? Unsaved progress will be lost.',
         defaultId: 0,
       });
-      console.log(choice);
       if (choice === 1) {
         currWindow.destroy();
       }
