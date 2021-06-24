@@ -1,6 +1,7 @@
 import fs from 'fs';
 import BaseApi from './base';
 import {
+  getKnexDb,
   getTempDbPath,
   initDb,
   AnnotationModel,
@@ -161,12 +162,18 @@ export default class ElectronApi extends BaseApi {
   ): Promise<{ results: TextEntity[]; total: number }> {
     return TextModel.query().groupBy('group_id').page(page, pageSize);
   }
-  async deleteTempDb(): Promise<void> {
-    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
+  async connectedToTempDb(): Promise<boolean> {
     const tempDbPath = await getTempDbPath();
-    const currDbPath = (await db.client.config.connection()).filename;
-    if (currDbPath === tempDbPath) db.destroy();
+    const currDbPath = (await getKnexDb().client.config.connection()).filename;
+    return currDbPath === tempDbPath;
+  }
+  async deleteTempDb(): Promise<void> {
+    const tempDbPath = await getTempDbPath();
+    if (await this.connectedToTempDb()) getKnexDb().destroy();
     fs.unlinkSync(tempDbPath);
+  }
+  async projectStarted(): Promise<boolean> {
+    return (await SettingsModel.query()).length > 0;
   }
 
   async saveDbAs(): Promise<string | undefined> {
@@ -182,8 +189,7 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
-      const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
-      const source = (await db.client.config.connection()).filename;
+      const source = (await getKnexDb().client.config.connection()).filename;
       fs.copyFileSync(source, destination);
       this.loadDbFromPath(destination);
       return destination;
@@ -195,8 +201,7 @@ export default class ElectronApi extends BaseApi {
   }
 
   async loadDbFromPath(source?: string): Promise<void> {
-    const db = TextModel.knex(); // Arbitrarily get the knex object from the text model.
-    db.destroy();
+    getKnexDb().destroy();
     await initDb(source);
   }
 

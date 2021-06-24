@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, ButtonProps, Flex, Heading, Text } from '@chakra-ui/react';
 import useLoadDb from '../../hooks/useLoadDb';
 import { FaPlus, FaUpload } from 'react-icons/fa';
+import { useContext, useEffect } from 'react';
+import { ApiContext } from '../../api';
 
 type MainLinkBoxProps = {
   text: string;
@@ -29,6 +31,15 @@ function MainLink(props: MainLinkBoxProps & ButtonProps): JSX.Element {
 
 function Home(): JSX.Element {
   const loadDb = useLoadDb();
+  const history = useHistory();
+  const api = useContext(ApiContext);
+  useEffect(() => {
+    // Route to dashboard if there is already work in progress.
+    api.projectStarted().then((started) => {
+      if (started) history.push('/dashboard');
+    });
+  }, [api, history]);
+
   return (
     <Flex
       flexDirection="column"
