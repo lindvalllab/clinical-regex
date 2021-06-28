@@ -23,7 +23,6 @@ function InlineUpload(props: InlineUploadProps): JSX.Element {
 
   return (
     <FormLabel
-      onClick={clickInput}
       onKeyDown={handleEnter}
       tabIndex={0}
       display="inline"

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 import Papa from 'papaparse';
 import {
   Checkbox,
@@ -14,7 +14,6 @@ import { DatasetFormData } from './types';
 function DatasetForm(): JSX.Element {
   const { values, setFieldValue, handleBlur, errors, touched } =
     useFormikContext<DatasetFormData>();
-  const [fields, setFields] = useState<string[]>([]);
 
   // For these we'll use the indices within the header
   // to handle cases where there are multiple fields with
@@ -23,24 +22,25 @@ function DatasetForm(): JSX.Element {
   // In the future, this may have to be rewritten if we
   // want to handle non-csv formats
 
-  const getFields = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file_ = event.target.files[0];
-
-      setFieldValue('file', file_);
-
-      // Parse just first line and store
-      Papa.parse<string>(file_, {
-        step: (result, parser) => {
-          setFields(result.data);
-          parser.abort();
-        },
-      });
-    }
+  const getFields = (file: File) => {
+    // Parse just first line and store
+    Papa.parse<string>(file, {
+      step: (result, parser) => {
+        setFieldValue('fields', result.data);
+        parser.abort();
+      },
+    });
   };
 
   const onChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-    getFields(event);
+    let file = {} as File;
+
+    if (event.target.files && event.target.files[0]) {
+      file = event.target.files[0];
+      getFields(file);
+    }
+
+    setFieldValue('file', file);
 
     setFieldValue('groupIdField', -1);
     setFieldValue('textField', -1);
@@ -56,7 +56,7 @@ function DatasetForm(): JSX.Element {
     setFieldValue('textField', Number(event.target.value));
   };
 
-  const fieldOptions = fields.map((name, index) => (
+  const fieldOptions = values.fields?.map((name, index) => (
     <option value={index} key={index}>
       {name}
     </option>

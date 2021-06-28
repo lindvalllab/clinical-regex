@@ -3,4 +3,5 @@ export interface DatasetFormData {
   isGrouped: boolean;
   groupIdField: number;
   textField: number;
+  fields: string[];
 }

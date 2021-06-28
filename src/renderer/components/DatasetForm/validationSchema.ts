@@ -30,6 +30,7 @@ const validationSchema = Yup.object({
       .notOneOf([Yup.ref('textField')], 'Must be different from Text Field'),
   }),
   textField: Yup.number().min(0, 'Required'),
+  fields: Yup.array(Yup.string()),
 });
 
 export default validationSchema;
