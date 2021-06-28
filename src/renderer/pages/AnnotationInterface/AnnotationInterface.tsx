@@ -99,12 +99,14 @@ function AnnotationInterface(): JSX.Element {
         totalPages={groupIds.length}
         groupId={groupIds[page]}
         groupIdField={settings?.GROUP_ID_FIELD}
-        onPrevPage={() =>
-          history.push(`/annotation-interface?page=${clipPage(page - 1)}`)
-        }
-        onNextPage={() =>
-          history.push(`/annotation-interface?page=${clipPage(page + 1)}`)
-        }
+        onPrevPage={() => {
+          setEntry(undefined);
+          history.push(`/annotation-interface?page=${clipPage(page - 1)}`);
+        }}
+        onNextPage={() => {
+          setEntry(undefined);
+          history.push(`/annotation-interface?page=${clipPage(page + 1)}`);
+        }}
       />
     </Flex>
   );

@@ -43,8 +43,8 @@ function NavBarMenu(): JSX.Element {
     useState<boolean>(false);
 
   const newProject = {
-    onClick: () => {
-      if (api.connectedToTempDb() && api.projectStarted()) {
+    onClick: async () => {
+      if ((await api.connectedToTempDb()) && (await api.projectStarted())) {
         setNewProjectDialogVisible(true);
       } else history.push('/upload');
     },
@@ -53,8 +53,8 @@ function NavBarMenu(): JSX.Element {
     onClick: saveDbAs,
   };
   const openProject = {
-    onClick: () => {
-      if (api.connectedToTempDb() && api.projectStarted()) {
+    onClick: async () => {
+      if ((await api.connectedToTempDb()) && (await api.projectStarted())) {
         setOpenProjectDialogVisible(true);
       } else loadDb();
     },
