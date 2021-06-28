@@ -12,6 +12,7 @@ import { CRLabel } from '../../../types';
 import { FaTrashAlt } from 'react-icons/fa';
 import { ChangeEventHandler, ComponentProps } from 'react';
 import PatternInput from './PatternInput';
+import { FocusEventHandler } from 'react';
 
 type LabelFormItemProps = {
   displayNumber: number;
@@ -19,6 +20,8 @@ type LabelFormItemProps = {
   isRemoveDisabled: boolean;
   onChangeName: ChangeEventHandler<HTMLInputElement>;
   onChangePatterns: ComponentProps<typeof PatternInput>['onChange'];
+  onBlurName: FocusEventHandler<HTMLInputElement>;
+  onBlurPatterns: () => void;
   onClickRemove: () => void;
   errors?: string | FormikErrors<CRLabel>;
   touched?: FormikTouched<CRLabel>;
@@ -31,6 +34,8 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
     touched,
     onChangeName,
     onChangePatterns,
+    onBlurName,
+    onBlurPatterns,
     onClickRemove,
     isRemoveDisabled,
   } = props;
@@ -47,6 +52,7 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
         <Button
           leftIcon={<FaTrashAlt />}
           size="sm"
+          colorScheme="red"
           onClick={onClickRemove}
           isDisabled={isRemoveDisabled}
         >
@@ -63,6 +69,7 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
         <Input
           value={label.name}
           onChange={onChangeName}
+          onBlur={onBlurName}
           placeholder="Palliative Care"
         />
       </FormControl>
@@ -83,6 +90,7 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
           inputId={`patterns-${displayNumber}`}
           value={label.patterns}
           onChange={onChangePatterns}
+          onBlur={onBlurPatterns}
           placeholder="pall(iative)? (care|medicine)"
         />
       </FormControl>

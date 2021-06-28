@@ -5,7 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import LabelFormItem from './LabelFormItem';
 
 function LabelForm(): JSX.Element {
-  const { values, setFieldValue, errors, touched } =
+  const { values, setFieldValue, errors, touched, setFieldTouched } =
     useFormikContext<LabelFormData>();
 
   return (
@@ -32,11 +32,17 @@ function LabelForm(): JSX.Element {
                 }}
                 errors={errors.labels && errors.labels[index]}
                 touched={touched.labels && touched.labels[index]}
-                onChangeName={(event) =>
-                  setFieldValue(`labels[${index}].name`, event.target.value)
+                onChangeName={(event) => {
+                  setFieldValue(`labels[${index}].name`, event.target.value);
+                }}
+                onChangePatterns={(value) => {
+                  setFieldValue(`labels[${index}].patterns`, value);
+                }}
+                onBlurName={() =>
+                  setFieldTouched(`labels[${index}].name`, true)
                 }
-                onChangePatterns={(value) =>
-                  setFieldValue(`labels[${index}].patterns`, value)
+                onBlurPatterns={() =>
+                  setFieldTouched(`labels[${index}].patterns`, true)
                 }
                 onClickRemove={() => arrayHelpers.remove(index)}
                 isRemoveDisabled={values.labels.length <= 1}
