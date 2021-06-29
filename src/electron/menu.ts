@@ -24,9 +24,9 @@ export function createMenu(mainWindow: BrowserWindow): void {
     click: () => mainWindow.webContents.send('save-as'),
   });
   const exportProject = new MenuItem({
-    label: 'Export Project...',
+    label: 'Export Annotations...',
     accelerator: 'CmdOrCtrl+e',
-    click: () => mainWindow.webContents.send('export-project'),
+    click: () => mainWindow.webContents.send('export-annotations'),
   });
   const separator = new MenuItem({
     type: 'separator',

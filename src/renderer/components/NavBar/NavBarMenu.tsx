@@ -22,6 +22,7 @@ import { useHistory } from 'react-router';
 import { menuEntries } from '../../../menu';
 import { ApiContext, HandleMenuEntryContext } from '../../api';
 import useExportAnnotations from '../../hooks/useExportAnnotations';
+import useExportMatches from '../../hooks/useExportMatches';
 import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
@@ -32,6 +33,7 @@ function NavBarMenu(): JSX.Element {
   const saveDbAs = useSaveDbAs();
   const loadDb = useLoadDb();
   const exportAnnotations = useExportAnnotations();
+  const exportMatches = useExportMatches();
   const disclosure = useDisclosure();
   const preferences = { ...disclosure, onClick: disclosure.onToggle };
   const handleMenuEntry = useContext(HandleMenuEntryContext);
@@ -59,8 +61,11 @@ function NavBarMenu(): JSX.Element {
       } else loadDb();
     },
   };
-  const exportProject = {
+  const exportProjectAnnotations = {
     onClick: exportAnnotations,
+  };
+  const exportProjectMatches = {
+    onClick: exportMatches,
   };
 
   // Associate menu actions to the electron menu.
@@ -74,8 +79,10 @@ function NavBarMenu(): JSX.Element {
     handleMenuEntry[menuEntries.SAVE_AS](saveProjectAs.onClick);
   }, [handleMenuEntry, saveProjectAs.onClick]);
   useEffect(() => {
-    handleMenuEntry[menuEntries.EXPORT_PROJECT](exportProject.onClick);
-  }, [exportProject.onClick, handleMenuEntry]);
+    handleMenuEntry[menuEntries.EXPORT_ANNOTATIONS](
+      exportProjectAnnotations.onClick
+    );
+  }, [exportProjectAnnotations.onClick, handleMenuEntry]);
   useEffect(() => {
     handleMenuEntry[menuEntries.PREFERENCES](preferences.onClick);
   }, [handleMenuEntry, preferences.onClick]);
@@ -110,10 +117,16 @@ function NavBarMenu(): JSX.Element {
           </MenuItem>
           <MenuItem
             icon={<FaDownload />}
-            onClick={exportProject.onClick}
+            onClick={exportProjectAnnotations.onClick}
             command="⌘E"
           >
-            Export
+            Export Annotations
+          </MenuItem>
+          <MenuItem
+            icon={<FaDownload />}
+            onClick={exportProjectMatches.onClick}
+          >
+            Export Keyword Matches
           </MenuItem>
           <MenuDivider />
           <MenuItem icon={<FaCog />} onClick={preferences.onClick} command="⌘,">
