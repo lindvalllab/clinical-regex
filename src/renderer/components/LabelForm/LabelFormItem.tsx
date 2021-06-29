@@ -3,9 +3,11 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
   Heading,
   Input,
+  Kbd,
 } from '@chakra-ui/react';
 import { FormikErrors, FormikTouched } from 'formik';
 import { CRLabel } from '../../../types';
@@ -93,6 +95,10 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
           onBlur={onBlurPatterns}
           placeholder="pall(iative)? (care|medicine)"
         />
+        <FormHelperText>
+          Press <Kbd>tab</Kbd> or <Kbd>Enter</Kbd> while typing to start a new
+          pattern.
+        </FormHelperText>
       </FormControl>
     </Flex>
   );
