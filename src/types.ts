@@ -2,6 +2,7 @@ import { ModelObject } from 'objection';
 import {
   AnnotationModel,
   LabelModel,
+  MatchModel,
   SettingsModel,
   TextModel,
 } from './electron/db';
@@ -24,6 +25,7 @@ export type TextEntity = ModelObject<TextModel>;
 export type LabelEntity = ModelObject<LabelModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;
 export type SettingsEntity = ModelObject<SettingsModel>;
+export type MatchEntity = ModelObject<MatchModel>;
 export interface Entry {
   groupId: string;
   texts: TextEntity[];

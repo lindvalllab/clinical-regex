@@ -33,6 +33,10 @@ function NavBarContent(): JSX.Element {
     console.log('Settings');
     const settings = await api.getSettings();
     console.log(settings);
+    console.log('Matches');
+    const matches = await api.getAllMatches();
+    console.log(matches);
+    await api.exportMatches();
   };
 
   return (

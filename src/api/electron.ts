@@ -6,6 +6,7 @@ import {
   initDb,
   AnnotationModel,
   LabelModel,
+  MatchModel,
   TextModel,
   SettingsModel,
 } from '../electron/db';
@@ -16,6 +17,7 @@ import {
   CRText,
   Entry,
   LabelEntity,
+  MatchEntity,
   SettingsEntity,
   TextEntity,
 } from '../types';
@@ -36,6 +38,12 @@ export default class ElectronApi extends BaseApi {
   }
   async getAllTexts(): Promise<TextEntity[]> {
     return TextModel.query();
+  }
+  async getAllMatches(): Promise<MatchEntity[]> {
+    return MatchModel.query();
+  }
+  async getMatchesByTextId(text_id: number): Promise<MatchEntity[]> {
+    return MatchModel.query().where('text_id', text_id);
   }
   async getEntry(groupId: string): Promise<Entry> {
     const texts = await TextModel.query().where({ group_id: groupId });
@@ -300,6 +308,36 @@ export default class ElectronApi extends BaseApi {
       console.error(`Destination ${destination} not valid.`);
       return;
     }
+  }
+
+  async findRegexMatches(): Promise<void> {
+    const labels = await this.getAllLabels();
+    const promises: Promise<void>[] = [];
+    await MatchModel.transaction(async (trx) => {
+      for (let text_id = 1; ; text_id++) {
+        const textEntity = await TextModel.query(trx).findById(text_id);
+        if (textEntity === undefined) break;
+        for (const label of labels) {
+          const re = new RegExp(label.pattern, 'gi');
+          for (const match of Array.from(textEntity.text.matchAll(re))) {
+            if (match.index !== undefined) {
+              promises.push(
+                new Promise(async (resolve) => {
+                  await MatchModel.query(trx).insert({
+                    text_id: text_id,
+                    label: label.name,
+                    start: match.index,
+                    length: match[0].length,
+                  });
+                  resolve();
+                })
+              );
+            }
+          }
+        }
+      }
+      await Promise.all(promises);
+    });
   }
 
   private static allMethodNames(): string[] {

@@ -5,6 +5,7 @@ import {
   CRText,
   Entry,
   LabelEntity,
+  MatchEntity,
   SettingsEntity,
   TextEntity,
 } from '../types';
@@ -13,7 +14,9 @@ export default abstract class BaseApi {
   public abstract getAllAnnotations(): Promise<AnnotationEntity[]>;
   public abstract getAllLabels(): Promise<LabelEntity[]>;
   public abstract getAllTexts(): Promise<TextEntity[]>;
+  public abstract getAllMatches(): Promise<MatchEntity[]>;
   public abstract getAllGroupIds(): Promise<string[]>;
+  public abstract getMatchesByTextId(text_id: number): Promise<MatchEntity[]>;
   public abstract getSettings(): Promise<SettingsEntity>;
   public abstract getEntry(groupId: string): Promise<Entry>;
   public abstract getDashboardTable(
@@ -31,6 +34,7 @@ export default abstract class BaseApi {
   public abstract insertText(text: CRText): Promise<void>;
   public abstract updateAnnotation(annotation: CRAnnotation): Promise<void>;
   public abstract exportAnnotations(): Promise<string | undefined>;
+  public abstract findRegexMatches(): Promise<void>;
   public abstract insertSettings(
     isGrouped: boolean,
     groupIdField: string | null,
