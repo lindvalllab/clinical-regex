@@ -170,7 +170,7 @@ export default class ElectronApi extends BaseApi {
   async deleteTempDb(): Promise<void> {
     const tempDbPath = await getTempDbPath();
     if (await this.connectedToTempDb()) getKnexDb().destroy();
-    fs.unlinkSync(tempDbPath);
+    if (fs.existsSync(tempDbPath)) fs.unlinkSync(tempDbPath);
   }
   async projectStarted(): Promise<boolean> {
     return (await SettingsModel.query()).length > 0;
