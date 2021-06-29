@@ -35,6 +35,7 @@ export default abstract class BaseApi {
   public abstract updateAnnotation(annotation: CRAnnotation): Promise<void>;
   public abstract exportAnnotations(): Promise<string | undefined>;
   public abstract findRegexMatches(): Promise<void>;
+  public abstract exportMatches(): Promise<string | undefined>;
   public abstract insertSettings(
     isGrouped: boolean,
     groupIdField: string | null,
