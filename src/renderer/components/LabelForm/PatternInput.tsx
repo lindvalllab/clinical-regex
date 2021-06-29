@@ -13,7 +13,7 @@ type PatternInputProps = {
   onChange?: (value: string[]) => void;
   onBlur?: () => void;
   value: string[];
-  inputId: string;
+  inputId?: string;
 };
 
 function PatternInput(props: PatternInputProps): JSX.Element {
