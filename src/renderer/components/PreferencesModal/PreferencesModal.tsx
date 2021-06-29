@@ -25,32 +25,30 @@ function AppearancePreferences(): JSX.Element {
   /** For dark mode toggle */
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <>
-      <Flex alignItems="center">
-        <Text>Theme</Text>
-        <Spacer />
-        <ButtonGroup colorScheme="gray" variant="ghost">
-          <Button
-            aria-label="Switch to light mode"
-            color="current"
-            onClick={toggleColorMode}
-            leftIcon={<FaSun />}
-            isActive={colorMode === 'light'}
-          >
-            Light
-          </Button>
-          <Button
-            aria-label="Switch to dark mode"
-            color="current"
-            onClick={toggleColorMode}
-            leftIcon={<FaMoon />}
-            isActive={colorMode === 'dark'}
-          >
-            Dark
-          </Button>
-        </ButtonGroup>
-      </Flex>
-    </>
+    <Flex alignItems="center">
+      <Text>Theme</Text>
+      <Spacer />
+      <ButtonGroup colorScheme="gray" variant="ghost">
+        <Button
+          aria-label="Switch to light mode"
+          color="current"
+          onClick={toggleColorMode}
+          leftIcon={<FaSun />}
+          isActive={colorMode === 'light'}
+        >
+          Light
+        </Button>
+        <Button
+          aria-label="Switch to dark mode"
+          color="current"
+          onClick={toggleColorMode}
+          leftIcon={<FaMoon />}
+          isActive={colorMode === 'dark'}
+        >
+          Dark
+        </Button>
+      </ButtonGroup>
+    </Flex>
   );
 }
 
