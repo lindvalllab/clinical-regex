@@ -68,6 +68,7 @@ function FileUploader(): JSX.Element {
           patterns: label.patterns,
         }))
       );
+      await api.findRegexMatches();
       await api.insertSettings(
         values.isGrouped,
         values.idColIndex !== -1 ? headers[values.idColIndex] : null,

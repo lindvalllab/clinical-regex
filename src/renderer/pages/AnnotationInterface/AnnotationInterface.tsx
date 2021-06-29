@@ -1,7 +1,12 @@
 import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
-import { Entry, LabelEntity, SettingsEntity } from '../../../types';
+import {
+  Entry,
+  LabelEntity,
+  SettingsEntity,
+  SpanWithTag,
+} from '../../../types';
 import {
   Box,
   Center,
@@ -29,6 +34,8 @@ function AnnotationInterface(): JSX.Element {
   const [labels, setLabels] = useState<LabelEntity[]>([]);
   const [settings, setSettings] = useState<SettingsEntity>();
   const [entry, setEntry] = useState<Entry>();
+  const [highlights, setHighlights] =
+    useState<{ [textId: number]: SpanWithTag[] }>();
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -68,17 +75,35 @@ function AnnotationInterface(): JSX.Element {
   useEffect(() => {
     if (groupIds.length === 0) return;
     const groupId = groupIds[page];
+    const fetchedMatches: Promise<void>[] = [];
     api.getEntry(groupId).then((entry) => {
       setEntry(entry);
+      const newHighlights: typeof highlights = {};
+      for (const textEntity of entry.texts) {
+        fetchedMatches.push(
+          api.getMatchesByTextId(textEntity.id).then((matches) => {
+            newHighlights[textEntity.id] = matches.map((match) => ({
+              start: match.start,
+              length: match.length,
+              tag: match.label,
+            }));
+          })
+        );
+      }
+      Promise.all(fetchedMatches).then(() => setHighlights(newHighlights));
     });
   }, [api, groupIds, page]);
 
   return (
     <Flex flexDirection="column" h="full" w="full">
-      {entry && labels ? (
+      {entry && labels && highlights ? (
         <HStack alignItems="start" maxW="100vw">
           <Box w="80vw">
-            <EntryDisplay entry={entry} labels={labels} />
+            <EntryDisplay
+              entry={entry}
+              labels={labels}
+              highlights={highlights}
+            />
           </Box>
           <AnnotationSidebar entry={entry} labels={labels} />
         </HStack>
@@ -101,10 +126,12 @@ function AnnotationInterface(): JSX.Element {
         groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={() => {
           setEntry(undefined);
+          setHighlights(undefined);
           history.push(`/annotation-interface?page=${clipPage(page - 1)}`);
         }}
         onNextPage={() => {
           setEntry(undefined);
+          setHighlights(undefined);
           history.push(`/annotation-interface?page=${clipPage(page + 1)}`);
         }}
       />
