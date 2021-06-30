@@ -77,7 +77,6 @@ function AnnotationInterface(): JSX.Element {
     const groupId = groupIds[page];
     const fetchedMatches: Promise<void>[] = [];
     api.getEntry(groupId).then((entry) => {
-      setEntry(entry);
       const newHighlights: typeof highlights = {};
       for (const textEntity of entry.texts) {
         fetchedMatches.push(
@@ -90,7 +89,10 @@ function AnnotationInterface(): JSX.Element {
           })
         );
       }
-      Promise.all(fetchedMatches).then(() => setHighlights(newHighlights));
+      Promise.all(fetchedMatches).then(() => {
+        setHighlights(newHighlights);
+        setEntry(entry);
+      });
     });
   }, [api, groupIds, page]);
 
