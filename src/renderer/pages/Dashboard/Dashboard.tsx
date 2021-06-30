@@ -10,7 +10,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { TextEntity } from '../../../types';
+import { DashboardEntry } from '../../../types';
 import DataTable from '../../components/DataTable';
 import { useHistory } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ interface RowData {
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
   const history = useHistory();
-  const columns = useMemo<Column<TextEntity>[]>(
+  const columns = useMemo<Column<DashboardEntry>[]>(
     () => [
       {
         Header: 'Entry ID',
@@ -34,7 +34,9 @@ function Dashboard(): JSX.Element {
       },
       {
         Header: 'Keyword Matches',
-        Cell: () => <Tag>Label</Tag>,
+        accessor: 'labels',
+        Cell: ({ row }) =>
+          row.original.labels.map((label) => <Tag m={0.5}>{label}</Tag>),
       },
       {
         Header: 'Is Annotated',
@@ -57,7 +59,7 @@ function Dashboard(): JSX.Element {
     ],
     []
   );
-  const [data, setData] = useState<TextEntity[]>([]);
+  const [data, setData] = useState<DashboardEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [pageCount, setPageCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);

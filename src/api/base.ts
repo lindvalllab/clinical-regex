@@ -3,6 +3,7 @@ import {
   CRAnnotation,
   CRLabel,
   CRText,
+  DashboardEntry,
   Entry,
   LabelEntity,
   MatchEntity,
@@ -22,7 +23,7 @@ export default abstract class BaseApi {
   public abstract getDashboardTable(
     page: number,
     pageSize: number
-  ): Promise<{ results: TextEntity[]; total: number }>;
+  ): Promise<{ results: DashboardEntry[]; total: number }>;
   public abstract connectedToTempDb(): Promise<boolean>;
   public abstract deleteTempDb(): Promise<void>;
   public abstract projectStarted(): Promise<boolean>;

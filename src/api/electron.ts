@@ -15,6 +15,7 @@ import {
   CRAnnotation,
   CRLabel,
   CRText,
+  DashboardEntry,
   Entry,
   LabelEntity,
   MatchEntity,
@@ -168,8 +169,31 @@ export default class ElectronApi extends BaseApi {
   async getDashboardTable(
     page: number,
     pageSize: number
-  ): Promise<{ results: TextEntity[]; total: number }> {
-    return TextModel.query().groupBy('group_id').page(page, pageSize);
+  ): Promise<{ results: DashboardEntry[]; total: number }> {
+    const textPage = await TextModel.query()
+      .groupBy('group_id')
+      .page(page, pageSize);
+    const dashboardPage = await Promise.all(
+      textPage.results.map(async (text) => ({
+        id: text.id,
+        group_id: text.group_id,
+        text: text.text,
+        labels: await this.getMatchedLabelsByGroupId(text.group_id),
+      }))
+    );
+    return {
+      results: dashboardPage,
+      total: textPage.total,
+    };
+  }
+  async getMatchedLabelsByGroupId(groupId: string): Promise<string[]> {
+    // TODO: can this be done using objection directly?
+    const matches = TextModel.knex()('texts')
+      .where('group_id', groupId)
+      .join('matches', 'matches.text_id', 'texts.id')
+      .select('texts.id', 'group_id', 'label')
+      .groupBy('label');
+    return (await matches).map((match: Record<string, string>) => match.label);
   }
   async connectedToTempDb(): Promise<boolean> {
     const tempDbPath = await getTempDbPath();

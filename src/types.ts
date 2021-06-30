@@ -45,3 +45,9 @@ export interface SpanWithTags extends Span {
   entities?: SpanWithTag[];
 }
 export type AnnotatedSpan = SpanWithTag | SpanWithTags;
+export type DashboardEntry = {
+  id: number; // TODO: Remove? This is just the ID of *one* of the texts.
+  group_id: string;
+  text: string;
+  labels: string[];
+};
