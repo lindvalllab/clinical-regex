@@ -32,7 +32,11 @@ function Dashboard(): JSX.Element {
         Header: 'Keyword Matches',
         accessor: 'labels',
         Cell: ({ row }) =>
-          row.original.labels.map((label) => <Tag m={0.5}>{label}</Tag>),
+          row.original.labels.map((label, idx) => (
+            <Tag m={0.5} key={idx}>
+              {label}
+            </Tag>
+          )),
       },
       {
         Header: 'Is Annotated',
