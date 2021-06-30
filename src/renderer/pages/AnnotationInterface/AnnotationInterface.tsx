@@ -73,6 +73,9 @@ function AnnotationInterface(): JSX.Element {
 
   // Get the next set of texts when the page changes.
   useEffect(() => {
+    // current: Are the async effects from this useEffect hook relevant to the current page?
+    // This allows us not to update state based on lingering promises from old pages.
+    let current = true;
     if (groupIds.length === 0) return;
     const groupId = groupIds[page];
     const fetchedMatches: Promise<void>[] = [];
@@ -90,11 +93,17 @@ function AnnotationInterface(): JSX.Element {
         );
       }
       Promise.all(fetchedMatches).then(() => {
-        setHighlights(newHighlights);
-        setEntry(entry);
+        if (current) {
+          setHighlights(newHighlights);
+          setEntry(entry);
+        }
       });
     });
+    return () => {
+      current = false;
+    };
   }, [api, groupIds, page]);
+  console.log(entry, highlights);
 
   return (
     <Flex flexDirection="column" h="full" w="full">
