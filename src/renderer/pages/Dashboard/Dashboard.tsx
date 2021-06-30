@@ -25,10 +25,6 @@ function Dashboard(): JSX.Element {
   const columns = useMemo<Column<DashboardEntry>[]>(
     () => [
       {
-        Header: 'Entry ID',
-        accessor: 'id',
-      },
-      {
         Header: 'Group ID',
         accessor: 'group_id',
       },
