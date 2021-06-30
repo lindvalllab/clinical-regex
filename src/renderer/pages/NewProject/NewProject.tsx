@@ -69,6 +69,7 @@ function NewProject(): JSX.Element {
         values.groupIdField !== -1 ? values.fields[values.groupIdField] : null,
         values.fields[values.textField]
       );
+      await api.findRegexMatches();
     }
 
     helpers.setSubmitting(false);

@@ -41,6 +41,17 @@ export class SettingsModel extends Model {
   }
 }
 
+export class MatchModel extends Model {
+  id!: number;
+  text_id!: number;
+  label!: string;
+  start!: number;
+  length!: number;
+  static get tableName(): string {
+    return 'matches';
+  }
+}
+
 const getTempDbPath = async (): Promise<string> => {
   let userDataPath;
 
@@ -115,6 +126,24 @@ const initDb = async (filename?: string): Promise<void> => {
         table.integer('IS_GROUPED').notNullable();
         table.string('GROUP_ID_FIELD');
         table.string('TEXT_ID_FIELD').notNullable();
+      });
+    }
+
+    if (!(await db.schema.hasTable('matches'))) {
+      await db.schema.createTable('matches', (table) => {
+        table.increments('id').primary();
+        table
+          .integer('text_id')
+          .references('id')
+          .inTable('texts')
+          .notNullable();
+        table
+          .string('label')
+          .references('name')
+          .inTable('labels')
+          .notNullable();
+        table.integer('start').notNullable();
+        table.integer('length').notNullable();
       });
     }
   }

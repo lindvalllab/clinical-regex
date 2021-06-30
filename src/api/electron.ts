@@ -6,6 +6,7 @@ import {
   initDb,
   AnnotationModel,
   LabelModel,
+  MatchModel,
   TextModel,
   SettingsModel,
 } from '../electron/db';
@@ -14,14 +15,17 @@ import {
   CRAnnotation,
   CRLabel,
   CRText,
+  DashboardEntry,
   Entry,
   LabelEntity,
+  MatchEntity,
   SettingsEntity,
   TextEntity,
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
 import { Transaction, ref } from 'objection';
+import { ExportedEntry, ExportedLabel, ExportedText } from './types';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -36,6 +40,12 @@ export default class ElectronApi extends BaseApi {
   }
   async getAllTexts(): Promise<TextEntity[]> {
     return TextModel.query();
+  }
+  async getAllMatches(): Promise<MatchEntity[]> {
+    return MatchModel.query();
+  }
+  async getMatchesByTextId(text_id: number): Promise<MatchEntity[]> {
+    return MatchModel.query().where('text_id', text_id);
   }
   async getEntry(groupId: string): Promise<Entry> {
     const texts = await TextModel.query().where({ group_id: groupId });
@@ -159,8 +169,31 @@ export default class ElectronApi extends BaseApi {
   async getDashboardTable(
     page: number,
     pageSize: number
-  ): Promise<{ results: TextEntity[]; total: number }> {
-    return TextModel.query().groupBy('group_id').page(page, pageSize);
+  ): Promise<{ results: DashboardEntry[]; total: number }> {
+    const textPage = await TextModel.query()
+      .groupBy('group_id')
+      .page(page, pageSize);
+    const dashboardPage = await Promise.all(
+      textPage.results.map(async (text) => ({
+        id: text.id,
+        group_id: text.group_id,
+        text: text.text,
+        labels: await this.getMatchedLabelsByGroupId(text.group_id),
+      }))
+    );
+    return {
+      results: dashboardPage,
+      total: textPage.total,
+    };
+  }
+  async getMatchedLabelsByGroupId(groupId: string): Promise<string[]> {
+    // TODO: can this be done using objection directly?
+    const matches = TextModel.knex()('texts')
+      .where('group_id', groupId)
+      .join('matches', 'matches.text_id', 'texts.id')
+      .select('texts.id', 'group_id', 'label')
+      .groupBy('label');
+    return (await matches).map((match: Record<string, string>) => match.label);
   }
   async connectedToTempDb(): Promise<boolean> {
     const tempDbPath = await getTempDbPath();
@@ -297,6 +330,94 @@ export default class ElectronApi extends BaseApi {
       return destination;
     } else {
       // TO-DO: figure out a better way to handle this.
+      console.error(`Destination ${destination} not valid.`);
+      return;
+    }
+  }
+
+  async findRegexMatches(): Promise<void> {
+    const labels = await this.getAllLabels();
+    const promises: Promise<void>[] = [];
+    await MatchModel.transaction(async (trx) => {
+      for (let text_id = 1; ; text_id++) {
+        const textEntity = await TextModel.query(trx).findById(text_id);
+        if (textEntity === undefined) break;
+        for (const label of labels) {
+          const re = new RegExp(label.pattern, 'gi');
+          for (const match of Array.from(textEntity.text.matchAll(re))) {
+            if (match.index !== undefined) {
+              promises.push(
+                new Promise(async (resolve) => {
+                  await MatchModel.query(trx).insert({
+                    text_id: text_id,
+                    label: label.name,
+                    start: match.index,
+                    length: match[0].length,
+                  });
+                  resolve();
+                })
+              );
+            }
+          }
+        }
+      }
+      await Promise.all(promises);
+    });
+  }
+
+  async exportMatches(): Promise<string | undefined> {
+    const destination = dialog.showSaveDialogSync({
+      title: 'Export File As',
+      defaultPath: 'Untitled.json',
+      filters: [
+        {
+          name: 'JSON file',
+          extensions: ['json'],
+        },
+      ],
+    });
+
+    if (destination) {
+      // The output will look a little weird when not using a group ID.
+      const groupIds = await this.getAllGroupIds();
+      const output: ExportedEntry[] = [];
+      for (const groupId of groupIds) {
+        const nextEntry: ExportedEntry = {
+          group_id: groupId,
+          texts: [],
+        };
+        const texts = await TextModel.query().where({ group_id: groupId });
+        for (const text of texts) {
+          const labels = await MatchModel.query()
+            .where('text_id', text.id)
+            .distinct('label');
+          if (labels.length === 0) continue;
+          const nextText: ExportedText = {
+            text_id: text.id,
+            labels: [],
+          };
+          for (const label of labels) {
+            const nextLabel: ExportedLabel = {
+              name: label.label,
+              matches: [],
+            };
+            const matches = await MatchModel.query()
+              .where('text_id', text.id)
+              .where('label', label.label);
+            nextLabel.matches = matches.map((match) => ({
+              start: match.start,
+              length: match.length,
+              text: text.text.slice(match.start, match.start + match.length),
+            }));
+            nextText.labels.push(nextLabel);
+          }
+          nextEntry.texts.push(nextText);
+        }
+        if (nextEntry.texts.length > 0) output.push(nextEntry);
+      }
+      fs.writeFileSync(destination, JSON.stringify(output, null, 2));
+      return destination;
+    } else {
       console.error(`Destination ${destination} not valid.`);
       return;
     }

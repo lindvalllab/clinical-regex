@@ -2,6 +2,7 @@ import { ModelObject } from 'objection';
 import {
   AnnotationModel,
   LabelModel,
+  MatchModel,
   SettingsModel,
   TextModel,
 } from './electron/db';
@@ -24,6 +25,7 @@ export type TextEntity = ModelObject<TextModel>;
 export type LabelEntity = ModelObject<LabelModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;
 export type SettingsEntity = ModelObject<SettingsModel>;
+export type MatchEntity = ModelObject<MatchModel>;
 export interface Entry {
   groupId: string;
   texts: TextEntity[];
@@ -43,3 +45,9 @@ export interface SpanWithTags extends Span {
   entities?: SpanWithTag[];
 }
 export type AnnotatedSpan = SpanWithTag | SpanWithTags;
+export type DashboardEntry = {
+  id: number; // TODO: Remove? This is just the ID of *one* of the texts.
+  group_id: string;
+  text: string;
+  labels: string[];
+};

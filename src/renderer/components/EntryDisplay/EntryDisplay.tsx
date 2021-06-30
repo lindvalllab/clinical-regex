@@ -15,29 +15,13 @@ import {
 type EntryDisplayProps = {
   entry: Entry;
   labels: LabelEntity[];
+  highlights: { [textId: number]: SpanWithTag[] };
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
   const [contextWindow, setContextWindow] = useState<number | undefined>(
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
-
-  const highlights = (text: string): SpanWithTag[] => {
-    const matches: SpanWithTag[] = [];
-    for (const label of props.labels) {
-      const re = new RegExp(label.pattern, 'gi');
-      for (const match of Array.from(text.matchAll(re))) {
-        if (match.index !== undefined) {
-          matches.push({
-            start: match.index,
-            length: match[0].length,
-            tag: label.name,
-          });
-        }
-      }
-    }
-    return matches;
-  };
 
   // Temporary solution to color palette: cycle through three different colors.
   const palette: Record<string, string> = {};
@@ -78,7 +62,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
         <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
           <HighlightedText
             text={textObj.text}
-            highlights={highlights(textObj.text)}
+            highlights={props.highlights[textObj.id]}
             palette={palette}
             contextWindow={
               contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
