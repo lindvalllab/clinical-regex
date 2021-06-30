@@ -175,7 +175,6 @@ export default class ElectronApi extends BaseApi {
       .page(page, pageSize);
     const dashboardPage = await Promise.all(
       textPage.results.map(async (text) => ({
-        id: text.id,
         group_id: text.group_id,
         text: text.text,
         labels: await this.getMatchedLabelsByGroupId(text.group_id),
