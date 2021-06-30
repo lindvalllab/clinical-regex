@@ -103,7 +103,6 @@ function AnnotationInterface(): JSX.Element {
       current = false;
     };
   }, [api, groupIds, page]);
-  console.log(entry, highlights);
 
   return (
     <Flex flexDirection="column" h="full" w="full">
