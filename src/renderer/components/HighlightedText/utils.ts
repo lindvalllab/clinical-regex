@@ -1,4 +1,4 @@
-import c_c from 'color-mixer';
+import tinycolor from 'tinycolor2';
 import { SpanWithTags } from '../../../types';
 import { MIN_CONTEXT_WINDOW_SIZE } from './constants';
 
@@ -12,14 +12,16 @@ export const getColor = (
 
   const colors = tags.map((tag: string) => {
     const color = palette[tag] ? palette[tag] : null;
-    return new c_c.Color(color ? { hex: color } : { name: 'transparent' });
+    return tinycolor(color || 'transparent');
   });
 
   if (colors.length === 1) {
-    return colors[0].hex();
+    return colors[0].toHexString();
   } else if (colors.length > 1) {
-    const color = new c_c.Color({ mix: colors });
-    return color.hex();
+    const color = colors.reduce((accumulated, current) =>
+      tinycolor.mix(accumulated, current, 100 / colors.length)
+    );
+    return color.toHexString();
   }
 
   return undefined;
