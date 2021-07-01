@@ -11,12 +11,8 @@ import {
   Tooltip,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  getColor,
-  getTooltip,
-  getUnique,
-  isValidContextWindowValue,
-} from './utils';
+import { getColor, getTooltip, isValidContextWindowValue } from './utils';
+import { getUnique } from '../../../utils';
 import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,

@@ -27,8 +27,6 @@ export const getColor = (
   return undefined;
 };
 
-export const getUnique = <T>(arr: T[]): T[] => Array.from(new Set(arr));
-
 export const getTooltip = (span: SpanWithTags): string => {
   return span.tags.join(', ');
 };

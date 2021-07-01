@@ -11,6 +11,8 @@ import {
   DEFAULT_CONTEXT_WINDOW_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from '../HighlightedText/constants';
+import { useContext } from 'react';
+import { ColorPaletteContext } from '../../ColorPaletteProvider';
 
 type EntryDisplayProps = {
   entry: Entry;
@@ -23,16 +25,8 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
 
-  // Temporary solution to color palette: cycle through three different colors.
-  const palette: Record<string, string> = {};
-  const uniqueLabelNames = Array.from(
-    new Set(props.labels.map((label) => label.name))
-  );
-  for (let i = 0; i < uniqueLabelNames.length; i++) {
-    if (i % 3 === 0) palette[uniqueLabelNames[i]] = '#4089ff';
-    else if (i % 3 === 1) palette[uniqueLabelNames[i]] = '#f302fe';
-    else palette[uniqueLabelNames[i]] = '#ffd900';
-  }
+  const { paletteFromLabels } = useContext(ColorPaletteContext);
+  const palette = paletteFromLabels(props.labels);
 
   return (
     <VStack spacing={4} p={8}>

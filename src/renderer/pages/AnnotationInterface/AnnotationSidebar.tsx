@@ -10,13 +10,16 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   VStack,
+  Icon,
+  Text,
 } from '@chakra-ui/react';
 import { useContext, useEffect } from 'react';
 import { useState } from 'react';
-import { FaArrowAltCircleRight } from 'react-icons/fa';
+import { FaArrowAltCircleRight, FaCircle } from 'react-icons/fa';
 import { CRAnnotation, Entry, LabelEntity } from '../../../types';
 import { ApiContext } from '../../api';
-import { getUnique } from '../../components/HighlightedText/utils';
+import { getUnique } from '../../../utils';
+import { ColorPaletteContext } from '../../ColorPaletteProvider';
 
 type AnnotationSidebarProps = {
   entry: Entry;
@@ -57,6 +60,7 @@ function AnnotationSidebar({
   entry,
   labels,
 }: AnnotationSidebarProps): JSX.Element {
+  const { paletteFromLabels } = useContext(ColorPaletteContext);
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
   );
@@ -81,6 +85,8 @@ function AnnotationSidebar({
     api.updateAnnotations(annotations);
   };
 
+  const palette = paletteFromLabels(labels);
+
   return (
     <Flex
       borderWidth={1}
@@ -97,13 +103,17 @@ function AnnotationSidebar({
           {annotations.map((annotation) => {
             return (
               <FormControl key={annotation.label}>
-                <FormLabel
-                  fontSize="xs"
-                  fontFamily="heading"
-                  textTransform="uppercase"
-                  mb={1}
-                >
-                  {annotation.label}
+                <FormLabel mb={1}>
+                  <Flex gridGap={2} alignItems="center">
+                    <Icon
+                      as={FaCircle}
+                      color={palette[annotation.label]}
+                      fontFamily="body"
+                      borderRadius="full"
+                      boxSize="0.8em"
+                    />
+                    <Text fontSize="sm">{annotation.label}</Text>
+                  </Flex>
                 </FormLabel>
                 <NumberInput
                   onChange={(value) =>
