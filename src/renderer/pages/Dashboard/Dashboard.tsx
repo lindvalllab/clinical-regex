@@ -1,4 +1,11 @@
-import { useContext, useState, useMemo, useRef, useCallback } from 'react';
+import {
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+} from 'react';
 import { Column, Row } from 'react-table';
 import { ApiContext } from '../../api';
 import {
@@ -10,10 +17,13 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { DashboardEntry } from '../../../types';
+import { DashboardEntry, LabelEntity } from '../../../types';
 import DataTable from '../../components/DataTable';
 import { useHistory } from 'react-router-dom';
-import { ColorPaletteContext } from '../../ColorPaletteProvider';
+import {
+  ColorPaletteContext,
+  ColorPaletteFromLabels,
+} from '../../ColorPaletteProvider';
 
 interface RowData {
   pageSize: number;
@@ -22,7 +32,20 @@ interface RowData {
 
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
-  const { palette } = useContext(ColorPaletteContext);
+  const [labels, setLabels] = useState<LabelEntity[]>();
+  const [palette, setPalette] = useState<ColorPaletteFromLabels>();
+  const { paletteFromLabels } = useContext(ColorPaletteContext);
+
+  useEffect(() => {
+    api.getAllLabels().then((labels) => setLabels(labels));
+  }, [api]);
+
+  useEffect(() => {
+    if (labels) {
+      setPalette(paletteFromLabels(labels));
+    }
+  }, [labels, paletteFromLabels]);
+
   const history = useHistory();
   const columns = useMemo<Column<DashboardEntry>[]>(
     () => [
@@ -35,7 +58,16 @@ function Dashboard(): JSX.Element {
         accessor: 'labels',
         Cell: ({ row }) =>
           row.original.labels.map((label, idx) => (
-            <Tag m={0.5} key={idx} bgColor={palette && palette[label]}>
+            <Tag
+              m={0.5}
+              key={idx}
+              bgColor={palette && palette[label]}
+              size="sm"
+              fontFamily="mono"
+              textTransform="uppercase"
+              borderRadius="base"
+              boxShadow="base"
+            >
               {label}
             </Tag>
           )),

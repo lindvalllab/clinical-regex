@@ -1,16 +1,7 @@
 import { useColorModeValue } from '@chakra-ui/react';
-import {
-  createContext,
-  useState,
-  useEffect,
-  useReducer,
-  Context,
-  Dispatch,
-  useContext,
-} from 'react';
+import { Context, Dispatch, createContext, useEffect, useReducer } from 'react';
 import { LabelEntity } from '../types';
 import { getUnique } from '../utils';
-import { ApiContext } from './api';
 
 type ColorPaletteName = 'rainbow' | 'bright';
 type ColorPaletteColors = string[];
@@ -20,6 +11,7 @@ type ColorPalette = {
   light: ColorPaletteColors;
   dark: ColorPaletteColors;
 };
+export type ColorPaletteFromLabels = Record<string, string>;
 
 const RAINBOW: ColorPalette = {
   name: 'rainbow',
@@ -39,7 +31,7 @@ const DEFAULT = BRIGHT;
 
 interface ColorPaletteContextType {
   dispatch: Dispatch<ColorPaletteName>;
-  palette?: Record<string, string>;
+  paletteFromLabels: (labels: LabelEntity[]) => ColorPaletteFromLabels;
 }
 
 const colorPaletteReducer = (state: ColorPalette, name?: ColorPaletteName) => {
@@ -64,17 +56,6 @@ const initialState =
 
 const ColorPaletteProvider: React.FC = ({ children }) => {
   const [palette, dispatch] = useReducer(colorPaletteReducer, initialState);
-  const [labels, setLabels] = useState<LabelEntity[]>();
-  const [isLoading, setIsLoading] = useState(true);
-  const api = useContext(ApiContext);
-
-  useEffect(() => {
-    api
-      .getAllLabels()
-      .then((labels) => setLabels(labels))
-      .catch((error) => console.error(error));
-  }, [api]);
-
   const isDark = useColorModeValue(false, true);
 
   /** Create a (label name, hex value) map given a set of labels */
@@ -100,7 +81,7 @@ const ColorPaletteProvider: React.FC = ({ children }) => {
   return (
     <ColorPaletteContext.Provider
       value={{
-        palette: labels && paletteFromLabels(labels),
+        paletteFromLabels: paletteFromLabels,
         dispatch,
       }}
     >

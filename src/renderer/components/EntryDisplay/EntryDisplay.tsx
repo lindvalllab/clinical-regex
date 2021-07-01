@@ -11,13 +11,13 @@ import {
   DEFAULT_CONTEXT_WINDOW_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from '../HighlightedText/constants';
-import { useContext } from 'react';
-import { ColorPaletteContext } from '../../ColorPaletteProvider';
+import { ColorPaletteFromLabels } from '../../ColorPaletteProvider';
 
 type EntryDisplayProps = {
   entry: Entry;
   labels: LabelEntity[];
   highlights: { [textId: number]: SpanWithTag[] };
+  palette: ColorPaletteFromLabels;
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
@@ -25,11 +25,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
 
-  const { palette } = useContext(ColorPaletteContext);
-
-  return palette === undefined ? (
-    <></>
-  ) : (
+  return (
     <VStack spacing={4} p={8}>
       <FormControl as="fieldset">
         <FormLabel as="legend">Context Window</FormLabel>
@@ -58,7 +54,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           <HighlightedText
             text={textObj.text}
             highlights={props.highlights[textObj.id]}
-            palette={palette}
+            palette={props.palette}
             contextWindow={
               contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
             }

@@ -19,6 +19,7 @@ import {
 import AnnotationSidebar from './AnnotationSidebar';
 import AnnotationFooter from './AnnotationFooter';
 import { useHistory, useLocation } from 'react-router-dom';
+import { ColorPaletteContext } from '../../ColorPaletteProvider';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -36,6 +37,7 @@ function AnnotationInterface(): JSX.Element {
   const [entry, setEntry] = useState<Entry>();
   const [highlights, setHighlights] =
     useState<{ [textId: number]: SpanWithTag[] }>();
+  const { paletteFromLabels } = useContext(ColorPaletteContext);
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -113,9 +115,14 @@ function AnnotationInterface(): JSX.Element {
               entry={entry}
               labels={labels}
               highlights={highlights}
+              palette={paletteFromLabels(labels)}
             />
           </Box>
-          <AnnotationSidebar entry={entry} labels={labels} />
+          <AnnotationSidebar
+            entry={entry}
+            labels={labels}
+            palette={paletteFromLabels(labels)}
+          />
         </HStack>
       ) : (
         <Center w="full" h="full" bg={bg}>
