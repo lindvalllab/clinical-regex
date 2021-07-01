@@ -3,10 +3,14 @@ import { FieldArray, useFormikContext } from 'formik';
 import { LabelFormData } from './types';
 import { FaPlus } from 'react-icons/fa';
 import LabelFormItem from './LabelFormItem';
+import { useContext } from 'react';
+import { ColorPaletteContext } from '../../ColorPaletteProvider';
 
 function LabelForm(): JSX.Element {
   const { values, setFieldValue, errors, touched, setFieldTouched } =
     useFormikContext<LabelFormData>();
+
+  const { paletteAsList } = useContext(ColorPaletteContext);
 
   return (
     <FieldArray
@@ -43,6 +47,7 @@ function LabelForm(): JSX.Element {
                 name: label.name,
                 patterns: label.patterns,
               }}
+              color={paletteAsList[index % paletteAsList.length]}
               errors={errors.labels && errors.labels[index]}
               touched={touched.labels && touched.labels[index]}
               onChangeName={(event) => {

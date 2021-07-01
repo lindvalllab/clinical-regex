@@ -32,6 +32,7 @@ const DEFAULT = BRIGHT;
 interface ColorPaletteContextType {
   dispatch: Dispatch<ColorPaletteName>;
   paletteFromLabels: (labels: LabelEntity[]) => ColorPaletteFromLabels;
+  paletteAsList: ColorPaletteColors;
 }
 
 const colorPaletteReducer = (state: ColorPalette, name?: ColorPaletteName) => {
@@ -82,6 +83,7 @@ const ColorPaletteProvider: React.FC = ({ children }) => {
     <ColorPaletteContext.Provider
       value={{
         paletteFromLabels: paletteFromLabels,
+        paletteAsList: isDark ? palette.dark : palette.light,
         dispatch,
       }}
     >

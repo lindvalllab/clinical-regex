@@ -6,12 +6,13 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
+  Icon,
   Input,
   Kbd,
 } from '@chakra-ui/react';
 import { FormikErrors, FormikTouched } from 'formik';
 import { CRLabel } from '../../../types';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaSquare } from 'react-icons/fa';
 import { ChangeEventHandler, ComponentProps } from 'react';
 import PatternInput from './PatternInput';
 import { FocusEventHandler } from 'react';
@@ -19,6 +20,7 @@ import { FocusEventHandler } from 'react';
 type LabelFormItemProps = {
   displayNumber: number;
   label: CRLabel;
+  color: string;
   isRemoveDisabled: boolean;
   onChangeName: ChangeEventHandler<HTMLInputElement>;
   onChangePatterns: ComponentProps<typeof PatternInput>['onChange'];
@@ -33,6 +35,7 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
   const {
     displayNumber,
     label,
+    color,
     touched,
     onChangeName,
     onChangePatterns,
@@ -50,7 +53,10 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
   return (
     <Flex gridGap={2} flexDirection="column">
       <Flex justifyContent="space-between" alignItems="center">
-        <Heading size="sm">Label {displayNumber}</Heading>
+        <Flex gridGap={2} alignItems="center">
+          <Icon as={FaSquare} color={color} fontFamily="body" boxSize="0.8em" />
+          <Heading size="sm">Label {displayNumber}</Heading>
+        </Flex>
         <Button
           leftIcon={<FaTrashAlt />}
           size="sm"
