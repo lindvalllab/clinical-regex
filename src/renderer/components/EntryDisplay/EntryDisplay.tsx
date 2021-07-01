@@ -11,28 +11,19 @@ import {
   DEFAULT_CONTEXT_WINDOW_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from '../HighlightedText/constants';
+import { ColorPaletteFromLabels } from '../../ColorPaletteProvider';
 
 type EntryDisplayProps = {
   entry: Entry;
   labels: LabelEntity[];
   highlights: { [textId: number]: SpanWithTag[] };
+  palette: ColorPaletteFromLabels;
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
   const [contextWindow, setContextWindow] = useState<number | undefined>(
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
-
-  // Temporary solution to color palette: cycle through three different colors.
-  const palette: Record<string, string> = {};
-  const uniqueLabelNames = Array.from(
-    new Set(props.labels.map((label) => label.name))
-  );
-  for (let i = 0; i < uniqueLabelNames.length; i++) {
-    if (i % 3 === 0) palette[uniqueLabelNames[i]] = '#4089ff';
-    else if (i % 3 === 1) palette[uniqueLabelNames[i]] = '#f302fe';
-    else palette[uniqueLabelNames[i]] = '#ffd900';
-  }
 
   return (
     <VStack spacing={4} p={8}>
@@ -63,7 +54,7 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           <HighlightedText
             text={textObj.text}
             highlights={props.highlights[textObj.id]}
-            palette={palette}
+            palette={props.palette}
             contextWindow={
               contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
             }

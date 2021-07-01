@@ -10,17 +10,22 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   VStack,
+  Icon,
+  Text,
+  Skeleton,
 } from '@chakra-ui/react';
 import { useContext, useEffect } from 'react';
 import { useState } from 'react';
-import { FaArrowAltCircleRight } from 'react-icons/fa';
+import { FaArrowAltCircleRight, FaSquare } from 'react-icons/fa';
 import { CRAnnotation, Entry, LabelEntity } from '../../../types';
 import { ApiContext } from '../../api';
-import { getUnique } from '../../components/HighlightedText/utils';
+import { getUnique } from '../../../utils';
+import { ColorPaletteFromLabels } from '.././../ColorPaletteProvider';
 
 type AnnotationSidebarProps = {
   entry: Entry;
   labels: LabelEntity[];
+  palette: ColorPaletteFromLabels;
 };
 
 const initialAnnotations = (entry: Entry, labels: LabelEntity[]) => {
@@ -56,6 +61,7 @@ const initialAnnotations = (entry: Entry, labels: LabelEntity[]) => {
 function AnnotationSidebar({
   entry,
   labels,
+  palette,
 }: AnnotationSidebarProps): JSX.Element {
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
@@ -82,57 +88,62 @@ function AnnotationSidebar({
   };
 
   return (
-    <Flex
-      borderWidth={1}
-      pos="fixed"
-      top="6.5rem"
-      right="1.2em"
-      w="calc(20vw - 1.8rem)"
-      h="calc(100vh - 12.5rem)"
-      flexDirection="column"
-      justifyContent="space-between"
-    >
-      <Box overflowY="scroll" px={4} pt={6}>
-        <VStack spacing={4} px={2}>
-          {annotations.map((annotation) => {
-            return (
-              <FormControl key={annotation.label}>
-                <FormLabel
-                  fontSize="xs"
-                  fontFamily="heading"
-                  textTransform="uppercase"
-                  mb={1}
-                >
-                  {annotation.label}
-                </FormLabel>
-                <NumberInput
-                  onChange={(value) =>
-                    setAnnotationValue(annotation.label, parseInt(value))
-                  }
-                  value={annotation.value}
-                  size="md"
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-            );
-          })}
-        </VStack>
-      </Box>
-      <Button
-        m={4}
-        flexShrink={0}
-        colorScheme="green"
-        rightIcon={<FaArrowAltCircleRight />}
-        onClick={onSubmit}
+    <Skeleton isLoaded={palette !== undefined}>
+      <Flex
+        borderWidth={1}
+        pos="fixed"
+        top="6.5rem"
+        right="1.2em"
+        w="calc(20vw - 1.8rem)"
+        h="calc(100vh - 12.5rem)"
+        flexDirection="column"
+        justifyContent="space-between"
       >
-        Submit
-      </Button>
-    </Flex>
+        <Box overflowY="scroll" px={4} pt={6}>
+          <VStack spacing={4} px={2}>
+            {annotations.map((annotation) => {
+              return (
+                <FormControl key={annotation.label}>
+                  <FormLabel mb={1}>
+                    <Flex gridGap={2} alignItems="center" cursor="pointer">
+                      <Icon
+                        as={FaSquare}
+                        color={palette ? palette[annotation.label] : undefined}
+                        fontFamily="body"
+                        boxSize="0.8em"
+                      />
+                      <Text fontSize="sm">{annotation.label}</Text>
+                    </Flex>
+                  </FormLabel>
+                  <NumberInput
+                    onChange={(value) =>
+                      setAnnotationValue(annotation.label, parseInt(value))
+                    }
+                    value={annotation.value}
+                    size="md"
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              );
+            })}
+          </VStack>
+        </Box>
+        <Button
+          m={4}
+          flexShrink={0}
+          colorScheme="green"
+          rightIcon={<FaArrowAltCircleRight />}
+          onClick={onSubmit}
+        >
+          Submit
+        </Button>
+      </Flex>
+    </Skeleton>
   );
 }
 

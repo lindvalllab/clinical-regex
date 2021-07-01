@@ -1,6 +1,6 @@
 import flatten from 'flatten-overlapping-ranges';
 import { SpanWithTag, SpanWithTags } from '../../../types';
-import { getUnique } from './utils';
+import { getUnique } from '../../../utils';
 
 const flattenSpans = (
   text: string,
