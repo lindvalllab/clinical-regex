@@ -60,7 +60,7 @@ function AnnotationSidebar({
   entry,
   labels,
 }: AnnotationSidebarProps): JSX.Element {
-  const { paletteFromLabels } = useContext(ColorPaletteContext);
+  const { palette } = useContext(ColorPaletteContext);
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
   );
@@ -85,9 +85,9 @@ function AnnotationSidebar({
     api.updateAnnotations(annotations);
   };
 
-  const palette = paletteFromLabels(labels);
-
-  return (
+  return palette === undefined ? (
+    <></>
+  ) : (
     <Flex
       borderWidth={1}
       pos="fixed"

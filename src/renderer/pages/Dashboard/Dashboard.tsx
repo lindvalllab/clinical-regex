@@ -13,6 +13,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import { DashboardEntry } from '../../../types';
 import DataTable from '../../components/DataTable';
 import { useHistory } from 'react-router-dom';
+import { ColorPaletteContext } from '../../ColorPaletteProvider';
 
 interface RowData {
   pageSize: number;
@@ -21,6 +22,7 @@ interface RowData {
 
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
+  const { palette } = useContext(ColorPaletteContext);
   const history = useHistory();
   const columns = useMemo<Column<DashboardEntry>[]>(
     () => [
@@ -33,7 +35,7 @@ function Dashboard(): JSX.Element {
         accessor: 'labels',
         Cell: ({ row }) =>
           row.original.labels.map((label, idx) => (
-            <Tag m={0.5} key={idx}>
+            <Tag m={0.5} key={idx} bgColor={palette && palette[label]}>
               {label}
             </Tag>
           )),
@@ -57,7 +59,7 @@ function Dashboard(): JSX.Element {
         ),
       },
     ],
-    []
+    [palette]
   );
   const [data, setData] = useState<DashboardEntry[]>([]);
   const [loading, setLoading] = useState(false);

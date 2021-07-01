@@ -25,10 +25,11 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
 
-  const { paletteFromLabels } = useContext(ColorPaletteContext);
-  const palette = paletteFromLabels(props.labels);
+  const { palette } = useContext(ColorPaletteContext);
 
-  return (
+  return palette === undefined ? (
+    <></>
+  ) : (
     <VStack spacing={4} p={8}>
       <FormControl as="fieldset">
         <FormLabel as="legend">Context Window</FormLabel>
