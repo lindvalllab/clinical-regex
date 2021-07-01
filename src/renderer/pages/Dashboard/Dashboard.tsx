@@ -139,6 +139,7 @@ function Dashboard(): JSX.Element {
         rowProps={(row: Row, data: RowData) => ({
           onClick: onRowClick(row, data),
           cursor: 'pointer',
+          height: '2.5rem',
           _hover: {
             background: rowHoverColor,
           },
