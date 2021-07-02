@@ -4,6 +4,12 @@ import {
   Container,
   Heading,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useColorModeValue,
   useToast,
@@ -47,6 +53,7 @@ function NewProject(): JSX.Element {
     isGrouped: true,
     labels: [{ name: '', patterns: [] }],
   });
+  const [modalText, setModalText] = useState<string>();
 
   const linkColor = useColorModeValue('blue.600', 'blue.400');
 
@@ -55,21 +62,28 @@ function NewProject(): JSX.Element {
     helpers: FormikHelpers<FormData>
   ) => {
     if (values.file) {
+      setModalText('Cleaning up old data...');
       await api.deleteTempDb();
       // Connect to the (now empty) database in the user data directory
+      setModalText('Connecting to new project...');
       await api.loadDbFromPath();
+      setModalText('Loading texts...');
       await api.loadCsv(
         values.file.path,
         values.groupIdField,
         values.textField
       );
+      setModalText('Processing labels...');
       await api.insertLabels(values.labels);
+      setModalText('Saving settings...');
       await api.insertSettings(
         values.isGrouped,
         values.groupIdField !== -1 ? values.fields[values.groupIdField] : null,
         values.fields[values.textField]
       );
+      setModalText('Finding keyword matches...');
       await api.findRegexMatches();
+      setModalText(undefined);
     }
 
     helpers.setSubmitting(false);
@@ -250,6 +264,15 @@ function NewProject(): JSX.Element {
           </Form>
         )}
       </Formik>
+      <Modal isOpen={Boolean(modalText)} onClose={() => undefined}>
+        <ModalOverlay>
+          <ModalContent>
+            <ModalHeader>Loading</ModalHeader>
+            <ModalBody>{modalText}</ModalBody>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </ModalOverlay>
+      </Modal>
     </Container>
   );
 }
