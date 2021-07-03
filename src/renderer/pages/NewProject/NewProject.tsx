@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Progress,
   Text,
   useColorModeValue,
   useToast,
@@ -54,6 +55,7 @@ function NewProject(): JSX.Element {
     labels: [{ name: '', patterns: [] }],
   });
   const [modalText, setModalText] = useState<string>();
+  const [progress, setProgress] = useState<number>(0);
 
   const linkColor = useColorModeValue('blue.600', 'blue.400');
 
@@ -68,8 +70,14 @@ function NewProject(): JSX.Element {
       setModalText('Connecting to new project...');
       await api.loadDbFromPath();
       setModalText('Loading texts...');
+      const interval = setInterval(async () => {
+        const gotProgress = await api.getProgress();
+        console.log(gotProgress);
+        setProgress(gotProgress);
+      }, 50);
       await api.loadCsv(
         values.file.path,
+        values.file.size,
         values.groupIdField,
         values.textField
       );
@@ -82,7 +90,9 @@ function NewProject(): JSX.Element {
         values.fields[values.textField]
       );
       setModalText('Finding keyword matches...');
-      await api.findRegexMatches();
+      await api.findRegexMatches().then(() => {
+        clearInterval(interval);
+      });
       setModalText(undefined);
     }
 
@@ -268,7 +278,10 @@ function NewProject(): JSX.Element {
         <ModalOverlay>
           <ModalContent>
             <ModalHeader>Loading</ModalHeader>
-            <ModalBody>{modalText}</ModalBody>
+            <ModalBody>
+              {modalText}
+              <Progress value={progress} />
+            </ModalBody>
             <ModalFooter></ModalFooter>
           </ModalContent>
         </ModalOverlay>
