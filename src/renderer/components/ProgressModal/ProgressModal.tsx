@@ -1,14 +1,33 @@
-import {Modal} from '@chakra-ui/react';
+import {
+  CircularProgress,
+  CircularProgressLabel,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from '@chakra-ui/react';
 
-function ProgressModal(): JSX.Element {
+interface ProgressModalProps {
+  isOpen: boolean;
+  text: string;
+  progress: number;
+}
+
+export default function ProgressModal(props: ProgressModalProps): JSX.Element {
   return (
-    <Modal isOpen={true} onClose={() => undefined}>
+    <Modal isOpen={props.isOpen} onClose={() => undefined}>
       <ModalOverlay>
         <ModalContent>
           <ModalHeader>Loading</ModalHeader>
           <ModalBody>
-            {'hi'}
-            <Progress value={30} />
+            {props.text}
+            <CircularProgress value={props.progress}>
+              <CircularProgressLabel>
+                {Math.round(props.progress)}%
+              </CircularProgressLabel>
+            </CircularProgress>
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>

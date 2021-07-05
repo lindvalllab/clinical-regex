@@ -4,13 +4,6 @@ import {
   Container,
   Heading,
   Link,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Progress,
   Text,
   useColorModeValue,
   useToast,
@@ -31,6 +24,7 @@ import { LabelFormData } from '../../components/LabelForm/types';
 import { useContext } from 'react';
 import { ApiContext } from '../../api';
 import { useHistory } from 'react-router-dom';
+import ProgressModal from '../../components/ProgressModal';
 
 type NewProjectConfig = {
   isGrouped?: boolean;
@@ -64,36 +58,38 @@ function NewProject(): JSX.Element {
     helpers: FormikHelpers<FormData>
   ) => {
     if (values.file) {
-      setModalText('Cleaning up old data...');
-      await api.deleteTempDb();
-      // Connect to the (now empty) database in the user data directory
-      setModalText('Connecting to new project...');
-      await api.loadDbFromPath();
-      setModalText('Loading texts...');
       const interval = setInterval(async () => {
-        const gotProgress = await api.getProgress();
-        console.log(gotProgress);
-        setProgress(gotProgress);
-      }, 50);
-      await api.loadCsv(
-        values.file.path,
-        values.file.size,
-        values.groupIdField,
-        values.textField
-      );
-      setModalText('Processing labels...');
-      await api.insertLabels(values.labels);
-      setModalText('Saving settings...');
-      await api.insertSettings(
-        values.isGrouped,
-        values.groupIdField !== -1 ? values.fields[values.groupIdField] : null,
-        values.fields[values.textField]
-      );
-      setModalText('Finding keyword matches...');
-      await api.findRegexMatches().then(() => {
-        clearInterval(interval);
+        setProgress(await api.getProgress());
       });
-      setModalText(undefined);
+      try {
+        setModalText('Cleaning up old data...');
+        await api.deleteTempDb();
+        // Connect to the (now empty) database in the user data directory
+        setModalText('Connecting to new project...');
+        await api.loadDbFromPath();
+        setModalText('Loading texts...');
+        await api.loadCsv(
+          values.file.path,
+          values.file.size,
+          values.groupIdField,
+          values.textField
+        );
+        setModalText('Processing labels...');
+        await api.insertLabels(values.labels);
+        setModalText('Saving settings...');
+        await api.insertSettings(
+          values.isGrouped,
+          values.groupIdField !== -1
+            ? values.fields[values.groupIdField]
+            : null,
+          values.fields[values.textField]
+        );
+        setModalText('Finding keyword matches...');
+        await api.findRegexMatches();
+      } finally {
+        setModalText(undefined);
+        clearInterval(interval);
+      }
     }
 
     helpers.setSubmitting(false);
@@ -274,18 +270,11 @@ function NewProject(): JSX.Element {
           </Form>
         )}
       </Formik>
-      <Modal isOpen={Boolean(modalText)} onClose={() => undefined}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>Loading</ModalHeader>
-            <ModalBody>
-              {modalText}
-              <Progress value={progress} />
-            </ModalBody>
-            <ModalFooter></ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
+      <ProgressModal
+        isOpen={Boolean(modalText)}
+        text={modalText ? modalText : ''}
+        progress={progress}
+      />
     </Container>
   );
 }
