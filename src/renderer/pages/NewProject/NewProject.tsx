@@ -24,6 +24,7 @@ import { LabelFormData } from '../../components/LabelForm/types';
 import { useContext } from 'react';
 import { ApiContext } from '../../api';
 import { useHistory } from 'react-router-dom';
+import ProgressModal from '../../components/ProgressModal';
 
 type NewProjectConfig = {
   isGrouped?: boolean;
@@ -47,6 +48,8 @@ function NewProject(): JSX.Element {
     isGrouped: true,
     labels: [{ name: '', patterns: [] }],
   });
+  const [modalText, setModalText] = useState<string>();
+  const [progress, setProgress] = useState<number>(0);
 
   const linkColor = useColorModeValue('blue.600', 'blue.400');
 
@@ -55,21 +58,38 @@ function NewProject(): JSX.Element {
     helpers: FormikHelpers<FormData>
   ) => {
     if (values.file) {
-      await api.deleteTempDb();
-      // Connect to the (now empty) database in the user data directory
-      await api.loadDbFromPath();
-      await api.loadCsv(
-        values.file.path,
-        values.groupIdField,
-        values.textField
-      );
-      await api.insertLabels(values.labels);
-      await api.insertSettings(
-        values.isGrouped,
-        values.groupIdField !== -1 ? values.fields[values.groupIdField] : null,
-        values.fields[values.textField]
-      );
-      await api.findRegexMatches();
+      const interval = setInterval(async () => {
+        setProgress(await api.getProgress());
+      });
+      try {
+        setModalText('Cleaning up old data...');
+        await api.deleteTempDb();
+        // Connect to the (now empty) database in the user data directory
+        setModalText('Connecting to new project...');
+        await api.loadDbFromPath();
+        setModalText('Loading texts...');
+        await api.loadCsv(
+          values.file.path,
+          values.file.size,
+          values.groupIdField,
+          values.textField
+        );
+        setModalText('Processing labels...');
+        await api.insertLabels(values.labels);
+        setModalText('Saving settings...');
+        await api.insertSettings(
+          values.isGrouped,
+          values.groupIdField !== -1
+            ? values.fields[values.groupIdField]
+            : null,
+          values.fields[values.textField]
+        );
+        setModalText('Finding keyword matches...');
+        await api.findRegexMatches();
+      } finally {
+        setModalText(undefined);
+        clearInterval(interval);
+      }
     }
 
     helpers.setSubmitting(false);
@@ -250,6 +270,11 @@ function NewProject(): JSX.Element {
           </Form>
         )}
       </Formik>
+      <ProgressModal
+        isOpen={Boolean(modalText)}
+        text={modalText ? modalText : ''}
+        progress={progress}
+      />
     </Container>
   );
 }

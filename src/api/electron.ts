@@ -31,6 +31,8 @@ interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
 }
 
+let progress = 0;
+
 export default class ElectronApi extends BaseApi {
   async getAllAnnotations(): Promise<AnnotationEntity[]> {
     return AnnotationModel.query();
@@ -259,9 +261,11 @@ export default class ElectronApi extends BaseApi {
 
   async loadCsv(
     path: string,
+    size: number,
     idColIndex: number,
     textColIndex: number
   ): Promise<void> {
+    progress = 0;
     try {
       const csv = fs.createReadStream(path);
       const promises: Promise<void>[] = [];
@@ -270,6 +274,7 @@ export default class ElectronApi extends BaseApi {
         const parseLine = async (result: Papa.ParseResult<string>) => {
           // Skip header row.
           if (!isHeaderRow) {
+            progress = (100 * result.meta.cursor) / size;
             promises.push(
               this.insertText(
                 {
@@ -337,10 +342,11 @@ export default class ElectronApi extends BaseApi {
   async findRegexMatches(): Promise<void> {
     const labels = await this.getAllLabels();
     const promises: Promise<void>[] = [];
+    const numberOfTexts = await TextModel.query().resultSize();
+    progress = 0;
     await MatchModel.transaction(async (trx) => {
-      for (let text_id = 1; ; text_id++) {
+      for (let text_id = 1; text_id <= numberOfTexts; text_id++) {
         const textEntity = await TextModel.query(trx).findById(text_id);
-        if (textEntity === undefined) break;
         for (const label of labels) {
           const re = new RegExp(label.pattern, 'gi');
           for (const match of Array.from(textEntity.text.matchAll(re))) {
@@ -359,12 +365,14 @@ export default class ElectronApi extends BaseApi {
             }
           }
         }
+        progress = 100 * (text_id / numberOfTexts);
       }
       await Promise.all(promises);
     });
   }
 
   async exportMatches(): Promise<string | undefined> {
+    progress = 0;
     const destination = dialog.showSaveDialogSync({
       title: 'Export File As',
       defaultPath: 'Untitled.json',
@@ -439,6 +447,9 @@ export default class ElectronApi extends BaseApi {
       console.error(`Destination ${destination} not valid.`);
       return;
     }
+  }
+  async getProgress(): Promise<number> {
+    return progress;
   }
 
   private static allMethodNames(): string[] {
