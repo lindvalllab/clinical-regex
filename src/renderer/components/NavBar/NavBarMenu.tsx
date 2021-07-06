@@ -46,8 +46,6 @@ function NavBarMenu(): JSX.Element {
     useState<boolean>(false);
   const [exportMatchesProgressVisible, setExportMatchesProgressVisible] =
     useState<boolean>(false);
-  const [exportProgress, setExportProgress] = useState<number>(-1);
-  // API can send progress of < 0 to indicate that work hasn't started.
 
   const newProject = {
     onClick: async () => {
@@ -68,29 +66,21 @@ function NavBarMenu(): JSX.Element {
   };
   const exportProjectAnnotations = {
     onClick: async () => {
-      const interval = setInterval(async () => {
-        setExportProgress(await api.getProgress());
-      });
       setExportMatchesProgressVisible(true);
       try {
         await exportAnnotations();
       } finally {
         setExportMatchesProgressVisible(false);
-        clearInterval(interval);
       }
     },
   };
   const exportProjectMatches = {
     onClick: async () => {
-      const interval = setInterval(async () => {
-        setExportProgress(await api.getProgress());
-      });
       setExportMatchesProgressVisible(true);
       try {
         await exportMatches();
       } finally {
         setExportMatchesProgressVisible(false);
-        clearInterval(interval);
       }
     },
   };
@@ -189,9 +179,9 @@ function NavBarMenu(): JSX.Element {
         }}
       />
       <ProgressModal
-        isOpen={exportMatchesProgressVisible && exportProgress >= 0}
+        isOpen={exportMatchesProgressVisible}
         text="Exporting..."
-        progress={exportProgress}
+        progress={0}
       />
     </>
   );
