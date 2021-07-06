@@ -74,9 +74,9 @@ function Dashboard(): JSX.Element {
       },
       {
         Header: 'Is Annotated',
-        accessor: 'annotated',
+        accessor: 'is_annotated',
         Cell: ({ row }) =>
-          row.original.annotated ? (
+          row.original.is_annotated ? (
             <Icon as={FaCheckCircle} color="green.500" />
           ) : (
             ''

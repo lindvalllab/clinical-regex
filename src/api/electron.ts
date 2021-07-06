@@ -180,7 +180,7 @@ export default class ElectronApi extends BaseApi {
         group_id: text.group_id,
         text: text.text,
         labels: await this.getMatchedLabelsByGroupId(text.group_id),
-        annotated:
+        is_annotated:
           (
             await AnnotationModel.query().where('group_id', text.group_id)
           ).length > 0,
