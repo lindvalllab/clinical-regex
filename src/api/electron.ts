@@ -25,7 +25,7 @@ import {
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
 import { Transaction, ref } from 'objection';
-import { ExportedEntry, ExportedLabel, ExportedText } from './types';
+import { ExportedEntry } from './types';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -385,43 +385,61 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
+      // TODO: can this be done with just objection?
+      const db = TextModel.knex();
+      const matches = await db('texts')
+        .join('matches', 'matches.text_id', 'texts.id')
+        .select(
+          'group_id',
+          'text_id',
+          'label',
+          'start',
+          'length',
+          db.raw('substr(text, start + 1, length) as text')
+        )
+        .orderBy('group_id')
+        .orderBy('text_id')
+        .orderBy('label')
+        .orderBy('start');
+
       // The output will look a little weird when not using a group ID.
-      const groupIds = await this.getAllGroupIds();
       const output: ExportedEntry[] = [];
-      for (let i = 0; i < groupIds.length; i++) {
-        const nextEntry: ExportedEntry = {
-          group_id: groupIds[i],
-          texts: [],
-        };
-        const texts = await TextModel.query().where({ group_id: groupIds[i] });
-        for (const text of texts) {
-          const labels = await MatchModel.query()
-            .where('text_id', text.id)
-            .distinct('label');
-          if (labels.length === 0) continue;
-          const nextText: ExportedText = {
-            text_id: text.id,
+      for (const match of matches) {
+        if (
+          output.length === 0 ||
+          output[output.length - 1].group_id !== match.group_id
+        )
+          output.push({
+            group_id: match.group_id,
+            texts: [],
+          });
+        const entry = output[output.length - 1];
+
+        if (
+          entry.texts.length === 0 ||
+          entry.texts[entry.texts.length - 1].text_id !== match.text_id
+        )
+          entry.texts.push({
+            text_id: match.text_id,
             labels: [],
-          };
-          for (const label of labels) {
-            const nextLabel: ExportedLabel = {
-              name: label.label,
-              matches: [],
-            };
-            const matches = await MatchModel.query()
-              .where('text_id', text.id)
-              .where('label', label.label);
-            nextLabel.matches = matches.map((match) => ({
-              start: match.start,
-              length: match.length,
-              text: text.text.slice(match.start, match.start + match.length),
-            }));
-            nextText.labels.push(nextLabel);
-          }
-          nextEntry.texts.push(nextText);
-        }
-        if (nextEntry.texts.length > 0) output.push(nextEntry);
-        progress = (100 * (i + 1)) / groupIds.length;
+          });
+        const text = entry.texts[entry.texts.length - 1];
+
+        if (
+          text.labels.length === 0 ||
+          text.labels[text.labels.length - 1].name !== match.label
+        )
+          text.labels.push({
+            name: match.label,
+            matches: [],
+          });
+        const label = text.labels[text.labels.length - 1];
+
+        label.matches.push({
+          start: match.start,
+          length: match.length,
+          text: match.text,
+        });
       }
       fs.writeFileSync(destination, JSON.stringify(output, null, 2));
       return destination;
