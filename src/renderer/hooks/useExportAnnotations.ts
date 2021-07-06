@@ -2,11 +2,11 @@ import { useToast } from '@chakra-ui/toast';
 import { useContext } from 'react';
 import { ApiContext } from '../api';
 
-export default function useExportAnnotations(): () => void {
+export default function useExportAnnotations(): () => Promise<void> {
   const api = useContext(ApiContext);
   const toast = useToast();
   const exportAnnotations = () => {
-    api
+    return api
       .exportAnnotations()
       .then((result) => {
         if (result) {

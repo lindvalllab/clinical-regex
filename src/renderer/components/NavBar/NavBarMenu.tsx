@@ -26,6 +26,7 @@ import useExportMatches from '../../hooks/useExportMatches';
 import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
+import ProgressModal from '../ProgressModal';
 import UnsavedProgressDialog from './UnsavedProgressDialog';
 
 function NavBarMenu(): JSX.Element {
@@ -43,6 +44,10 @@ function NavBarMenu(): JSX.Element {
     useState<boolean>(false);
   const [openProjectDialogVisible, setOpenProjectDialogVisible] =
     useState<boolean>(false);
+  const [exportMatchesProgressVisible, setExportMatchesProgressVisible] =
+    useState<boolean>(false);
+  const [exportProgress, setExportProgress] = useState<number>(-1);
+  // API can send progress of < 0 to indicate that work hasn't started.
 
   const newProject = {
     onClick: async () => {
@@ -62,10 +67,32 @@ function NavBarMenu(): JSX.Element {
     },
   };
   const exportProjectAnnotations = {
-    onClick: exportAnnotations,
+    onClick: async () => {
+      const interval = setInterval(async () => {
+        setExportProgress(await api.getProgress());
+      });
+      setExportMatchesProgressVisible(true);
+      try {
+        await exportAnnotations();
+      } finally {
+        setExportMatchesProgressVisible(false);
+        clearInterval(interval);
+      }
+    },
   };
   const exportProjectMatches = {
-    onClick: exportMatches,
+    onClick: async () => {
+      const interval = setInterval(async () => {
+        setExportProgress(await api.getProgress());
+      });
+      setExportMatchesProgressVisible(true);
+      try {
+        await exportMatches();
+      } finally {
+        setExportMatchesProgressVisible(false);
+        clearInterval(interval);
+      }
+    },
   };
 
   // Associate menu actions to the electron menu.
@@ -160,6 +187,11 @@ function NavBarMenu(): JSX.Element {
           setOpenProjectDialogVisible(false);
           loadDb();
         }}
+      />
+      <ProgressModal
+        isOpen={exportMatchesProgressVisible && exportProgress >= 0}
+        text="Exporting..."
+        progress={exportProgress}
       />
     </>
   );
