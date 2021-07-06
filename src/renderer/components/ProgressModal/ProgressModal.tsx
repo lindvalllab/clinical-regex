@@ -25,11 +25,16 @@ export default function ProgressModal(props: ProgressModalProps): JSX.Element {
           <ModalBody>
             {props.text}
             <Center>
-              <CircularProgress value={props.progress}>
-                <CircularProgressLabel>
-                  {Math.round(props.progress)}%
-                </CircularProgressLabel>
-              </CircularProgress>
+              {/* API can send a progress of zero to indicate indeterminate */}
+              {props.progress > 0 ? (
+                <CircularProgress value={props.progress}>
+                  <CircularProgressLabel>
+                    {Math.round(props.progress)}%
+                  </CircularProgressLabel>
+                </CircularProgress>
+              ) : (
+                <CircularProgress isIndeterminate />
+              )}
             </Center>
           </ModalBody>
           <ModalFooter></ModalFooter>

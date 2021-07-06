@@ -2,13 +2,13 @@ import { useToast } from '@chakra-ui/toast';
 import { useContext } from 'react';
 import { ApiContext } from '../api';
 
-export default function useExportMatches(): () => void {
+export default function useExportMatches(): () => Promise<void> {
   // TODO: include an indicator that something is happening
   // when the export takes a long time.
   const api = useContext(ApiContext);
   const toast = useToast();
   const exportMatches = () => {
-    api
+    return api
       .exportMatches()
       .then((result) => {
         if (result) {

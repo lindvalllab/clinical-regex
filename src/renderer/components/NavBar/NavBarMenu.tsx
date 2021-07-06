@@ -26,6 +26,7 @@ import useExportMatches from '../../hooks/useExportMatches';
 import useLoadDb from '../../hooks/useLoadDb';
 import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
+import ProgressModal from '../ProgressModal';
 import UnsavedProgressDialog from './UnsavedProgressDialog';
 
 function NavBarMenu(): JSX.Element {
@@ -42,6 +43,8 @@ function NavBarMenu(): JSX.Element {
   const [newProjectDialogVisible, setNewProjectDialogVisible] =
     useState<boolean>(false);
   const [openProjectDialogVisible, setOpenProjectDialogVisible] =
+    useState<boolean>(false);
+  const [exportMatchesProgressVisible, setExportMatchesProgressVisible] =
     useState<boolean>(false);
 
   const newProject = {
@@ -62,10 +65,24 @@ function NavBarMenu(): JSX.Element {
     },
   };
   const exportProjectAnnotations = {
-    onClick: exportAnnotations,
+    onClick: async () => {
+      setExportMatchesProgressVisible(true);
+      try {
+        await exportAnnotations();
+      } finally {
+        setExportMatchesProgressVisible(false);
+      }
+    },
   };
   const exportProjectMatches = {
-    onClick: exportMatches,
+    onClick: async () => {
+      setExportMatchesProgressVisible(true);
+      try {
+        await exportMatches();
+      } finally {
+        setExportMatchesProgressVisible(false);
+      }
+    },
   };
 
   // Associate menu actions to the electron menu.
@@ -160,6 +177,11 @@ function NavBarMenu(): JSX.Element {
           setOpenProjectDialogVisible(false);
           loadDb();
         }}
+      />
+      <ProgressModal
+        isOpen={exportMatchesProgressVisible}
+        text="Exporting..."
+        progress={0}
       />
     </>
   );
