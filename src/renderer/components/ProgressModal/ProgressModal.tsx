@@ -1,4 +1,5 @@
 import {
+  Center,
   CircularProgress,
   CircularProgressLabel,
   Modal,
@@ -23,11 +24,13 @@ export default function ProgressModal(props: ProgressModalProps): JSX.Element {
           <ModalHeader>Loading</ModalHeader>
           <ModalBody>
             {props.text}
-            <CircularProgress value={props.progress}>
-              <CircularProgressLabel>
-                {Math.round(props.progress)}%
-              </CircularProgressLabel>
-            </CircularProgress>
+            <Center>
+              <CircularProgress value={props.progress}>
+                <CircularProgressLabel>
+                  {Math.round(props.progress)}%
+                </CircularProgressLabel>
+              </CircularProgress>
+            </Center>
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
