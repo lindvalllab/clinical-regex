@@ -53,7 +53,9 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
         <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
           <HighlightedText
             text={textObj.text}
-            highlights={props.highlights[textObj.id]}
+            highlights={
+              props.highlights[textObj.id] ? props.highlights[textObj.id] : []
+            }
             palette={props.palette}
             contextWindow={
               contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
