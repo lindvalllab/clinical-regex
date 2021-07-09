@@ -155,6 +155,47 @@ const initDb = async (filename?: string): Promise<void> => {
   }
 };
 
+export async function isDbBroken(filename: string): Promise<boolean> {
+  // Check if the database with the given filename was initialized incorrectly.
+  const db = knex({
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: async () => {
+      return {
+        filename: filename,
+      };
+    },
+  });
+  const hasTables = (
+    await Promise.all([
+      db.schema.hasTable('texts'),
+      db.schema.hasTable('annotations'),
+      db.schema.hasTable('labels'),
+      db.schema.hasTable('settings'),
+      db.schema.hasTable('matches'),
+    ])
+  ).every((x) => x);
+
+  if (!hasTables) {
+    db.destroy();
+    return true;
+  }
+
+  // If any of the texts, labels, matches, or settings tables are empty we assume that
+  // the project was not initialized properly.
+  const hasData = (
+    await Promise.all([
+      db('texts').count('* as count'),
+      db('labels').count('* as count'),
+      db('matches').count('* as count'),
+      db('settings').count('* as count'),
+    ])
+  ).every((x) => x[0]['count'] > 0);
+
+  db.destroy();
+  return !hasData;
+}
+
 export const getKnexDb = (): Knex => Model.knex();
 
 export { getTempDbPath, initDb };
