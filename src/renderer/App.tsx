@@ -17,8 +17,8 @@ function App(): JSX.Element {
       <ColorPaletteProvider>
         <Flex h="100vh" flexDirection="column">
           <Router>
-            <NavBar />
             <Box flexGrow={1}>
+              <NavBar />
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/upload" component={NewProject} />
