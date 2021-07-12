@@ -4,7 +4,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
 import { getKnexDb, getTempDbPath, initDb, isDbBroken } from './db';
 import { URL } from 'url';
-import { createMenu, disableDevTools } from './menu';
+import { createMenu, disableCustomMenuItems, disableDevTools } from './menu';
 
 const windowUrl = app.isPackaged
   ? `file://${path.join(__dirname, '../index.html')}`
@@ -129,6 +129,8 @@ app.on('ready', async () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
+  } else {
+    disableCustomMenuItems();
   }
 });
 

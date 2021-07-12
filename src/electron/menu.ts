@@ -1,41 +1,68 @@
 import { BrowserWindow, IpcRenderer, Menu, MenuItem } from 'electron';
-import { menuEntries, MenuEntryHandler } from '../menu';
+import { menuEntries, MenuEntry, MenuEntryHandler } from '../menu';
+
+interface MenuItemSpec {
+  label: string;
+  accelerator: string;
+  webContentsChannel: MenuEntry;
+}
+
+const fileMenuEntrySpecs: MenuItemSpec[] = [
+  {
+    label: 'New Project',
+    accelerator: 'CmdOrCtrl+n',
+    webContentsChannel: menuEntries.NEW_PROJECT,
+  },
+  {
+    label: 'Load Project...',
+    accelerator: 'CmdOrCtrl+o',
+    webContentsChannel: menuEntries.LOAD_PROJECT,
+  },
+  {
+    label: 'Save As...',
+    accelerator: 'CmdOrCtrl+Shift+s',
+    webContentsChannel: menuEntries.SAVE_AS,
+  },
+  {
+    label: 'Export Annotations...',
+    accelerator: 'CmdOrCtrl+e',
+    webContentsChannel: menuEntries.EXPORT_ANNOTATIONS,
+  },
+];
+
+const editMenuEntrySpecs: MenuItemSpec[] = [
+  {
+    label: 'Preferences',
+    accelerator: 'CmdOrCtrl+,',
+    webContentsChannel: menuEntries.PREFERENCES,
+  },
+];
 
 export function createMenu(mainWindow: BrowserWindow): void {
+  // Add custom menu items. If adding something here, remember to set the ability
+  // to disable it in the disableCustomMenuItems function below.
   const menu = Menu.getApplicationMenu();
   if (menu === null) return;
 
   const fileMenu = menu.items.find(
     (item) => item.role !== undefined && item.role.toLowerCase() === 'filemenu'
   );
-  const newProject = new MenuItem({
-    label: 'New Project',
-    accelerator: 'CmdOrCtrl+n',
-    click: () => mainWindow.webContents.send('new-project'),
-  });
-  const loadProject = new MenuItem({
-    label: 'Load Project...',
-    accelerator: 'CmdOrCtrl+o',
-    click: () => mainWindow.webContents.send('load-project'),
-  });
-  const saveAs = new MenuItem({
-    label: 'Save As...',
-    accelerator: 'CmdOrCtrl+Shift+s',
-    click: () => mainWindow.webContents.send('save-as'),
-  });
-  const exportProject = new MenuItem({
-    label: 'Export Annotations...',
-    accelerator: 'CmdOrCtrl+e',
-    click: () => mainWindow.webContents.send('export-annotations'),
-  });
   const separator = new MenuItem({
     type: 'separator',
   });
+  const fileMenuEntries = fileMenuEntrySpecs.map(
+    (spec) =>
+      new MenuItem({
+        label: spec.label,
+        accelerator: spec.accelerator,
+        click: () => mainWindow.webContents.send(spec.webContentsChannel),
+      })
+  );
 
   // On macOS, we might have menu items that were created the last time the window was opened.
   // However, the 'click' handlers will be associated to the old window, which has been destroyed.
   // So if the menu items already exist, we need to update their 'click' properties.
-  const fileMenuEntries = [newProject, loadProject, saveAs, exportProject];
+  // These menu items have also been disabled, so we need to set them to be enabled.
   if (fileMenu !== undefined && fileMenu.submenu !== undefined) {
     let inserted = false; // Did we insert new entries in the file menu?
     for (const i in fileMenuEntries) {
@@ -44,6 +71,7 @@ export function createMenu(mainWindow: BrowserWindow): void {
       );
       if (foundEntry !== undefined) {
         foundEntry.click = fileMenuEntries[i].click;
+        foundEntry.enabled = true;
       } else {
         fileMenu.submenu.insert(Number(i), fileMenuEntries[i]);
         inserted = true;
@@ -55,17 +83,27 @@ export function createMenu(mainWindow: BrowserWindow): void {
   const editMenu = menu.items.find(
     (item) => item.role !== undefined && item.role.toLowerCase() === 'editmenu'
   );
-  const preferences = new MenuItem({
-    label: 'Preferences',
-    accelerator: 'CmdOrCtrl+,',
-    click: () => mainWindow.webContents.send('preferences'),
-  });
+  const editMenuEntries = editMenuEntrySpecs.map(
+    (spec) =>
+      new MenuItem({
+        label: spec.label,
+        accelerator: spec.accelerator,
+        click: () => mainWindow.webContents.send(spec.webContentsChannel),
+      })
+  );
+  if (editMenuEntries.length !== 1) {
+    // Code below assumes the list only contains one entry.
+    throw Error('Please ensure that the edit menu is handled properly.');
+  }
+
+  const preferences = editMenuEntries[0];
   if (editMenu !== undefined && editMenu.submenu !== undefined) {
     const foundPreferences = editMenu.submenu.items.find(
       (item) => item.label === preferences.label
     );
     if (foundPreferences !== undefined) {
       foundPreferences.click = preferences.click;
+      foundPreferences.enabled = true;
     } else {
       editMenu.submenu.append(separator);
       editMenu.submenu.append(preferences);
@@ -73,6 +111,38 @@ export function createMenu(mainWindow: BrowserWindow): void {
   }
 
   Menu.setApplicationMenu(menu);
+}
+
+export function disableCustomMenuItems(): void {
+  const menu = Menu.getApplicationMenu();
+  if (menu === null) return;
+  const fileMenu = menu.items.find(
+    (item) => item.role !== undefined && item.role.toLowerCase() === 'filemenu'
+  );
+  if (fileMenu !== undefined && fileMenu.submenu !== undefined) {
+    for (const fileMenuEntrySpec of fileMenuEntrySpecs) {
+      const foundEntry = fileMenu.submenu.items.find(
+        (item) => item.label === fileMenuEntrySpec.label
+      );
+      if (foundEntry !== undefined) {
+        foundEntry.enabled = false;
+      }
+    }
+  }
+
+  const editMenu = menu.items.find(
+    (item) => item.role !== undefined && item.role.toLowerCase() === 'editmenu'
+  );
+  if (editMenu !== undefined && editMenu.submenu !== undefined) {
+    for (const editMenuEntrySpec of editMenuEntrySpecs) {
+      const foundEntry = editMenu.submenu.items.find(
+        (item) => item.label === editMenuEntrySpec.label
+      );
+      if (foundEntry !== undefined) {
+        foundEntry.enabled = false;
+      }
+    }
+  }
 }
 
 export function disableDevTools(): void {
