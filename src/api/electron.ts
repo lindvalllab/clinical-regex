@@ -66,6 +66,7 @@ export default class ElectronApi extends BaseApi {
 
     if (results.length > 1)
       throw Error('Multiple settings found. Something is wrong!');
+    else if (results.length === 0) throw Error('No settings found.');
 
     const settings = results[0];
 

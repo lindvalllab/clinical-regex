@@ -24,6 +24,7 @@ import {
   ColorPaletteContext,
   ColorPaletteFromLabels,
 } from '../../ColorPaletteProvider';
+import RedirectHome from '../../components/RedirectHome';
 
 interface RowData {
   pageSize: number;
@@ -34,7 +35,12 @@ function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
   const [labels, setLabels] = useState<LabelEntity[]>();
   const [palette, setPalette] = useState<ColorPaletteFromLabels>();
+  const [hasData, setHasData] = useState<boolean>(true);
   const { paletteFromLabels } = useContext(ColorPaletteContext);
+
+  useEffect(() => {
+    api.projectStarted().then((started) => setHasData(started));
+  }, [api]);
 
   useEffect(() => {
     api.getAllLabels().then((labels) => setLabels(labels));
@@ -131,6 +137,8 @@ function Dashboard(): JSX.Element {
       );
     };
   };
+
+  if (!hasData) return <RedirectHome />;
 
   return (
     <Box px={8} py={4}>

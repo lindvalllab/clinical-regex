@@ -20,6 +20,7 @@ import AnnotationSidebar from './AnnotationSidebar';
 import AnnotationFooter from './AnnotationFooter';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ColorPaletteContext } from '../../ColorPaletteProvider';
+import RedirectHome from '../../components/RedirectHome';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -82,7 +83,14 @@ function AnnotationInterface(): JSX.Element {
       .then((settings) => {
         setSettings(settings);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        if (/no settings found/i.test(e.message)) {
+          // No settings means that the project has not been initialized properly.
+          setSettings(undefined);
+        } else {
+          console.error(e);
+        }
+      });
   }, [api]);
 
   // Get the next set of texts when the page changes.
@@ -117,6 +125,8 @@ function AnnotationInterface(): JSX.Element {
       current = false;
     };
   }, [api, groupIds, page]);
+
+  if (settings === undefined) return <RedirectHome />;
 
   return (
     <Flex flexDirection="column" h="full" w="full">
