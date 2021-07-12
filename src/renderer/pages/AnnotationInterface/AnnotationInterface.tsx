@@ -51,6 +51,18 @@ function AnnotationInterface(): JSX.Element {
 
   const page = clipPage(Number(query.get('page')));
 
+  function skipPages(skippedPages: number) {
+    return () => {
+      if (page !== clipPage(page + skippedPages)) {
+        setEntry(undefined);
+        setHighlights(undefined);
+        history.push(
+          `/annotation-interface?page=${clipPage(page + skippedPages)}`
+        );
+      }
+    };
+  }
+
   // Get the groupIds and labels on initial render.
   useEffect(() => {
     api
@@ -122,6 +134,7 @@ function AnnotationInterface(): JSX.Element {
             entry={entry}
             labels={labels}
             palette={paletteFromLabels(labels)}
+            nextPage={skipPages(1)}
           />
         </HStack>
       ) : (
@@ -141,16 +154,8 @@ function AnnotationInterface(): JSX.Element {
         totalPages={groupIds.length}
         groupId={groupIds[page]}
         groupIdField={settings?.GROUP_ID_FIELD}
-        onPrevPage={() => {
-          setEntry(undefined);
-          setHighlights(undefined);
-          history.push(`/annotation-interface?page=${clipPage(page - 1)}`);
-        }}
-        onNextPage={() => {
-          setEntry(undefined);
-          setHighlights(undefined);
-          history.push(`/annotation-interface?page=${clipPage(page + 1)}`);
-        }}
+        onPrevPage={skipPages(-1)}
+        onNextPage={skipPages(1)}
       />
     </Flex>
   );
