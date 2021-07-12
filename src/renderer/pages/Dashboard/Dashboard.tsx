@@ -139,7 +139,7 @@ function Dashboard(): JSX.Element {
         columns={columns}
         data={data}
         fetchData={fetchData}
-        loading={loading}
+        isLoading={loading}
         pageCount={pageCount}
         totalCount={totalCount}
         rowProps={(row: Row, data: RowData) => ({

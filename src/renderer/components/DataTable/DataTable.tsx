@@ -42,7 +42,7 @@ function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
   fetchData,
-  loading,
+  isLoading,
   pageCount: controlledPageCount,
   totalCount,
   rowProps,
@@ -88,7 +88,6 @@ function DataTable<T extends Record<string, unknown>>({
 
   const displayPage = pageIndex + 1;
 
-  console.log(headerGroups);
   return (
     <Box {...props}>
       <Flex justifyContent="space-between" alignItems="flex-end" mb={6}>
@@ -148,7 +147,7 @@ function DataTable<T extends Record<string, unknown>>({
             Page {displayPage} of {pageOptions.length}
           </Text>
           <Text fontSize="xs">
-            {loading
+            {isLoading
               ? 'Loading...'
               : `Showing ${pageSize * pageIndex + 1} -
               ${pageSize * pageIndex + page.length} of ${totalCount} results`}
@@ -166,7 +165,7 @@ function DataTable<T extends Record<string, unknown>>({
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {!loading ? (
+          {!isLoading ? (
             page.map((row, i) => {
               prepareRow(row);
               const data = {
