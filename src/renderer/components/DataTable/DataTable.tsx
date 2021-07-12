@@ -10,6 +10,7 @@ import {
   BoxProps,
   Button,
   ButtonGroup,
+  Center,
   Flex,
   FormControl,
   FormLabel,
@@ -19,6 +20,7 @@ import {
   NumberInputField,
   NumberInputStepper,
   Select,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -40,7 +42,7 @@ function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
   fetchData,
-  loading,
+  isLoading,
   pageCount: controlledPageCount,
   totalCount,
   rowProps,
@@ -145,7 +147,7 @@ function DataTable<T extends Record<string, unknown>>({
             Page {displayPage} of {pageOptions.length}
           </Text>
           <Text fontSize="xs">
-            {loading
+            {isLoading
               ? 'Loading...'
               : `Showing ${pageSize * pageIndex + 1} -
               ${pageSize * pageIndex + page.length} of ${totalCount} results`}
@@ -163,22 +165,39 @@ function DataTable<T extends Record<string, unknown>>({
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {page.map((row, i) => {
-            prepareRow(row);
-            const data = {
-              pageSize: pageSize,
-              pageIndex: pageIndex,
-            };
-            return (
-              <Tr {...row.getRowProps(rowProps(row, data))}>
-                {row.cells.map((cell) => {
-                  return (
-                    <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
+          {!isLoading ? (
+            page.map((row, i) => {
+              prepareRow(row);
+              const data = {
+                pageSize: pageSize,
+                pageIndex: pageIndex,
+              };
+              return (
+                <Tr {...row.getRowProps(rowProps(row, data))}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })
+          ) : (
+            <Tr>
+              <Td colSpan={headerGroups[0].headers.length}>
+                <Box height="40vh">
+                  <Center w="full" h="full">
+                    <Spinner
+                      thickness="4px"
+                      size="xl"
+                      color="gray"
+                      speed="0.65s"
+                    />
+                  </Center>
+                </Box>
+              </Td>
+            </Tr>
+          )}
         </Tbody>
       </Table>
     </Box>
