@@ -181,16 +181,18 @@ export async function isDbBroken(filename: string): Promise<boolean> {
     return true;
   }
 
-  // If any of the texts, labels, matches, or settings tables are empty we assume that
-  // the project was not initialized properly.
-  const hasData = (
-    await Promise.all([
-      db('texts').count('* as count'),
-      db('labels').count('* as count'),
-      db('matches').count('* as count'),
-      db('settings').count('* as count'),
-    ])
-  ).every((x) => x[0]['count'] > 0);
+  // If any of the texts, labels, matches, or settings tables are empty and if there
+  // are no annotations, we assume that the project was not initialized properly.
+  const hasData =
+    (
+      await Promise.all([
+        db('texts').count('* as count'),
+        db('labels').count('* as count'),
+        db('matches').count('* as count'),
+        db('settings').count('* as count'),
+      ])
+    ).every((x) => x[0]['count'] > 0) ||
+    (await db('annotations').count('* as count'))[0]['count'] > 0;
 
   db.destroy();
   return !hasData;
