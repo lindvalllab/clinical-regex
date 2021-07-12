@@ -26,6 +26,7 @@ type AnnotationSidebarProps = {
   entry: Entry;
   labels: LabelEntity[];
   palette: ColorPaletteFromLabels;
+  nextPage: () => void;
 };
 
 const initialAnnotations = (entry: Entry, labels: LabelEntity[]) => {
@@ -62,6 +63,7 @@ function AnnotationSidebar({
   entry,
   labels,
   palette,
+  nextPage,
 }: AnnotationSidebarProps): JSX.Element {
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
@@ -84,7 +86,7 @@ function AnnotationSidebar({
   };
 
   const onSubmit = () => {
-    api.updateAnnotations(annotations);
+    api.updateAnnotations(annotations).then(nextPage);
   };
 
   return (
