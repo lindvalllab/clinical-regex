@@ -94,6 +94,7 @@ function NewProject(): JSX.Element {
 
     helpers.setSubmitting(false);
     history.push('/dashboard');
+    history.go(0);
   };
 
   const getFieldIndex = (
