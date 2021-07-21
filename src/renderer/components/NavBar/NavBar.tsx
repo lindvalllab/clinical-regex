@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useViewportScroll } from 'framer-motion';
 import {
   chakra,
+  Button,
   Flex,
   HStack,
   HTMLChakraProps,
@@ -18,12 +19,24 @@ const activeStyle: React.CSSProperties = {
 function NavBarContent(): JSX.Element {
   const api = useContext(ApiContext);
 
-  // Check whether there is a project loaded to determine what to display in
-  // the nav bar.
-  const [projectStarted, setProjectStarted] = React.useState<boolean>(false);
-  useEffect(() => {
-    api.projectStarted().then((started) => setProjectStarted(started));
-  }, [api]);
+  const onClickLog = async () => {
+    console.log('Button clicked');
+    console.log('Texts');
+    const texts = await api.getAllTexts();
+    console.log(texts);
+    console.log('Labels');
+    const labels = await api.getAllLabels();
+    console.log(labels);
+    console.log('Annotations');
+    const annotations = await api.getAllAnnotations();
+    console.log(annotations);
+    console.log('Settings');
+    const settings = await api.getSettings();
+    console.log(settings);
+    console.log('Matches');
+    const matches = await api.getAllMatches();
+    console.log(matches);
+  };
 
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
@@ -31,21 +44,15 @@ function NavBarContent(): JSX.Element {
         <NavBarMenu />
       </Flex>
       <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
-        {projectStarted ? (
-          <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
-            <NavLink to="/dashboard" activeStyle={activeStyle}>
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/annotation-interface?page=0"
-              activeStyle={activeStyle}
-            >
-              Annotate
-            </NavLink>
-          </HStack>
-        ) : (
-          ''
-        )}
+        <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
+          <NavLink to="/dashboard" activeStyle={activeStyle}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/annotation-interface?page=0" activeStyle={activeStyle}>
+            Annotate
+          </NavLink>
+          <Button onClick={onClickLog}>Log</Button>
+        </HStack>
       </Flex>
     </Flex>
   );
