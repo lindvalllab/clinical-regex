@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    "released",
+    "npm"
+  ],
+  "owner": "akwok-dfci",
+  "repo": "clinical-regex",
+  "name": "ClinicalRegexBot",
+  "email": "87085594+ClinicalRegexBot@users.noreply.github.com",
+  "labels": [
+    {
+      "name": "ci",
+      "releaseType": "none",
+      "description": "CI tooling",
+      "changelogTitle": "🤖 CI Upgrades"
+    }
+  ]
+}
