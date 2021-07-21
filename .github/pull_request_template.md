@@ -1,0 +1,1 @@
+If your pull request creates any changes for the final built project, please use (at least) one of the github labels `major`, `minor`, `patch`, or `performance`. If not, please use (at least) one of the labels `ci`, `internal`, `documentation`, `test`, `dependencies`.
