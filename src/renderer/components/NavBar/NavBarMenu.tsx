@@ -47,6 +47,13 @@ function NavBarMenu(): JSX.Element {
   const [exportMatchesProgressVisible, setExportMatchesProgressVisible] =
     useState<boolean>(false);
 
+  // Check whether there is a project loaded to determine whether to disable
+  // some menu items.
+  const [projectStarted, setProjectStarted] = useState<boolean>(false);
+  useEffect(() => {
+    api.projectStarted().then((started) => setProjectStarted(started));
+  }, [api]);
+
   const newProject = {
     onClick: async () => {
       if ((await api.connectedToTempDb()) && (await api.projectStarted())) {
@@ -129,6 +136,7 @@ function NavBarMenu(): JSX.Element {
             icon={<FaSave />}
             onClick={saveProjectAs.onClick}
             command="⌘⇧S"
+            isDisabled={!projectStarted}
           >
             Save Project As
           </MenuItem>
@@ -136,12 +144,14 @@ function NavBarMenu(): JSX.Element {
             icon={<FaDownload />}
             onClick={exportProjectAnnotations.onClick}
             command="⌘E"
+            isDisabled={!projectStarted}
           >
             Export Annotations
           </MenuItem>
           <MenuItem
             icon={<FaDownload />}
             onClick={exportProjectMatches.onClick}
+            isDisabled={!projectStarted}
           >
             Export Keyword Matches
           </MenuItem>
