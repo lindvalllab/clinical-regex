@@ -21,4 +21,6 @@ jobs:
       - name: Run tests
         run: yarn test
       - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: yarn auto shipit
