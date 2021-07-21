@@ -20,3 +20,5 @@ jobs:
         run: yarn tc
       - name: Run tests
         run: yarn test
+      - name: Create release
+        run: yarn auto shipit
