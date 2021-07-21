@@ -49,20 +49,24 @@ function EntryDisplay(props: EntryDisplayProps): JSX.Element {
           Number of words of context to show around highlights.
         </FormHelperText>
       </FormControl>
-      {props.entry.texts.map((textObj) => (
-        <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
-          <HighlightedText
-            text={textObj.text}
-            highlights={
-              props.highlights[textObj.id] ? props.highlights[textObj.id] : []
-            }
-            palette={props.palette}
-            contextWindow={
-              contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
-            }
-          />
-        </Box>
-      ))}
+      {props.entry.texts.map((textObj) => {
+        const highlights = props.highlights[textObj.id]
+          ? props.highlights[textObj.id]
+          : [];
+        return (
+          <Box key={textObj.id} p={2} shadow="md" borderWidth="1px" w="full">
+            <HighlightedText
+              text={textObj.text}
+              highlights={highlights}
+              palette={props.palette}
+              contextWindow={
+                contextWindow ? contextWindow : DEFAULT_CONTEXT_WINDOW_SIZE
+              }
+              isHidden={highlights.length <= 0}
+            />
+          </Box>
+        );
+      })}
     </VStack>
   );
 }
