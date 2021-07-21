@@ -1,5 +1,4 @@
-import React, { useContext, useEffect } from 'react';
-import { ApiContext } from '../../api';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useViewportScroll } from 'framer-motion';
 import {
@@ -16,14 +15,7 @@ const activeStyle: React.CSSProperties = {
 };
 
 function NavBarContent(): JSX.Element {
-  const api = useContext(ApiContext);
-
-  // Check whether there is a project loaded to determine what to display in
-  // the nav bar.
-  const [projectStarted, setProjectStarted] = React.useState<boolean>(false);
-  useEffect(() => {
-    api.projectStarted().then((started) => setProjectStarted(started));
-  }, [api]);
+  // const api = useContext(ApiContext);
 
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
@@ -31,21 +23,14 @@ function NavBarContent(): JSX.Element {
         <NavBarMenu />
       </Flex>
       <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
-        {projectStarted ? (
-          <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
-            <NavLink to="/dashboard" activeStyle={activeStyle}>
-              Dashboard
-            </NavLink>
-            <NavLink
-              to="/annotation-interface?page=0"
-              activeStyle={activeStyle}
-            >
-              Annotate
-            </NavLink>
-          </HStack>
-        ) : (
-          ''
-        )}
+        <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
+          <NavLink to="/dashboard" activeStyle={activeStyle}>
+            Dashboard
+          </NavLink>
+          <NavLink to="/annotation-interface?page=0" activeStyle={activeStyle}>
+            Annotate
+          </NavLink>
+        </HStack>
       </Flex>
     </Flex>
   );
