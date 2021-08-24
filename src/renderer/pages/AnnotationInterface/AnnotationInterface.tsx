@@ -129,6 +129,19 @@ function AnnotationInterface(): JSX.Element {
 
   if (settings === undefined) return <RedirectHome />;
 
+  const uniqueLabels = getUnique(
+    labels.sort((e) => e.id).map((label) => label.name)
+  );
+  const matchedLabels =
+    highlights === undefined
+      ? new Set()
+      : new Set(
+          Object.values(highlights)
+            .flat()
+            .map((x) => x.tag)
+        );
+  const matched = uniqueLabels.map((label) => matchedLabels.has(label));
+
   return (
     <Flex flexDirection="column" h="full" w="full">
       {entry && labels && highlights ? (
@@ -143,9 +156,8 @@ function AnnotationInterface(): JSX.Element {
           </Box>
           <AnnotationSidebar
             entry={entry}
-            labels={getUnique(
-              labels.sort((e) => e.id).map((label) => label.name)
-            )}
+            labels={uniqueLabels}
+            matched={matched}
             palette={paletteFromLabels(labels)}
             nextPage={skipPages(1)}
           />
