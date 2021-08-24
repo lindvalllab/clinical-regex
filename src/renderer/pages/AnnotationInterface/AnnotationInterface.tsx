@@ -21,6 +21,7 @@ import AnnotationFooter from './AnnotationFooter';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ColorPaletteContext } from '../../ColorPaletteProvider';
 import RedirectHome from '../../components/RedirectHome';
+import { getUnique } from '../../../utils';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -142,7 +143,9 @@ function AnnotationInterface(): JSX.Element {
           </Box>
           <AnnotationSidebar
             entry={entry}
-            labels={labels}
+            labels={getUnique(
+              labels.sort((e) => e.id).map((label) => label.name)
+            )}
             palette={paletteFromLabels(labels)}
             nextPage={skipPages(1)}
           />

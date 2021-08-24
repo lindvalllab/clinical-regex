@@ -17,24 +17,19 @@ import {
 import { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { FaArrowAltCircleRight, FaSquare } from 'react-icons/fa';
-import { CRAnnotation, Entry, LabelEntity } from '../../../types';
+import { CRAnnotation, Entry } from '../../../types';
 import { ApiContext } from '../../api';
-import { getUnique } from '../../../utils';
 import { ColorPaletteFromLabels } from '.././../ColorPaletteProvider';
 
 type AnnotationSidebarProps = {
   entry: Entry;
-  labels: LabelEntity[];
+  labels: string[];
   palette: ColorPaletteFromLabels;
   nextPage: () => void;
 };
 
-const initialAnnotations = (entry: Entry, labels: LabelEntity[]) => {
-  const uniqueLabels = getUnique(
-    labels.sort((e) => e.id).map((label) => label.name)
-  );
-
-  return uniqueLabels.map((name) => {
+const initialAnnotations = (entry: Entry, labels: string[]) => {
+  return labels.map((name) => {
     const annotationCandidates = entry.annotations.filter(
       (annotation) => annotation.label === name
     );
