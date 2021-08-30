@@ -1,3 +1,15 @@
+# v0.2.0 (Mon Aug 30 2021)
+
+#### 🚀 Enhancement
+
+- Annotation sidebar: use a different icon if the label has no matches [#211](https://github.com/lindvalllab/clinical-regex/pull/211) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.1.2 (Thu Jul 22 2021)
 
 #### 🐛 Bug Fix
