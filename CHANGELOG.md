@@ -1,3 +1,15 @@
+# v0.2.4 (Mon Sep 27 2021)
+
+#### 🐛 Bug Fix
+
+- build workflow: only run when release is released [#215](https://github.com/lindvalllab/clinical-regex/pull/215) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.3 (Mon Sep 27 2021)
 
 #### 🐛 Bug Fix
