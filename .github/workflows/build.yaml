@@ -28,38 +28,12 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build -p never
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: |
-            dist/*.dmg
-            dist/*.exe
-            dist/*.AppImage
-
-  create-release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download build artifacts
-        id: download
-        uses: actions/download-artifact@v2
-        with:
-          path: artifacts
-      - name: ls artifacts
-        run: |
-          ls -la1 artifacts
-          ls -la1 artifacts/dist
-      - name: Create release
-        id: create_release
+      - name: Upload build to release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            artifacts/**/*.dmg
-            artifacts/**/*.exe
-            artifacts/**/*.AppImage
+            dist/*.dmg
+            dist/*.exe
+            dist/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
