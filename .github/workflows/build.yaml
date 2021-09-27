@@ -52,9 +52,6 @@ jobs:
       - name: ls artifacts
         run: |
           ls -la1 artifacts
-          ls -la1 artifacts/macos
-          ls -la1 artifacts/windows
-          ls -la1 artifacts/linux
           ls -la1 artifacts/dist
       - name: Create release
         id: create_release
