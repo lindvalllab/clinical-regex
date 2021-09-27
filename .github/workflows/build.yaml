@@ -1,0 +1,75 @@
+name: Build release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Prepare repository
+        run: git fetch --unshallow --tags
+      - name: Cache node_modules
+        id: cache-node
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
+      - name: Install modules
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Upload artifact (mac)
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.os  == 'macos-latest' }}
+        with:
+          name: macos
+          path: dist_electron/*.dmg
+      - name: Upload artifact (windows)
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.os  == 'windows-latest' }}
+        with:
+          name: windows
+          path: dist_electron/*.exe
+      - name: Upload artifact (linux)
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.os  == 'ubuntu-latest' }}
+        with:
+          name: linux
+          path: dist_electron/*.AppImage
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download build artifacts
+        id: download
+        uses: actions/download-artifact@v2
+        with:
+          path: artifacts
+      - name: ls artifacts
+        run: |
+          ls -la1 artifacts
+          ls -la1 artifacts/macos
+          ls -la1 artifacts/windows
+          ls -la1 artifacts/linux
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            artifacts/**/*.dmg
+            artifacts/**/*.exe
+            artifacts/**/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
