@@ -27,27 +27,17 @@ jobs:
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
       - name: Build
-        run: yarn build
+        run: yarn build -p never
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload artifact (mac)
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
-        if: ${{ matrix.os  == 'macos-latest' }}
         with:
-          name: macos
-          path: dist/*.dmg
-      - name: Upload artifact (windows)
-        uses: actions/upload-artifact@v2
-        if: ${{ matrix.os  == 'windows-latest' }}
-        with:
-          name: windows
-          path: dist/*.exe
-      - name: Upload artifact (linux)
-        uses: actions/upload-artifact@v2
-        if: ${{ matrix.os  == 'ubuntu-latest' }}
-        with:
-          name: linux
-          path: dist/*.AppImage
+          name: dist
+          path: |
+            dist/*.dmg
+            dist/*.exe
+            dist/*.AppImage
 
   create-release:
     name: Create Release
@@ -65,6 +55,7 @@ jobs:
           ls -la1 artifacts/macos
           ls -la1 artifacts/windows
           ls -la1 artifacts/linux
+          ls -la1 artifacts/dist
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
