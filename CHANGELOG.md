@@ -1,3 +1,15 @@
+# v0.2.2 (Mon Sep 27 2021)
+
+#### 🐛 Bug Fix
+
+- Build release [#213](https://github.com/lindvalllab/clinical-regex/pull/213) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.1 (Mon Sep 27 2021)
 
 #### 🐛 Bug Fix
