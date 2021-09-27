@@ -35,19 +35,19 @@ jobs:
         if: ${{ matrix.os  == 'macos-latest' }}
         with:
           name: macos
-          path: dist_electron/*.dmg
+          path: dist/*.dmg
       - name: Upload artifact (windows)
         uses: actions/upload-artifact@v2
         if: ${{ matrix.os  == 'windows-latest' }}
         with:
           name: windows
-          path: dist_electron/*.exe
+          path: dist/*.exe
       - name: Upload artifact (linux)
         uses: actions/upload-artifact@v2
         if: ${{ matrix.os  == 'ubuntu-latest' }}
         with:
           name: linux
-          path: dist_electron/*.AppImage
+          path: dist/*.AppImage
 
   create-release:
     name: Create Release
