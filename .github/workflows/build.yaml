@@ -12,8 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Prepare repository
-        run: git fetch --unshallow --tags
       - name: Cache node_modules
         id: cache-node
         uses: actions/cache@v2
