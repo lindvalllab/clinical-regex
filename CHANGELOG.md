@@ -1,3 +1,15 @@
+# v0.2.3 (Mon Sep 27 2021)
+
+#### 🐛 Bug Fix
+
+- build workflow: don't fetch tags [#214](https://github.com/lindvalllab/clinical-regex/pull/214) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.2 (Mon Sep 27 2021)
 
 #### 🐛 Bug Fix
