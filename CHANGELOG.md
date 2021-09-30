@@ -1,3 +1,15 @@
+# v0.2.5 (Thu Sep 30 2021)
+
+#### 🐛 Bug Fix
+
+- file validation: fix on windows [#216](https://github.com/lindvalllab/clinical-regex/pull/216) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.4 (Mon Sep 27 2021)
 
 #### 🐛 Bug Fix
