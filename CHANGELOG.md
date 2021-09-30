@@ -1,3 +1,15 @@
+# v0.2.6 (Thu Sep 30 2021)
+
+#### 🐛 Bug Fix
+
+- await knex destroy calls [#217](https://github.com/lindvalllab/clinical-regex/pull/217) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.5 (Thu Sep 30 2021)
 
 #### 🐛 Bug Fix
