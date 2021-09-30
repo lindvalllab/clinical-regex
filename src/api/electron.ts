@@ -208,7 +208,7 @@ export default class ElectronApi extends BaseApi {
   }
   async deleteTempDb(): Promise<void> {
     const tempDbPath = await getTempDbPath();
-    if (await this.connectedToTempDb()) getKnexDb().destroy();
+    if (await this.connectedToTempDb()) await getKnexDb().destroy();
     if (fs.existsSync(tempDbPath)) fs.unlinkSync(tempDbPath);
   }
   async projectStarted(): Promise<boolean> {
@@ -240,7 +240,7 @@ export default class ElectronApi extends BaseApi {
   }
 
   async loadDbFromPath(source?: string): Promise<void> {
-    getKnexDb().destroy();
+    await getKnexDb().destroy();
     await initDb(source);
   }
 

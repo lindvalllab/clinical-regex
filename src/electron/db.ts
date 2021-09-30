@@ -177,7 +177,7 @@ export async function isDbBroken(filename: string): Promise<boolean> {
   ).every((x) => x);
 
   if (!hasTables) {
-    db.destroy();
+    await db.destroy();
     return true;
   }
 
@@ -194,7 +194,7 @@ export async function isDbBroken(filename: string): Promise<boolean> {
     ).every((x) => x[0]['count'] > 0) ||
     (await db('annotations').count('* as count'))[0]['count'] > 0;
 
-  db.destroy();
+  await db.destroy();
   return !hasData;
 }
 
