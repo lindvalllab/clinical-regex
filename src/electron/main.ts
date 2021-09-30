@@ -46,7 +46,7 @@ function createWindow() {
   mainWindow.loadURL(windowUrl);
   mainWindow.on('closed', async () => {
     mainWindow = null;
-    getKnexDb().destroy();
+    await getKnexDb().destroy();
     const tempDbPath = await getTempDbPath();
     if (fs.existsSync(tempDbPath)) {
       fs.unlinkSync(tempDbPath);
