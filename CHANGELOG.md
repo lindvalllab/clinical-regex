@@ -1,3 +1,15 @@
+# v0.2.7 (Tue Oct 05 2021)
+
+#### 🐛 Bug Fix
+
+- validation schema: accept excel mime type [#218](https://github.com/lindvalllab/clinical-regex/pull/218) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.2.6 (Thu Sep 30 2021)
 
 #### 🐛 Bug Fix
