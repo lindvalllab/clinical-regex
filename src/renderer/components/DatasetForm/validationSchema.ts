@@ -12,14 +12,15 @@ const validateFile = (file: File) => {
   if (!file) return true;
   if (SUPPORTED_FORMATS.map((format) => format.mimeType).includes(file.type))
     return true;
-  if (file.type === '')
+  if (['', 'application/vnd.ms-excel'].includes(file.type)) {
+    // Windows doesn't always recognize the text/csv mimeType.
     if (
       SUPPORTED_FORMATS.map((format) =>
         file.name.endsWith(format.extension)
       ).includes(true)
     )
-      // Windows doesn't always recognize the text/csv mimeType.
       return true;
+  }
   return false;
 };
 
