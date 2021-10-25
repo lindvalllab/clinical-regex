@@ -1,3 +1,15 @@
+# v0.2.8 (Mon Oct 25 2021)
+
+#### 🐛 Bug Fix
+
+- Add code signing certificate for Mac. [#219](https://github.com/lindvalllab/clinical-regex/pull/219) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.7 (Tue Oct 05 2021)
 
 #### 🐛 Bug Fix
