@@ -27,6 +27,7 @@ module.exports = async function (params) {
   }
 
   console.log(`Notarizing ${appId} found at ${appPath}`);
+  console.log(`process.env.appleId ${process.env.appleId}`);
 
   try {
     await electron_notarize.notarize({
