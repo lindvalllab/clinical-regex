@@ -1,3 +1,15 @@
+# v0.2.12 (Mon Oct 25 2021)
+
+#### 🐛 Bug Fix
+
+- Only run find-identity on Mac build. [#223](https://github.com/lindvalllab/clinical-regex/pull/223) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.11 (Mon Oct 25 2021)
 
 #### 🐛 Bug Fix
