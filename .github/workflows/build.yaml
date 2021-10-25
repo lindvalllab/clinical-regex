@@ -23,10 +23,11 @@ jobs:
       - name: Install modules
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
+      - name: Print find-identity result if on MacOS
+        if: matrix.os == 'macos-latest'
+        run: security find-identity -vp codesigning
       - name: Build
-        run: |
-          security find-identity -vp codesigning
-          yarn build -p never
+        run: yarn build -p never
       - name: Upload build to release
         uses: softprops/action-gh-release@v1
         with:
