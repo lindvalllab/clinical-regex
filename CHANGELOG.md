@@ -1,3 +1,15 @@
+# v0.2.11 (Mon Oct 25 2021)
+
+#### 🐛 Bug Fix
+
+- Add some print statements. [#222](https://github.com/lindvalllab/clinical-regex/pull/222) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.10 (Mon Oct 25 2021)
 
 #### 🐛 Bug Fix
