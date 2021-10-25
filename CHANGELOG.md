@@ -1,3 +1,15 @@
+# v0.2.13 (Mon Oct 25 2021)
+
+#### 🐛 Bug Fix
+
+- Move env variables to build step. [#224](https://github.com/lindvalllab/clinical-regex/pull/224) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.12 (Mon Oct 25 2021)
 
 #### 🐛 Bug Fix
