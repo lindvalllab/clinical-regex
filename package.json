@@ -42,6 +42,7 @@
   "homepage": "./",
   "main": "./build/electron/main.js",
   "build": {
+    "appId": "com.electron.clinical-regex",
     "productName": "Clinical Regex",
     "extraMetadata": {
       "main": "build/electron/main.js"
@@ -52,7 +53,8 @@
         "name": "Clinical Regex File",
         "mimeType": "application/x-sqlite3"
       }
-    ]
+    ],
+    "afterSign": "./afterSignHook.js"
   },
   "scripts": {
     "start:react": "react-scripts start",
@@ -94,6 +96,7 @@
     "electron": "^12.0.5",
     "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.2.0",
+    "electron-notarize": "^1.1.1",
     "eslint": "^7.25.0",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.2.1",
