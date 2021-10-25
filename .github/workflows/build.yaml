@@ -23,11 +23,13 @@ jobs:
       - name: Install modules
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
-      - name: Print find-identity result if on MacOS
-        if: matrix.os == 'macos-latest'
-        run: security find-identity -vp codesigning
       - name: Build
         run: yarn build -p never
+        env:
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          appleId: ${{ secrets.APPLE_ID }}
+          appleIdPassword: ${{ secrets.APPLE_ID_APP_SPECIFIC_PASSWORD }}
       - name: Upload build to release
         uses: softprops/action-gh-release@v1
         with:
@@ -37,7 +39,3 @@ jobs:
             dist/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
-          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-          appleId: ${{ secrets.APPLE_ID }}
-          appleIdPassword: ${{ secrets.APPLE_ID_APP_SPECIFIC_PASSWORD }}
