@@ -1,3 +1,15 @@
+# v0.2.9 (Mon Oct 25 2021)
+
+#### 🐛 Bug Fix
+
+- Try turning off identity auto-discovery. [#220](https://github.com/lindvalllab/clinical-regex/pull/220) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.8 (Mon Oct 25 2021)
 
 #### 🐛 Bug Fix
