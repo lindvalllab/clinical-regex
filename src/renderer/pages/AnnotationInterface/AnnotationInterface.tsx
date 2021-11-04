@@ -14,6 +14,10 @@ import {
   HStack,
   Spacer,
   Spinner,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
   useColorModeValue,
 } from '@chakra-ui/react';
 import AnnotationSidebar from './AnnotationSidebar';
@@ -152,8 +156,20 @@ function AnnotationInterface(): JSX.Element {
   return (
     <Flex flexDirection="column" h="full" w="full">
       {entry && labels && highlights ? (
-        <HStack alignItems="start" maxW="100vw">
-          <Box w="80vw">
+        <HStack alignItems="flex-start" maxW="100vw">
+          <Box w="80vw" pl={8} pr={4} mt={4}>
+            <Flex justifyContent="flex-start" mb={4} p={4} borderWidth={1}>
+              <Stat>
+                <StatLabel>Entry</StatLabel>
+                <StatNumber>{page + 1}</StatNumber>
+                <StatHelpText>out of {groupIds.length} in project</StatHelpText>
+              </Stat>
+              <Stat>
+                <StatLabel>Group ID</StatLabel>
+                <StatNumber>{groupIds[page]}</StatNumber>
+                <StatHelpText>{settings?.GROUP_ID_FIELD}</StatHelpText>
+              </Stat>
+            </Flex>
             <EntryDisplay
               entry={entry}
               labels={labels}
@@ -185,8 +201,6 @@ function AnnotationInterface(): JSX.Element {
       <AnnotationFooter
         page={page}
         totalPages={groupIds.length}
-        groupId={groupIds[page]}
-        groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={skipPages(-1)}
         onNextPage={skipPages(1)}
         contextWindow={contextWindow}

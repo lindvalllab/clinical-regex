@@ -14,7 +14,7 @@ type EntryDisplayProps = {
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
   return (
-    <VStack spacing={4} p={8}>
+    <VStack spacing={4}>
       {props.entry.texts.map((textObj) => {
         const highlights = props.highlights[textObj.id]
           ? props.highlights[textObj.id]

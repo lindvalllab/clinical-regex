@@ -1,14 +1,11 @@
 import {
-  Box,
   Button,
   ButtonGroup,
   Flex,
-  Grid,
-  Text,
-  useColorModeValue,
   FormControl,
-  FormHelperText,
   FormLabel,
+  useColorModeValue,
+  Spacer,
   Stack,
   Radio,
   RadioGroup,
@@ -18,8 +15,6 @@ import { CONTEXT_WINDOW_SIZE_OPTIONS } from './constants';
 type AnnotationFooterProps = {
   page: number;
   totalPages: number;
-  groupId: string;
-  groupIdField?: string | null;
   onPrevPage: () => void;
   onNextPage: () => void;
   contextWindow: number;
@@ -30,8 +25,6 @@ type AnnotationFooterProps = {
 function AnnotationFooter({
   page,
   totalPages,
-  groupId,
-  groupIdField,
   onPrevPage,
   onNextPage,
   contextWindow,
@@ -53,31 +46,10 @@ function AnnotationFooter({
       px={6}
       borderTopWidth={1}
     >
-      <Grid
-        templateColumns="repeat(3, 1fr)"
-        templateRows="repeat(2, 1fr)"
-        columnGap={4}
-      >
-        <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-          Entry
-        </Text>
-        {groupId !== null ? (
-          <Text fontSize="xs" color="gray.500" textTransform="uppercase">
-            Group ID [
-            {groupIdField ? `${groupIdField}` : 'No Group ID Field identified'}]
-          </Text>
-        ) : (
-          <></>
-        )}
-        <Text fontSize="xs" color="gray.500" textTransform="uppercase">
+      <FormControl>
+        <FormLabel fontSize="xs" color="gray.500" textTransform="uppercase">
           Context Window
-        </Text>
-        <Text fontSize="md" fontWeight="extrabold">
-          {page + 1} / {totalPages}
-        </Text>
-        <Text fontSize="md" fontWeight="extrabold">
-          {groupId}
-        </Text>
+        </FormLabel>
         <RadioGroup
           onChange={(value) => {
             setContextWindow(Number(value));
@@ -94,31 +66,8 @@ function AnnotationFooter({
             )}
           </Stack>
         </RadioGroup>
-      </Grid>
-      {/* <Box>
-        <FormControl as="fieldset" ml={4}>
-          <FormLabel as="legend">Context Window</FormLabel>
-          <RadioGroup
-            onChange={(value) => {
-              setContextWindow(Number(value));
-            }}
-            value={contextWindow}
-          >
-            <Stack direction="row">
-              {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
-                ([name, value]) => (
-                  <Radio key={value} value={value}>
-                    {name}
-                  </Radio>
-                )
-              )}
-            </Stack>
-          </RadioGroup>
-          <FormHelperText>
-            Number of words of context to show around highlights.
-          </FormHelperText>
-        </FormControl>
-      </Box> */}
+      </FormControl>
+      <Spacer />
       <ButtonGroup isAttached>
         <Button colorScheme="gray" onClick={onPrevPage} disabled={isFirstPage}>
           Prev
