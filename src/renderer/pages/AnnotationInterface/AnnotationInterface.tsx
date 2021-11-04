@@ -18,6 +18,7 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import AnnotationSidebar from './AnnotationSidebar';
@@ -164,9 +165,11 @@ function AnnotationInterface(): JSX.Element {
                 <StatNumber>{page + 1}</StatNumber>
                 <StatHelpText>out of {groupIds.length} in project</StatHelpText>
               </Stat>
-              <Stat>
+              <Stat overflowX="hidden">
                 <StatLabel>Group ID</StatLabel>
-                <StatNumber>{groupIds[page]}</StatNumber>
+                <Tooltip label={groupIds[page]} placement="bottom-start">
+                  <StatNumber isTruncated>{groupIds[page]}</StatNumber>
+                </Tooltip>
                 <StatHelpText>{settings?.GROUP_ID_FIELD}</StatHelpText>
               </Stat>
             </Flex>
