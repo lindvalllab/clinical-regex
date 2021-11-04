@@ -16,7 +16,7 @@ import { getUnique } from '../../../utils';
 import {
   CONTEXT_INCREMENT_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
-} from './constants';
+} from '../../pages/AnnotationInterface/constants';
 import HighlightedTextChunk from './HighlightedTextChunk';
 
 const MIN_CONTEXT_WINDOW_SIZE = CONTEXT_WINDOW_SIZE_OPTIONS.Tiny;

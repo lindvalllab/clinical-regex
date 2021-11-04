@@ -22,6 +22,10 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { ColorPaletteContext } from '../../ColorPaletteProvider';
 import RedirectHome from '../../components/RedirectHome';
 import { getUnique } from '../../../utils';
+import {
+  DEFAULT_CONTEXT_WINDOW_SIZE,
+  CONTEXT_WINDOW_SIZE_OPTIONS,
+} from './constants';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -40,6 +44,9 @@ function AnnotationInterface(): JSX.Element {
   const [highlights, setHighlights] =
     useState<{ [textId: number]: SpanWithTag[] }>();
   const { paletteFromLabels } = useContext(ColorPaletteContext);
+  const [contextWindow, setContextWindow] = useState<number>(
+    DEFAULT_CONTEXT_WINDOW_SIZE
+  );
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -152,6 +159,7 @@ function AnnotationInterface(): JSX.Element {
               labels={labels}
               highlights={highlights}
               palette={paletteFromLabels(labels)}
+              contextWindow={contextWindow}
             />
           </Box>
           <AnnotationSidebar
@@ -181,6 +189,9 @@ function AnnotationInterface(): JSX.Element {
         groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={skipPages(-1)}
         onNextPage={skipPages(1)}
+        contextWindow={contextWindow}
+        setContextWindow={setContextWindow}
+        CONTEXT_WINDOW_SIZE_OPTIONS={CONTEXT_WINDOW_SIZE_OPTIONS}
       />
     </Flex>
   );

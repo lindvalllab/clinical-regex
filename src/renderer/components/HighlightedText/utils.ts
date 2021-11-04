@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2';
 import { SpanWithTags } from '../../../types';
-import { MIN_CONTEXT_WINDOW_SIZE } from './constants';
+import { MIN_CONTEXT_WINDOW_SIZE } from '../../pages/AnnotationInterface/constants';
 
 export const getColor = (
   tags: string[],
