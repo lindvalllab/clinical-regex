@@ -78,10 +78,6 @@ function AnnotationSidebar({
     setAnnotations(newAnnotations);
   };
 
-  // const onSubmit = () => {
-  //   api.updateAnnotations(annotations).then(nextPage);
-  // };
-
   return (
     <Flex
       borderWidth={1}
