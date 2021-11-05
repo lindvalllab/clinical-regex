@@ -1,3 +1,15 @@
+# v0.2.16 (Fri Nov 05 2021)
+
+#### 🐛 Bug Fix
+
+- Add stats [#228](https://github.com/lindvalllab/clinical-regex/pull/228) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.15 (Fri Nov 05 2021)
 
 #### 🐛 Bug Fix
