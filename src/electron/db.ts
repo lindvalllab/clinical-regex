@@ -1,4 +1,3 @@
-import { Match } from '@testing-library/dom';
 import { app, ipcRenderer } from 'electron';
 import { Knex, knex } from 'knex';
 import { Model, RelationMapping } from 'objection';
