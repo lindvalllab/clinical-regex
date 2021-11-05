@@ -1,3 +1,15 @@
+# v0.2.15 (Fri Nov 05 2021)
+
+#### 🐛 Bug Fix
+
+- Re-order texts in `EntryDisplay` [#226](https://github.com/lindvalllab/clinical-regex/pull/226) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.14 (Fri Nov 05 2021)
 
 #### 🐛 Bug Fix
