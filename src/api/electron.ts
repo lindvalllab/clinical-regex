@@ -195,11 +195,14 @@ export default class ElectronApi extends BaseApi {
     });
   }
   async getAllGroupIds(): Promise<string[]> {
-    const groupIds = await TextModel.query()
-      .distinct('group_id')
-      .orderBy('group_id');
+    const results = await TextModel.query().withGraphFetched({ matches: true });
+    const groupIds = getUnique(
+      results
+        .sort((a, b) => b.matches.length - a.matches.length)
+        .map((item) => item.group_id)
+    );
 
-    return groupIds.map((model) => model.group_id);
+    return groupIds;
   }
   async getDashboardTable(
     page: number,

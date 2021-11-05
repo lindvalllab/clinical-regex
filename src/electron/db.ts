@@ -1,3 +1,4 @@
+import { Match } from '@testing-library/dom';
 import { app, ipcRenderer } from 'electron';
 import { Knex, knex } from 'knex';
 import { Model, RelationMapping } from 'objection';
@@ -10,6 +11,7 @@ export class TextModel extends Model {
 
   // for using eager loading methods
   annotation!: AnnotationModel;
+  matches!: MatchModel[];
 
   static get tableName(): string {
     return 'texts';
@@ -17,6 +19,7 @@ export class TextModel extends Model {
 
   static get relationMappings(): {
     annotation: RelationMapping<AnnotationModel>;
+    matches: RelationMapping<MatchModel>;
   } {
     return {
       annotation: {
@@ -25,6 +28,14 @@ export class TextModel extends Model {
         join: {
           from: 'texts.group_id',
           to: 'annotations.group_id',
+        },
+      },
+      matches: {
+        relation: Model.HasManyRelation,
+        modelClass: MatchModel,
+        join: {
+          from: 'texts.id',
+          to: 'matches.text_id',
         },
       },
     };
