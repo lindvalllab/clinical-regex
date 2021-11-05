@@ -1,14 +1,43 @@
 import { app, ipcRenderer } from 'electron';
 import { Knex, knex } from 'knex';
-import { Model } from 'objection';
+import { Model, RelationMapping } from 'objection';
 import path from 'path';
 
 export class TextModel extends Model {
   id!: number;
   group_id!: string;
   text!: string;
+
+  // for using eager loading methods
+  annotation!: AnnotationModel;
+  matches!: MatchModel[];
+
   static get tableName(): string {
     return 'texts';
+  }
+
+  static get relationMappings(): {
+    annotation: RelationMapping<AnnotationModel>;
+    matches: RelationMapping<MatchModel>;
+  } {
+    return {
+      annotation: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: AnnotationModel,
+        join: {
+          from: 'texts.group_id',
+          to: 'annotations.group_id',
+        },
+      },
+      matches: {
+        relation: Model.HasManyRelation,
+        modelClass: MatchModel,
+        join: {
+          from: 'texts.id',
+          to: 'matches.text_id',
+        },
+      },
+    };
   }
 }
 
@@ -47,8 +76,27 @@ export class MatchModel extends Model {
   label!: string;
   start!: number;
   length!: number;
+
+  // for using eager loading methods
+  text!: TextModel;
+
   static get tableName(): string {
     return 'matches';
+  }
+
+  static get relationMappings(): {
+    text: RelationMapping<TextModel>;
+  } {
+    return {
+      text: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: TextModel,
+        join: {
+          from: 'matches.text_id',
+          to: 'texts.id',
+        },
+      },
+    };
   }
 }
 

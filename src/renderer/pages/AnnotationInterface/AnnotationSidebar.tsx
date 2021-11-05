@@ -14,10 +14,9 @@ import {
   Text,
   Tooltip,
 } from '@chakra-ui/react';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaArrowAltCircleRight, FaRegSquare, FaSquare } from 'react-icons/fa';
 import { CRAnnotation, Entry } from '../../../types';
-import { ApiContext } from '../../api';
 import { ColorPaletteFromLabels } from '.././../ColorPaletteProvider';
 
 type AnnotationSidebarProps = {
@@ -25,7 +24,7 @@ type AnnotationSidebarProps = {
   labels: string[];
   matched: boolean[]; // Same length as labels; indicates which ones have a keyword match.
   palette: ColorPaletteFromLabels;
-  nextPage: () => void;
+  onSubmit: (annotations: CRAnnotation[]) => void;
 };
 
 const initialAnnotations = (entry: Entry, labels: string[]) => {
@@ -59,13 +58,11 @@ function AnnotationSidebar({
   labels,
   matched,
   palette,
-  nextPage,
+  onSubmit,
 }: AnnotationSidebarProps): JSX.Element {
   const [annotations, setAnnotations] = useState(
     initialAnnotations(entry, labels)
   );
-  const api = useContext(ApiContext);
-
   useEffect(() => {
     setAnnotations(initialAnnotations(entry, labels));
   }, [entry, labels]);
@@ -79,10 +76,6 @@ function AnnotationSidebar({
     newAnnotations[index].value = newValue;
 
     setAnnotations(newAnnotations);
-  };
-
-  const onSubmit = () => {
-    api.updateAnnotations(annotations).then(nextPage);
   };
 
   return (
@@ -139,7 +132,7 @@ function AnnotationSidebar({
         flexShrink={0}
         colorScheme="green"
         rightIcon={<FaArrowAltCircleRight />}
-        onClick={onSubmit}
+        onClick={() => onSubmit(annotations)}
       >
         Submit
       </Button>
