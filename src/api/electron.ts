@@ -105,8 +105,6 @@ export default class ElectronApi extends BaseApi {
 
     const groupIds = getUnique(results.map((item) => item.text.group_id));
 
-    console.log(groupIds);
-
     return groupIds.length;
   }
   async insertText(
