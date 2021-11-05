@@ -26,6 +26,7 @@ import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
 import { Transaction, ref } from 'objection';
 import { ExportedEntry } from './types';
+import { getUnique } from '../utils';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -74,6 +75,39 @@ export default class ElectronApi extends BaseApi {
     settings.IS_GROUPED = Boolean(Number(settings.IS_GROUPED));
 
     return settings;
+  }
+  async getNumAnnotated(): Promise<number> {
+    const results = await AnnotationModel.query();
+
+    const groupIds = getUnique(results.map((item) => item.group_id));
+
+    return groupIds.length;
+  }
+  async getNumAnnotatedWithMatches(): Promise<number> {
+    const results = await MatchModel.query().withGraphFetched({
+      text: {
+        annotation: true,
+      },
+    });
+
+    const groupIds = getUnique(
+      results
+        .filter((item) => item.text.annotation !== null)
+        .map((item) => item.text.group_id)
+    );
+
+    return groupIds.length;
+  }
+  async getTotalEntriesWithMatches(): Promise<number> {
+    const results = await MatchModel.query().withGraphFetched({
+      text: true,
+    });
+
+    const groupIds = getUnique(results.map((item) => item.text.group_id));
+
+    console.log(groupIds);
+
+    return groupIds.length;
   }
   async insertText(
     text: Omit<CRText, 'group_id'> & Partial<CRText>,

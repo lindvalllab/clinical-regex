@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import { ApiContext } from '../../api';
 import EntryDisplay from '../../components/EntryDisplay';
 import {
+  CRAnnotation,
   Entry,
   LabelEntity,
   SettingsEntity,
@@ -14,11 +15,6 @@ import {
   HStack,
   Spacer,
   Spinner,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import AnnotationSidebar from './AnnotationSidebar';
@@ -31,6 +27,7 @@ import {
   DEFAULT_CONTEXT_WINDOW_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
 } from './constants';
+import AnnotationStats from './AnnotationStats';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -52,6 +49,11 @@ function AnnotationInterface(): JSX.Element {
   const [contextWindow, setContextWindow] = useState<number>(
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
+  const [numAnnotated, setNumAnnotated] = useState<number>(-1);
+  const [numAnnotatedWithMatches, setNumAnnotatedWithMatches] =
+    useState<number>(-1);
+  const [totalEntriesWithMatches, setTotalEntriesWithMatches] =
+    useState<number>(-1);
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -73,29 +75,23 @@ function AnnotationInterface(): JSX.Element {
         history.push(
           `/annotation-interface?page=${clipPage(page + skippedPages)}`
         );
+      } else {
+        history.go(0);
       }
     };
   }
 
-  // Get the groupIds and labels on initial render.
+  // Get the groupIds, labels, and total entries with matches on initial render.
   useEffect(() => {
+    api.getAllGroupIds().then(setGroupIds).catch(console.error);
+    api.getAllLabels().then(setLabels).catch(console.error);
     api
-      .getAllGroupIds()
-      .then((ids) => {
-        setGroupIds(ids);
-      })
-      .catch((e) => console.error(e));
-    api
-      .getAllLabels()
-      .then((labels) => {
-        setLabels(labels);
-      })
-      .catch((e) => console.error(e));
+      .getTotalEntriesWithMatches()
+      .then(setTotalEntriesWithMatches)
+      .catch(console.error);
     api
       .getSettings()
-      .then((settings) => {
-        setSettings(settings);
-      })
+      .then(setSettings)
       .catch((e) => {
         if (/no settings found/i.test(e.message)) {
           // No settings means that the project has not been initialized properly.
@@ -114,6 +110,11 @@ function AnnotationInterface(): JSX.Element {
     if (groupIds.length === 0) return;
     const groupId = groupIds[page];
     const fetchedMatches: Promise<void>[] = [];
+    api.getNumAnnotated().then(setNumAnnotated).catch(console.error);
+    api
+      .getNumAnnotatedWithMatches()
+      .then(setNumAnnotatedWithMatches)
+      .catch(console.error);
     api.getEntry(groupId).then((entry) => {
       const newHighlights: typeof highlights = {};
       for (const textEntity of entry.texts) {
@@ -154,25 +155,23 @@ function AnnotationInterface(): JSX.Element {
         );
   const matched = uniqueLabels.map((label) => matchedLabels.has(label));
 
+  const onSubmit = (annotations: CRAnnotation[]) =>
+    api.updateAnnotations(annotations).then(skipPages(1));
+
   return (
     <Flex flexDirection="column" h="full" w="full">
       {entry && labels && highlights ? (
         <HStack alignItems="flex-start" maxW="100vw">
           <Box w="80vw" pl={8} pr={4} mt={4}>
-            <Flex justifyContent="flex-start" mb={4} p={4} borderWidth={1}>
-              <Stat>
-                <StatLabel>Entry</StatLabel>
-                <StatNumber>{page + 1}</StatNumber>
-                <StatHelpText>out of {groupIds.length} in project</StatHelpText>
-              </Stat>
-              <Stat overflowX="hidden">
-                <StatLabel>Group ID</StatLabel>
-                <Tooltip label={groupIds[page]} placement="bottom-start">
-                  <StatNumber isTruncated>{groupIds[page]}</StatNumber>
-                </Tooltip>
-                <StatHelpText>{settings?.GROUP_ID_FIELD}</StatHelpText>
-              </Stat>
-            </Flex>
+            <AnnotationStats
+              page={page}
+              isAnnotated={entry.annotations.length > 0}
+              groupIds={groupIds}
+              groupIdField={settings?.GROUP_ID_FIELD}
+              numAnnotated={numAnnotated}
+              numAnnotatedWithMatches={numAnnotatedWithMatches}
+              totalEntriesWithMatches={totalEntriesWithMatches}
+            />
             <EntryDisplay
               entry={entry}
               labels={labels}
@@ -186,7 +185,7 @@ function AnnotationInterface(): JSX.Element {
             labels={uniqueLabels}
             matched={matched}
             palette={paletteFromLabels(labels)}
-            nextPage={skipPages(1)}
+            onSubmit={onSubmit}
           />
         </HStack>
       ) : (

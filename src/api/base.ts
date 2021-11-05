@@ -19,6 +19,9 @@ export default abstract class BaseApi {
   public abstract getAllGroupIds(): Promise<string[]>;
   public abstract getMatchesByTextId(text_id: number): Promise<MatchEntity[]>;
   public abstract getSettings(): Promise<SettingsEntity>;
+  public abstract getNumAnnotated(): Promise<number>;
+  public abstract getNumAnnotatedWithMatches(): Promise<number>;
+  public abstract getTotalEntriesWithMatches(): Promise<number>;
   public abstract getEntry(groupId: string): Promise<Entry>;
   public abstract getDashboardTable(
     page: number,
