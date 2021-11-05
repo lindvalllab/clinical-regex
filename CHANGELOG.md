@@ -1,3 +1,15 @@
+# v0.2.14 (Fri Nov 05 2021)
+
+#### 🐛 Bug Fix
+
+- Move context window options [#225](https://github.com/lindvalllab/clinical-regex/pull/225) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.13 (Mon Oct 25 2021)
 
 #### 🐛 Bug Fix
