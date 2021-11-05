@@ -13,9 +13,12 @@ type EntryDisplayProps = {
 };
 
 function EntryDisplay(props: EntryDisplayProps): JSX.Element {
+  const texts = props.entry.texts.sort(
+    (a, b) => props.highlights[b.id].length - props.highlights[a.id].length
+  );
   return (
     <VStack spacing={4}>
-      {props.entry.texts.map((textObj) => {
+      {texts.map((textObj) => {
         const highlights = props.highlights[textObj.id]
           ? props.highlights[textObj.id]
           : [];
