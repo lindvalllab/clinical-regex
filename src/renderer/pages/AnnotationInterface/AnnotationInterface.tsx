@@ -14,6 +14,11 @@ import {
   HStack,
   Spacer,
   Spinner,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react';
 import AnnotationSidebar from './AnnotationSidebar';
@@ -22,6 +27,10 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { ColorPaletteContext } from '../../ColorPaletteProvider';
 import RedirectHome from '../../components/RedirectHome';
 import { getUnique } from '../../../utils';
+import {
+  DEFAULT_CONTEXT_WINDOW_SIZE,
+  CONTEXT_WINDOW_SIZE_OPTIONS,
+} from './constants';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -40,6 +49,9 @@ function AnnotationInterface(): JSX.Element {
   const [highlights, setHighlights] =
     useState<{ [textId: number]: SpanWithTag[] }>();
   const { paletteFromLabels } = useContext(ColorPaletteContext);
+  const [contextWindow, setContextWindow] = useState<number>(
+    DEFAULT_CONTEXT_WINDOW_SIZE
+  );
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -145,13 +157,28 @@ function AnnotationInterface(): JSX.Element {
   return (
     <Flex flexDirection="column" h="full" w="full">
       {entry && labels && highlights ? (
-        <HStack alignItems="start" maxW="100vw">
-          <Box w="80vw">
+        <HStack alignItems="flex-start" maxW="100vw">
+          <Box w="80vw" pl={8} pr={4} mt={4}>
+            <Flex justifyContent="flex-start" mb={4} p={4} borderWidth={1}>
+              <Stat>
+                <StatLabel>Entry</StatLabel>
+                <StatNumber>{page + 1}</StatNumber>
+                <StatHelpText>out of {groupIds.length} in project</StatHelpText>
+              </Stat>
+              <Stat overflowX="hidden">
+                <StatLabel>Group ID</StatLabel>
+                <Tooltip label={groupIds[page]} placement="bottom-start">
+                  <StatNumber isTruncated>{groupIds[page]}</StatNumber>
+                </Tooltip>
+                <StatHelpText>{settings?.GROUP_ID_FIELD}</StatHelpText>
+              </Stat>
+            </Flex>
             <EntryDisplay
               entry={entry}
               labels={labels}
               highlights={highlights}
               palette={paletteFromLabels(labels)}
+              contextWindow={contextWindow}
             />
           </Box>
           <AnnotationSidebar
@@ -177,10 +204,11 @@ function AnnotationInterface(): JSX.Element {
       <AnnotationFooter
         page={page}
         totalPages={groupIds.length}
-        groupId={groupIds[page]}
-        groupIdField={settings?.GROUP_ID_FIELD}
         onPrevPage={skipPages(-1)}
         onNextPage={skipPages(1)}
+        contextWindow={contextWindow}
+        setContextWindow={setContextWindow}
+        CONTEXT_WINDOW_SIZE_OPTIONS={CONTEXT_WINDOW_SIZE_OPTIONS}
       />
     </Flex>
   );
