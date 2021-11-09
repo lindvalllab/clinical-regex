@@ -26,14 +26,10 @@ import {
 } from '../../ColorPaletteProvider';
 import RedirectHome from '../../components/RedirectHome';
 
-interface RowData {
-  pageSize: number;
-  pageIndex: number;
-}
-
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
   const [labels, setLabels] = useState<LabelEntity[]>();
+  const [groupIds, setGroupIds] = useState<string[]>();
   const [palette, setPalette] = useState<ColorPaletteFromLabels>();
   const [hasData, setHasData] = useState<boolean>(true);
   const { paletteFromLabels } = useContext(ColorPaletteContext);
@@ -44,6 +40,12 @@ function Dashboard(): JSX.Element {
 
   useEffect(() => {
     api.getAllLabels().then((labels) => setLabels(labels));
+  }, [api]);
+
+  useEffect(() => {
+    api
+      .getAllGroupIds({ orderByMatches: true })
+      .then((ids) => setGroupIds(ids));
   }, [api]);
 
   useEffect(() => {
@@ -77,6 +79,10 @@ function Dashboard(): JSX.Element {
               {label}
             </Tag>
           )),
+      },
+      {
+        Header: 'Total Matches',
+        accessor: 'match_count',
       },
       {
         Header: 'Is Annotated',
@@ -128,13 +134,14 @@ function Dashboard(): JSX.Element {
   );
 
   const rowHoverColor = useColorModeValue('gray.100', 'gray.700');
-  const onRowClick = (row: Row, data: RowData) => {
+  const onRowClick = (row: Row<DashboardEntry>) => {
     return () => {
-      history.push(
-        `/annotation-interface?page=${
-          data.pageSize * data.pageIndex + row.index
-        }`
-      );
+      if (groupIds)
+        history.push(
+          `/annotation-interface?page=${groupIds.findIndex(
+            (e) => e === row.original.group_id
+          )}`
+        );
     };
   };
 
@@ -150,8 +157,8 @@ function Dashboard(): JSX.Element {
         isLoading={loading}
         pageCount={pageCount}
         totalCount={totalCount}
-        rowProps={(row: Row, data: RowData) => ({
-          onClick: onRowClick(row, data),
+        rowProps={(row: Row<DashboardEntry>) => ({
+          onClick: onRowClick(row),
           cursor: 'pointer',
           height: '2.5rem',
           _hover: {

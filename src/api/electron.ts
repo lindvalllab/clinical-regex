@@ -241,11 +241,13 @@ export default class ElectronApi extends BaseApi {
     const textPage = await TextModel.query()
       .groupBy('group_id')
       .page(page, pageSize);
+    const matchCounts = await this.getEntryMatchCounts();
     const dashboardPage = await Promise.all(
       textPage.results.map(async (text) => ({
         group_id: text.group_id,
         text: text.text,
         labels: await this.getMatchedLabelsByGroupId(text.group_id),
+        match_count: matchCounts[text.group_id],
         is_annotated:
           (
             await AnnotationModel.query().where('group_id', text.group_id)
