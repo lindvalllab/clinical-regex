@@ -79,7 +79,7 @@ function AnnotationFooter({
         </RadioGroup>
       </FormControl>
       <Spacer />
-      <ButtonGroup variant="ghost" colorScheme="gray">
+      <ButtonGroup variant="ghost" colorScheme="gray" size="sm">
         <Button
           onClick={onFirstPage}
           disabled={isFirstPage}
