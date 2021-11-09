@@ -194,12 +194,45 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
-  async getAllGroupIds(): Promise<string[]> {
-    const groupIds = await TextModel.query()
-      .distinct('group_id')
-      .orderBy('group_id');
+  async getEntryMatchCounts(): Promise<Record<string, number>> {
+    return TextModel.query()
+      .withGraphFetched('matches')
+      .then((data) =>
+        data.map((textObj) => ({
+          groupId: textObj.group_id,
+          count: textObj.matches.length,
+        }))
+      )
+      .then((data) => {
+        const map: Record<string, number> = {};
 
-    return groupIds.map((model) => model.group_id);
+        // group by groupId and sum counts
+        for (const { groupId, count } of data) {
+          map[groupId] = (map[groupId] || 0) + count;
+        }
+
+        return map;
+      });
+  }
+  async getAllGroupIds({
+    orderByMatches = false,
+  }: {
+    orderByMatches: boolean;
+  }): Promise<string[]> {
+    if (orderByMatches) {
+      // order groupIds by number of matches among their texts
+      return this.getEntryMatchCounts().then((data) =>
+        Object.entries(data)
+          .sort((a, b) => b[1] - a[1])
+          .map((item) => item[0])
+      );
+    } else {
+      const groupIds = await TextModel.query()
+        .distinct('group_id')
+        .orderBy('group_id', 'desc');
+
+      return groupIds.map((model) => model.group_id);
+    }
   }
   async getDashboardTable(
     page: number,

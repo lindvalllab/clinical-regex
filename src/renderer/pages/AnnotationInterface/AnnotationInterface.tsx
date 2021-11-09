@@ -83,7 +83,10 @@ function AnnotationInterface(): JSX.Element {
 
   // Get the groupIds, labels, and total entries with matches on initial render.
   useEffect(() => {
-    api.getAllGroupIds().then(setGroupIds).catch(console.error);
+    api
+      .getAllGroupIds({ orderByMatches: true })
+      .then(setGroupIds)
+      .catch(console.error);
     api.getAllLabels().then(setLabels).catch(console.error);
     api
       .getTotalEntriesWithMatches()
