@@ -10,13 +10,21 @@ import {
   Radio,
   RadioGroup,
 } from '@chakra-ui/react';
+import {
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaAngleLeft,
+  FaAngleRight,
+} from 'react-icons/fa';
 import { CONTEXT_WINDOW_SIZE_OPTIONS } from './constants';
 
 type AnnotationFooterProps = {
   page: number;
   totalPages: number;
+  onFirstPage: () => void;
   onPrevPage: () => void;
   onNextPage: () => void;
+  onLastPage: () => void;
   contextWindow: number;
   setContextWindow: (size: number) => void;
   CONTEXT_WINDOW_SIZE_OPTIONS: typeof CONTEXT_WINDOW_SIZE_OPTIONS;
@@ -25,8 +33,10 @@ type AnnotationFooterProps = {
 function AnnotationFooter({
   page,
   totalPages,
+  onFirstPage,
   onPrevPage,
   onNextPage,
+  onLastPage,
   contextWindow,
   setContextWindow,
   CONTEXT_WINDOW_SIZE_OPTIONS,
@@ -39,6 +49,7 @@ function AnnotationFooter({
     <Flex
       w="full"
       justify="space-between"
+      alignItems="center"
       position="sticky"
       bottom={0}
       bg={bg}
@@ -68,12 +79,34 @@ function AnnotationFooter({
         </RadioGroup>
       </FormControl>
       <Spacer />
-      <ButtonGroup isAttached>
-        <Button colorScheme="gray" onClick={onPrevPage} disabled={isFirstPage}>
+      <ButtonGroup variant="ghost" colorScheme="gray">
+        <Button
+          onClick={onFirstPage}
+          disabled={isFirstPage}
+          leftIcon={<FaAngleDoubleLeft />}
+        >
+          First
+        </Button>
+        <Button
+          onClick={onPrevPage}
+          disabled={isFirstPage}
+          leftIcon={<FaAngleLeft />}
+        >
           Prev
         </Button>
-        <Button colorScheme="gray" onClick={onNextPage} disabled={isLastPage}>
+        <Button
+          onClick={onNextPage}
+          disabled={isLastPage}
+          rightIcon={<FaAngleRight />}
+        >
           Next
+        </Button>
+        <Button
+          onClick={onLastPage}
+          disabled={isLastPage}
+          rightIcon={<FaAngleDoubleRight />}
+        >
+          Last
         </Button>
       </ButtonGroup>
     </Flex>
