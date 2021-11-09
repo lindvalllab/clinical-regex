@@ -206,8 +206,10 @@ function AnnotationInterface(): JSX.Element {
       <AnnotationFooter
         page={page}
         totalPages={groupIds.length}
+        onFirstPage={skipPages(-page)}
         onPrevPage={skipPages(-1)}
         onNextPage={skipPages(1)}
+        onLastPage={skipPages(groupIds.length - page)}
         contextWindow={contextWindow}
         setContextWindow={setContextWindow}
         CONTEXT_WINDOW_SIZE_OPTIONS={CONTEXT_WINDOW_SIZE_OPTIONS}
