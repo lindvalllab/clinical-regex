@@ -135,6 +135,7 @@ function DataTable<T extends Record<string, unknown>>({
               value={pageSize}
               onChange={(e) => setPageSize(Number(e.target.value))}
               size="sm"
+              defaultValue={PAGE_SIZE_OPTIONS[1]}
             >
               {PAGE_SIZE_OPTIONS.map((pageSize) => (
                 <option key={pageSize}>{pageSize}</option>
