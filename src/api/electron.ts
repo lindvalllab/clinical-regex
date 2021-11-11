@@ -38,18 +38,23 @@ export default class ElectronApi extends BaseApi {
   async getAllAnnotations(): Promise<AnnotationEntity[]> {
     return AnnotationModel.query();
   }
+
   async getAllLabels(): Promise<LabelEntity[]> {
     return LabelModel.query();
   }
+
   async getAllTexts(): Promise<TextEntity[]> {
     return TextModel.query();
   }
+
   async getAllMatches(): Promise<MatchEntity[]> {
     return MatchModel.query();
   }
+
   async getMatchesByTextId(text_id: number): Promise<MatchEntity[]> {
     return MatchModel.query().where('text_id', text_id);
   }
+
   async getEntry(groupId: string): Promise<Entry> {
     const texts = await TextModel.query().where({ group_id: groupId });
     const annotations = await AnnotationModel.query().where({
@@ -62,6 +67,7 @@ export default class ElectronApi extends BaseApi {
       annotations: annotations,
     };
   }
+
   async getSettings(): Promise<SettingsEntity> {
     const results = await SettingsModel.query();
 
@@ -76,6 +82,7 @@ export default class ElectronApi extends BaseApi {
 
     return settings;
   }
+
   async getNumAnnotated(): Promise<number> {
     const results = await AnnotationModel.query();
 
@@ -83,6 +90,7 @@ export default class ElectronApi extends BaseApi {
 
     return groupIds.length;
   }
+
   async getNumAnnotatedWithMatches(): Promise<number> {
     const results = await MatchModel.query().withGraphFetched({
       text: {
@@ -98,6 +106,7 @@ export default class ElectronApi extends BaseApi {
 
     return groupIds.length;
   }
+
   async getTotalEntriesWithMatches(): Promise<number> {
     const results = await MatchModel.query().withGraphFetched({
       text: true,
@@ -107,6 +116,7 @@ export default class ElectronApi extends BaseApi {
 
     return groupIds.length;
   }
+
   async insertText(
     text: Omit<CRText, 'group_id'> & Partial<CRText>,
     trx?: Transaction
@@ -126,6 +136,7 @@ export default class ElectronApi extends BaseApi {
       await TextModel.query(trx).insert(text);
     }
   }
+
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
     for (const pattern of label.patterns) {
       await LabelModel.query(trx).insert({
@@ -134,6 +145,7 @@ export default class ElectronApi extends BaseApi {
       });
     }
   }
+
   async insertSettings(
     isGrouped: boolean,
     groupIdField: string | null,
@@ -150,12 +162,14 @@ export default class ElectronApi extends BaseApi {
       TEXT_ID_FIELD: textIdField,
     });
   }
+
   async insertAnnotation(
     annotation: CRAnnotation,
     trx?: Transaction
   ): Promise<void> {
     await AnnotationModel.query(trx).insert(annotation);
   }
+
   async insertTexts(texts: CRText[]): Promise<void> {
     await TextModel.transaction(async (trx) => {
       for (const text of texts) {
@@ -163,6 +177,7 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
+
   async insertLabels(labels: CRLabel[]): Promise<void> {
     await LabelModel.transaction(async (trx) => {
       for (const label of labels) {
@@ -170,6 +185,7 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
+
   async insertAnnotations(annotations: CRAnnotation[]): Promise<void> {
     await AnnotationModel.transaction(async (trx) => {
       for (const annotation of annotations) {
@@ -177,6 +193,7 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
+
   async updateAnnotation(
     annotation: CRAnnotation,
     trx?: Transaction
@@ -187,6 +204,7 @@ export default class ElectronApi extends BaseApi {
     if ((await existing).length > 0) await existing.update(annotation);
     else await this.insertAnnotation(annotation, trx);
   }
+
   async updateAnnotations(annotations: CRAnnotation[]): Promise<void> {
     await AnnotationModel.transaction(async (trx) => {
       for (const annotation of annotations) {
@@ -194,6 +212,7 @@ export default class ElectronApi extends BaseApi {
       }
     });
   }
+
   async getEntryMatchCounts(): Promise<Record<string, number>> {
     return TextModel.query()
       .withGraphFetched('matches')
@@ -214,6 +233,7 @@ export default class ElectronApi extends BaseApi {
         return map;
       });
   }
+
   async getAllGroupIds({
     orderByMatches = false,
   }: {
@@ -234,6 +254,7 @@ export default class ElectronApi extends BaseApi {
       return groupIds.map((model) => model.group_id);
     }
   }
+
   async getDashboardTable(
     page: number,
     pageSize: number
@@ -259,6 +280,7 @@ export default class ElectronApi extends BaseApi {
       total: textPage.total,
     };
   }
+
   async getMatchedLabelsByGroupId(groupId: string): Promise<string[]> {
     // TODO: can this be done using objection directly?
     const matches = TextModel.knex()('texts')
@@ -268,16 +290,19 @@ export default class ElectronApi extends BaseApi {
       .groupBy('label');
     return (await matches).map((match: Record<string, string>) => match.label);
   }
+
   async connectedToTempDb(): Promise<boolean> {
     const tempDbPath = await getTempDbPath();
     const currDbPath = (await getKnexDb().client.config.connection()).filename;
     return currDbPath === tempDbPath;
   }
+
   async deleteTempDb(): Promise<void> {
     const tempDbPath = await getTempDbPath();
     if (await this.connectedToTempDb()) await getKnexDb().destroy();
     if (fs.existsSync(tempDbPath)) fs.unlinkSync(tempDbPath);
   }
+
   async projectStarted(): Promise<boolean> {
     return (await SettingsModel.query()).length > 0;
   }
@@ -520,6 +545,7 @@ export default class ElectronApi extends BaseApi {
       return;
     }
   }
+
   async getProgress(): Promise<number> {
     return progress;
   }
