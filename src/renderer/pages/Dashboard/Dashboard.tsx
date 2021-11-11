@@ -82,7 +82,7 @@ function Dashboard(): JSX.Element {
       },
       {
         Header: 'Total Matches',
-        accessor: 'match_count',
+        accessor: 'num_matches',
       },
       {
         Header: 'Is Annotated',

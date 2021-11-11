@@ -12,6 +12,11 @@ export class TextModel extends Model {
   annotation!: AnnotationModel;
   matches!: MatchModel[];
 
+  // hacky way of getting types to work for aliased result
+  // in getDashboardTable, etc.
+  // https://github.com/Vincit/objection.js/issues/1876
+  num_matches!: number;
+
   static get tableName(): string {
     return 'texts';
   }

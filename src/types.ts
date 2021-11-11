@@ -49,6 +49,6 @@ export type DashboardEntry = {
   group_id: string;
   text: string;
   labels: string[];
-  match_count: number;
+  num_matches: number;
   is_annotated: boolean;
 };

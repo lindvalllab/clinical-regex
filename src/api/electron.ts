@@ -241,11 +241,13 @@ export default class ElectronApi extends BaseApi {
   }): Promise<string[]> {
     if (orderByMatches) {
       // order groupIds by number of matches among their texts
-      return this.getEntryMatchCounts().then((data) =>
-        Object.entries(data)
-          .sort((a, b) => b[1] - a[1])
-          .map((item) => item[0])
-      );
+      return TextModel.query()
+        .select('texts.group_id')
+        .count('matches.id', { as: 'num_matches' })
+        .leftJoinRelated('matches')
+        .groupBy('texts.group_id')
+        .orderBy('num_matches', 'desc')
+        .then((results) => results.map((item) => item.group_id));
     } else {
       const groupIds = await TextModel.query()
         .distinct('group_id')
@@ -260,15 +262,19 @@ export default class ElectronApi extends BaseApi {
     pageSize: number
   ): Promise<{ results: DashboardEntry[]; total: number }> {
     const textPage = await TextModel.query()
-      .groupBy('group_id')
+      .select('texts.*')
+      .count('matches.id', { as: 'num_matches' })
+      .leftJoinRelated('matches')
+      .groupBy('texts.group_id')
+      .orderBy('num_matches', 'desc')
       .page(page, pageSize);
-    const matchCounts = await this.getEntryMatchCounts();
+
     const dashboardPage = await Promise.all(
       textPage.results.map(async (text) => ({
         group_id: text.group_id,
         text: text.text,
         labels: await this.getMatchedLabelsByGroupId(text.group_id),
-        match_count: matchCounts[text.group_id],
+        num_matches: text.num_matches,
         is_annotated:
           (
             await AnnotationModel.query().where('group_id', text.group_id)
