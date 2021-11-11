@@ -16,7 +16,6 @@ export default abstract class BaseApi {
   public abstract getAllLabels(): Promise<LabelEntity[]>;
   public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getAllMatches(): Promise<MatchEntity[]>;
-  public abstract getEntryMatchCounts(): Promise<Record<string, number>>;
   public abstract getAllGroupIds(opts: {
     orderByMatches: boolean;
   }): Promise<string[]>;
