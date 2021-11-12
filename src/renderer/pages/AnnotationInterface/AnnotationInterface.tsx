@@ -16,6 +16,7 @@ import {
   Spacer,
   Spinner,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import AnnotationSidebar from './AnnotationSidebar';
 import AnnotationFooter from './AnnotationFooter';
@@ -57,6 +58,12 @@ function AnnotationInterface(): JSX.Element {
     useState<number>(-1);
   const [totalEntriesWithMatches, setTotalEntriesWithMatches] =
     useState<number>(-1);
+  const [triggerRefresh, setTriggerRefresh] = useState(false);
+  const onSubmitToast = useToast({
+    position: 'top-left',
+    isClosable: true,
+    duration: 3000,
+  });
 
   function clipPage(index: number) {
     if (index < 0) {
@@ -79,7 +86,7 @@ function AnnotationInterface(): JSX.Element {
           `/annotation-interface?page=${clipPage(page + skippedPages)}`
         );
       } else {
-        history.go(0);
+        setTriggerRefresh(!triggerRefresh);
       }
     };
   }
@@ -144,7 +151,7 @@ function AnnotationInterface(): JSX.Element {
     return () => {
       current = false;
     };
-  }, [api, groupIds, page]);
+  }, [api, groupIds, page, triggerRefresh]);
 
   if (settings === undefined) return <RedirectHome />;
 
@@ -161,8 +168,30 @@ function AnnotationInterface(): JSX.Element {
         );
   const matched = uniqueLabels.map((label) => matchedLabels.has(label));
 
-  const onSubmit = (annotations: CRAnnotation[]) =>
-    api.updateAnnotations(annotations).then(skipPages(1));
+  const onSubmit = (annotations: CRAnnotation[], goToNext = true) =>
+    api
+      .updateAnnotations(annotations)
+      .then(() => {
+        if (goToNext) {
+          skipPages(1)();
+        } else {
+          setTriggerRefresh(!triggerRefresh);
+        }
+      })
+      .then(() =>
+        onSubmitToast({
+          title: `Annotation(s) for Entry ${page + 1} submitted`,
+          status: 'success',
+        })
+      )
+      .catch((error) => {
+        onSubmitToast({
+          title: 'Error submitting annotation(s)',
+          description: error,
+          status: 'error',
+          duration: null,
+        });
+      });
 
   return (
     <Flex flexDirection="column" h="full" w="full">

@@ -24,7 +24,7 @@ type AnnotationSidebarProps = {
   labels: string[];
   matched: boolean[]; // Same length as labels; indicates which ones have a keyword match.
   palette: ColorPaletteFromLabels;
-  onSubmit: (annotations: CRAnnotation[]) => void;
+  onSubmit: (annotations: CRAnnotation[], goToNext?: boolean) => void;
 };
 
 const initialAnnotations = (entry: Entry, labels: string[]) => {
@@ -127,15 +127,30 @@ function AnnotationSidebar({
           })}
         </VStack>
       </Box>
-      <Button
-        m={4}
-        flexShrink={0}
-        colorScheme="green"
-        rightIcon={<FaArrowAltCircleRight />}
-        onClick={() => onSubmit(annotations)}
-      >
-        Submit
-      </Button>
+      <Flex flexDir="column" gridGap={2} p={4}>
+        <Button
+          colorScheme="green"
+          rightIcon={<FaArrowAltCircleRight />}
+          onClick={() => onSubmit(annotations)}
+          size="lg"
+          fontSize={{ base: 'sm', lg: 'sm', xl: 'md' }}
+          style={{
+            whiteSpace: 'normal',
+            wordWrap: 'break-word',
+          }}
+          py={{ base: 8, xl: 4 }}
+        >
+          Submit and continue
+        </Button>
+        <Button
+          colorScheme="green"
+          variant="outline"
+          onClick={() => onSubmit(annotations, false)}
+          size="sm"
+        >
+          Submit
+        </Button>
+      </Flex>
     </Flex>
   );
 }
