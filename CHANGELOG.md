@@ -1,3 +1,16 @@
+# v0.5.0 (Fri Nov 12 2021)
+
+#### 🚀 Enhancement
+
+- Include all group IDs in annotation export [#236](https://github.com/lindvalllab/clinical-regex/pull/236) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Add toast to onSubmit [#235](https://github.com/lindvalllab/clinical-regex/pull/235) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.4.0 (Fri Nov 12 2021)
 
 #### 🚀 Enhancement
