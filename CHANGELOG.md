@@ -1,3 +1,39 @@
+# v0.4.0 (Fri Nov 12 2021)
+
+#### 🚀 Enhancement
+
+- Add auto-hide options [#234](https://github.com/lindvalllab/clinical-regex/pull/234) ([@akwok-dfci](https://github.com/akwok-dfci) [@benfl-dfci](https://github.com/benfl-dfci))
+- Order entries by number of matches [#233](https://github.com/lindvalllab/clinical-regex/pull/233) ([@akwok-dfci](https://github.com/akwok-dfci) [@benfl-dfci](https://github.com/benfl-dfci))
+- Add auto-hide options [#231](https://github.com/lindvalllab/clinical-regex/pull/231) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 🐛 Bug Fix
+
+- Reduce build size [#232](https://github.com/lindvalllab/clinical-regex/pull/232) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.3.0 (Fri Nov 12 2021)
+
+#### 🚀 Enhancement
+
+- Order entries by number of matches [#229](https://github.com/lindvalllab/clinical-regex/pull/229) ([@akwok-dfci](https://github.com/akwok-dfci) [@benfl-dfci](https://github.com/benfl-dfci))
+
+#### 🐛 Bug Fix
+
+- Add "first" and "last" buttons to AnnotationFooter [#230](https://github.com/lindvalllab/clinical-regex/pull/230) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.2.16 (Fri Nov 05 2021)
 
 #### 🐛 Bug Fix
