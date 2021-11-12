@@ -83,7 +83,10 @@ function AnnotationInterface(): JSX.Element {
 
   // Get the groupIds, labels, and total entries with matches on initial render.
   useEffect(() => {
-    api.getAllGroupIds().then(setGroupIds).catch(console.error);
+    api
+      .getAllGroupIds({ orderByMatches: true })
+      .then(setGroupIds)
+      .catch(console.error);
     api.getAllLabels().then(setLabels).catch(console.error);
     api
       .getTotalEntriesWithMatches()
@@ -203,8 +206,10 @@ function AnnotationInterface(): JSX.Element {
       <AnnotationFooter
         page={page}
         totalPages={groupIds.length}
+        onFirstPage={skipPages(-page)}
         onPrevPage={skipPages(-1)}
         onNextPage={skipPages(1)}
+        onLastPage={skipPages(groupIds.length - page)}
         contextWindow={contextWindow}
         setContextWindow={setContextWindow}
         CONTEXT_WINDOW_SIZE_OPTIONS={CONTEXT_WINDOW_SIZE_OPTIONS}

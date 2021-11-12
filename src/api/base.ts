@@ -16,7 +16,9 @@ export default abstract class BaseApi {
   public abstract getAllLabels(): Promise<LabelEntity[]>;
   public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getAllMatches(): Promise<MatchEntity[]>;
-  public abstract getAllGroupIds(): Promise<string[]>;
+  public abstract getAllGroupIds(opts: {
+    orderByMatches: boolean;
+  }): Promise<string[]>;
   public abstract getMatchesByTextId(text_id: number): Promise<MatchEntity[]>;
   public abstract getSettings(): Promise<SettingsEntity>;
   public abstract getNumAnnotated(): Promise<number>;
