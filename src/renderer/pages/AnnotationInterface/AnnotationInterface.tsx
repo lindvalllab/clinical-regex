@@ -26,6 +26,8 @@ import { getUnique } from '../../../utils';
 import {
   DEFAULT_CONTEXT_WINDOW_SIZE,
   CONTEXT_WINDOW_SIZE_OPTIONS,
+  AUTO_HIDE_OPTIONS,
+  DEFAULT_AUTO_HIDE_OPTION,
 } from './constants';
 import AnnotationStats from './AnnotationStats';
 
@@ -49,6 +51,7 @@ function AnnotationInterface(): JSX.Element {
   const [contextWindow, setContextWindow] = useState<number>(
     DEFAULT_CONTEXT_WINDOW_SIZE
   );
+  const [autoHide, setAutoHide] = useState<string>(DEFAULT_AUTO_HIDE_OPTION);
   const [numAnnotated, setNumAnnotated] = useState<number>(-1);
   const [numAnnotatedWithMatches, setNumAnnotatedWithMatches] =
     useState<number>(-1);
@@ -181,6 +184,7 @@ function AnnotationInterface(): JSX.Element {
               highlights={highlights}
               palette={paletteFromLabels(labels)}
               contextWindow={contextWindow}
+              autoHide={autoHide}
             />
           </Box>
           <AnnotationSidebar
@@ -211,8 +215,11 @@ function AnnotationInterface(): JSX.Element {
         onNextPage={skipPages(1)}
         onLastPage={skipPages(groupIds.length - page)}
         contextWindow={contextWindow}
+        autoHide={autoHide}
         setContextWindow={setContextWindow}
+        setAutoHide={setAutoHide}
         CONTEXT_WINDOW_SIZE_OPTIONS={CONTEXT_WINDOW_SIZE_OPTIONS}
+        AUTO_HIDE_OPTIONS={AUTO_HIDE_OPTIONS}
       />
     </Flex>
   );
