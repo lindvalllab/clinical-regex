@@ -13,14 +13,6 @@
     "@fontsource/inter": "^4.3.0",
     "@fontsource/jetbrains-mono": "^4.3.0",
     "@fontsource/poppins": "^4.3.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/react-select": "^4.0.15",
     "flatten-overlapping-ranges": "^1.0.1",
     "formik": "^2.2.8",
     "framer-motion": "^4",
@@ -36,7 +28,6 @@
     "react-table": "^7.7.0",
     "sqlite3": "^5.0.2",
     "tinycolor2": "^1.4.2",
-    "typescript": "^4.1.2",
     "yup": "^0.32.9"
   },
   "homepage": "./",
@@ -57,6 +48,7 @@
     "afterSign": "./afterSignHook.js"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start:react": "react-scripts start",
     "build:react": "react-scripts build",
     "test:react": "react-scripts test",
@@ -83,10 +75,18 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
     "@types/knex": "^0.16.1",
+    "@types/node": "^12.0.0",
     "@types/papaparse": "^5.2.5",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/react-icons": "^3.0.0",
     "@types/react-router-dom": "^5.1.7",
+    "@types/react-select": "^4.0.15",
     "@types/react-table": "^7.7.1",
     "@types/sqlite3": "^3.1.7",
     "@types/styled-components": "^5.1.9",
@@ -100,6 +100,8 @@
     "eslint": "^7.25.0",
     "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.2.1",
+    "source-map-explorer": "^2.5.2",
+    "typescript": "^4.1.2",
     "wait-on": "^5.3.0"
   },
   "resolutions": {
