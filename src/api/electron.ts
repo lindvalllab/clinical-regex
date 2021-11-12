@@ -94,13 +94,13 @@ export default class ElectronApi extends BaseApi {
   async getNumAnnotatedWithMatches(): Promise<number> {
     const results = await MatchModel.query().withGraphFetched({
       text: {
-        annotation: true,
+        annotations: true,
       },
     });
 
     const groupIds = getUnique(
       results
-        .filter((item) => item.text.annotation !== null)
+        .filter((item) => item.text.annotations !== null)
         .map((item) => item.text.group_id)
     );
 
@@ -400,17 +400,41 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
-      const annotations = await this.getAllAnnotations();
+      const labels = await this.getAllLabels()
+        .then((labels) => labels.map((label) => label.name))
+        .then(getUnique);
+
+      const annotations = await TextModel.query()
+        .select('texts.group_id')
+        .distinct('texts.group_id')
+        .withGraphFetched('annotations')
+        .orderBy('texts.group_id')
+        .then((results) => {
+          return results
+            .map((entry) => {
+              if (entry.annotations.length === 0) {
+                return labels.map((label) => [
+                  entry.group_id,
+                  label,
+                  undefined,
+                ]);
+              } else {
+                return entry.annotations.map((annotation) => [
+                  entry.group_id,
+                  annotation.label,
+                  annotation.value,
+                ]);
+              }
+            })
+            .flat(1);
+        });
+
       const settings = await this.getSettings();
       const groupIdField =
         settings.GROUP_ID_FIELD !== null ? settings.GROUP_ID_FIELD : 'id';
       const csv = Papa.unparse({
         fields: [groupIdField, 'label', 'value'],
-        data: annotations.map((annotation) => [
-          annotation.group_id,
-          annotation.label,
-          annotation.value,
-        ]),
+        data: annotations,
       });
       fs.writeFileSync(destination, csv);
       return destination;
