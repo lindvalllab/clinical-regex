@@ -9,7 +9,7 @@ export class TextModel extends Model {
   text!: string;
 
   // for using eager loading methods
-  annotation!: AnnotationModel;
+  annotations!: AnnotationModel[];
   matches!: MatchModel[];
 
   // hacky way of getting types to work for aliased result
@@ -22,12 +22,12 @@ export class TextModel extends Model {
   }
 
   static get relationMappings(): {
-    annotation: RelationMapping<AnnotationModel>;
+    annotations: RelationMapping<AnnotationModel>;
     matches: RelationMapping<MatchModel>;
   } {
     return {
-      annotation: {
-        relation: Model.BelongsToOneRelation,
+      annotations: {
+        relation: Model.HasManyRelation,
         modelClass: AnnotationModel,
         join: {
           from: 'texts.group_id',
