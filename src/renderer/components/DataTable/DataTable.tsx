@@ -68,7 +68,10 @@ function DataTable<T extends Record<string, unknown>>({
     {
       columns,
       data,
-      initialState: { pageIndex: 0 }, // Pass our hoisted table state
+      initialState: {
+        pageIndex: 0,
+        pageSize: PAGE_SIZE_OPTIONS[1],
+      }, // Pass our hoisted table state
       manualPagination: true, // Tell the usePagination
       // hook that we'll handle our own data fetching
       // This means we'll also have to provide our own
@@ -135,7 +138,6 @@ function DataTable<T extends Record<string, unknown>>({
               value={pageSize}
               onChange={(e) => setPageSize(Number(e.target.value))}
               size="sm"
-              defaultValue={PAGE_SIZE_OPTIONS[1]}
             >
               {PAGE_SIZE_OPTIONS.map((pageSize) => (
                 <option key={pageSize}>{pageSize}</option>
