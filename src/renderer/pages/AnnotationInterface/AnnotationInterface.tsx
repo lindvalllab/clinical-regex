@@ -60,7 +60,7 @@ function AnnotationInterface(): JSX.Element {
     useState<number>(-1);
   const [triggerRefresh, setTriggerRefresh] = useState(false);
   const onSubmitToast = useToast({
-    position: 'top-left',
+    position: 'top',
     isClosable: true,
     duration: 3000,
   });
