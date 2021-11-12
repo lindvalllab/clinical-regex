@@ -4,9 +4,17 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
   useColorModeValue,
   Spacer,
   Stack,
+  StackDivider,
   Radio,
   RadioGroup,
 } from '@chakra-ui/react';
@@ -15,8 +23,9 @@ import {
   FaAngleDoubleRight,
   FaAngleLeft,
   FaAngleRight,
+  FaCog,
 } from 'react-icons/fa';
-import { CONTEXT_WINDOW_SIZE_OPTIONS } from './constants';
+import { CONTEXT_WINDOW_SIZE_OPTIONS, AUTO_HIDE_OPTIONS } from './constants';
 
 type AnnotationFooterProps = {
   page: number;
@@ -26,8 +35,13 @@ type AnnotationFooterProps = {
   onNextPage: () => void;
   onLastPage: () => void;
   contextWindow: number;
+  autoHide: typeof AUTO_HIDE_OPTIONS[keyof typeof AUTO_HIDE_OPTIONS];
   setContextWindow: (size: number) => void;
+  setAutoHide: (
+    option: typeof AUTO_HIDE_OPTIONS[keyof typeof AUTO_HIDE_OPTIONS]
+  ) => void;
   CONTEXT_WINDOW_SIZE_OPTIONS: typeof CONTEXT_WINDOW_SIZE_OPTIONS;
+  AUTO_HIDE_OPTIONS: typeof AUTO_HIDE_OPTIONS;
 };
 
 function AnnotationFooter({
@@ -38,12 +52,65 @@ function AnnotationFooter({
   onNextPage,
   onLastPage,
   contextWindow,
+  autoHide,
   setContextWindow,
+  setAutoHide,
   CONTEXT_WINDOW_SIZE_OPTIONS,
+  AUTO_HIDE_OPTIONS,
 }: AnnotationFooterProps): JSX.Element {
   const bg = useColorModeValue('white', 'gray.800');
   const isFirstPage = page === 0;
   const isLastPage = page === totalPages - 1;
+
+  const DisplayOptions = (
+    <Stack
+      direction="row"
+      spacing={6}
+      divider={<StackDivider borderColor="gray.200" />}
+    >
+      <FormControl>
+        <FormLabel fontSize="xs" color="gray.500" textTransform="uppercase">
+          Context Window
+        </FormLabel>
+        <RadioGroup
+          onChange={(value) => {
+            setContextWindow(Number(value));
+          }}
+          value={contextWindow}
+        >
+          <Stack direction={{ base: 'column', xl: 'row' }}>
+            {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
+              ([name, value]) => (
+                <Radio key={value} value={value}>
+                  {name}
+                </Radio>
+              )
+            )}
+          </Stack>
+        </RadioGroup>
+      </FormControl>
+      <FormControl>
+        <FormLabel fontSize="xs" color="gray.500" textTransform="uppercase">
+          Auto-Hide
+        </FormLabel>
+        <RadioGroup
+          onChange={(value) => {
+            setAutoHide(value);
+          }}
+          value={autoHide}
+          w="max-content"
+        >
+          <Stack direction={{ base: 'column', xl: 'row' }}>
+            {Object.entries(AUTO_HIDE_OPTIONS).map(([_, value]) => (
+              <Radio key={value} value={value}>
+                {value}
+              </Radio>
+            ))}
+          </Stack>
+        </RadioGroup>
+      </FormControl>
+    </Stack>
+  );
 
   return (
     <Flex
@@ -57,29 +124,26 @@ function AnnotationFooter({
       px={6}
       borderTopWidth={1}
     >
-      <FormControl>
-        <FormLabel fontSize="xs" color="gray.500" textTransform="uppercase">
-          Context Window
-        </FormLabel>
-        <RadioGroup
-          onChange={(value) => {
-            setContextWindow(Number(value));
-          }}
-          value={contextWindow}
-        >
-          <Stack direction="row">
-            {Object.entries(CONTEXT_WINDOW_SIZE_OPTIONS).map(
-              ([name, value]) => (
-                <Radio key={value} value={value}>
-                  {name}
-                </Radio>
-              )
-            )}
-          </Stack>
-        </RadioGroup>
-      </FormControl>
+      <Flex display={{ base: 'none', xl: 'flex' }}>{DisplayOptions}</Flex>
+      <Popover placement="top-end">
+        <PopoverTrigger>
+          <Button
+            display={{ base: 'flex', xl: 'none' }}
+            leftIcon={<FaCog />}
+            variant="outline"
+          >
+            Options
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverArrow />
+          <PopoverCloseButton />
+          <PopoverHeader>Display Options</PopoverHeader>
+          <PopoverBody>{DisplayOptions}</PopoverBody>
+        </PopoverContent>
+      </Popover>
       <Spacer />
-      <ButtonGroup variant="ghost" colorScheme="gray" size="sm">
+      <ButtonGroup variant="outline">
         <Button
           onClick={onFirstPage}
           disabled={isFirstPage}

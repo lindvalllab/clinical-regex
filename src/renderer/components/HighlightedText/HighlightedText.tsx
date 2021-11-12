@@ -58,7 +58,7 @@ const HighlightedText = (props: HighlightedTextProps): JSX.Element => {
   }, [props.contextWindow, fillContextWindowArray]);
 
   useEffect(() => {
-    if (props.isHidden) {
+    if (props.isHidden !== undefined) {
       setIsHidden(props.isHidden);
     }
   }, [props.isHidden]);

@@ -8,3 +8,10 @@ export const CONTEXT_WINDOW_SIZE_OPTIONS = {
   Large: 100,
   All: -1,
 };
+export const AUTO_HIDE_OPTIONS = {
+  None: 'None',
+  WithoutMatches: 'Without matches',
+  WithMatches: 'With matches',
+  All: 'All',
+};
+export const DEFAULT_AUTO_HIDE_OPTION = AUTO_HIDE_OPTIONS.WithoutMatches;
