@@ -74,11 +74,20 @@ function AnnotationStats({
             color="blue.500"
             size={6}
             mr={2}
+            isIndeterminate={numAnnotated === -1}
           />
-          <StatNumber>{percentAnnotatedAll.toFixed(0)}%</StatNumber>
+          <StatNumber>
+            {numAnnotated !== -1
+              ? `${percentAnnotatedAll.toFixed(0)}%`
+              : 'Loading...'}
+          </StatNumber>
         </Flex>
         <StatHelpText>
-          of all entries ({numAnnotated}/{groupIds.length})
+          of all entries (
+          {numAnnotated !== -1
+            ? `${numAnnotated}/${groupIds.length}`
+            : 'Loading...'}
+          )
         </StatHelpText>
       </Stat>
       <Stat>
@@ -90,12 +99,20 @@ function AnnotationStats({
             color="red.500"
             size={6}
             mr={2}
+            isIndeterminate={numAnnotatedWithMatches === -1}
           />
-          <StatNumber>{percentAnnotatedWithMatches.toFixed(0)}%</StatNumber>
+          <StatNumber>
+            {numAnnotatedWithMatches !== -1
+              ? `${percentAnnotatedWithMatches.toFixed(0)}%`
+              : 'Loading...'}
+          </StatNumber>
         </Flex>
         <StatHelpText>
-          of entries with keyword matches ({numAnnotatedWithMatches}/
-          {totalEntriesWithMatches})
+          of entries with keyword matches (
+          {numAnnotatedWithMatches !== -1
+            ? `${numAnnotatedWithMatches}/${totalEntriesWithMatches}`
+            : 'Loading...'}
+          )
         </StatHelpText>
       </Stat>
     </Flex>

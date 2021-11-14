@@ -100,7 +100,7 @@ export default class ElectronApi extends BaseApi {
 
     const groupIds = getUnique(
       results
-        .filter((item) => item.text.annotations !== null)
+        .filter((item) => item.text.annotations.length > 0)
         .map((item) => item.text.group_id)
     );
 
