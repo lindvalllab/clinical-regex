@@ -1,3 +1,15 @@
+# v0.5.1 (Sun Nov 14 2021)
+
+#### 🐛 Bug Fix
+
+- Fix `getNumAnnotatedWithMatches` bug [#237](https://github.com/lindvalllab/clinical-regex/pull/237) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.0 (Fri Nov 12 2021)
 
 #### 🚀 Enhancement
