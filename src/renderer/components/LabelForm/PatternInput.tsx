@@ -56,7 +56,7 @@ function PatternInput(props: PatternInputProps): JSX.Element {
   };
   const handlePaste = (e: ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData('text').split('\n');
+    const pasted = e.clipboardData.getData('text').split(/\r?\n/);
     // The first element of the pasted text will be combined with the already existing input.
     pasted[0] = inputValue + pasted[0];
     // The last element of the paste is handled differently:
