@@ -1,3 +1,15 @@
+# v0.5.3 (Thu Dec 09 2021)
+
+#### 🐛 Bug Fix
+
+- upgrade electron builder to 22.11.x [#239](https://github.com/lindvalllab/clinical-regex/pull/239) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.5.2 (Thu Dec 09 2021)
 
 #### 🐛 Bug Fix
