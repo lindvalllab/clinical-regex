@@ -1,3 +1,15 @@
+# v0.5.2 (Thu Dec 09 2021)
+
+#### 🐛 Bug Fix
+
+- Handle pasted carriage returns [#238](https://github.com/lindvalllab/clinical-regex/pull/238) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.5.1 (Sun Nov 14 2021)
 
 #### 🐛 Bug Fix
