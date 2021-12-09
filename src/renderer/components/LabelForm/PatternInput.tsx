@@ -1,6 +1,6 @@
 import { useEffect, useState, ClipboardEvent, KeyboardEvent } from 'react';
 import { OptionTypeBase, OptionsType } from 'react-select';
-import ChakraReactSelect from '../ChakraReactSelect';
+import { Select } from 'chakra-react-select';
 import { Box } from '@chakra-ui/react';
 
 const createOption = (label: string) => ({
@@ -74,7 +74,7 @@ function PatternInput(props: PatternInputProps): JSX.Element {
   return (
     // react-select doesn't handle onPaste, so wrap in a Box
     <Box onPaste={handlePaste}>
-      <ChakraReactSelect
+      <Select
         components={{ DropdownIndicator: null, ClearIndicator: null }}
         inputValue={inputValue}
         isClearable
