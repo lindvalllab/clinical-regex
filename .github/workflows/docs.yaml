@@ -20,5 +20,7 @@ jobs:
         run: yarn
       - name: Build
         run: yarn gatsby build --prefix-paths
+      - name: ls
+        run: ls public/
       - name: Publish
         run: yarn gh-pages -d public
