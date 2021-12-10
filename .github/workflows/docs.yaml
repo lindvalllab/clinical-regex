@@ -20,4 +20,6 @@ jobs:
         run: |
           yarn
           yarn gatsby build --prefix-paths
-          yarn gh-pages -d public
+          yarn gh-pages -d public -u 'github-actions-bot <support+actions@github.com>'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
