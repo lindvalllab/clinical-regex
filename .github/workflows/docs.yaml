@@ -15,13 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Move to docs
-        run: cd docs/
-      - name: Install modules
-        run: yarn
-      - name: Build
-        run: yarn gatsby build --prefix-paths
-      - name: ls
-        run: ls public/
-      - name: Publish
-        run: yarn gh-pages -d public
+      - name: Build and publish
+        working-directory: ./docs
+        run: |
+          yarn
+          yarn gatsby build --prefix-paths
+          yarn gh-pages -d public
