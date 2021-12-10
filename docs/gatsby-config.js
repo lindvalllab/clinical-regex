@@ -1,0 +1,75 @@
+module.exports = {
+  siteMetadata: {
+    title: `Clinical Regex`,
+    description: `Cross-platform desktop app for searching and annotating clinical texts.`,
+    author: `lindvalllab`,
+    siteUrl: `https://lindvalllab.dana-farber.org/`,
+    labUrl: `https://lindvalllab.dana-farber.org/`,
+    dfciUrl: `https://www.dana-farber.org/`,
+  },
+  pathPrefix: `/clinical-regex`,
+  plugins: [
+    `gatsby-plugin-typescript`,
+    `gatsby-plugin-styled-components`,
+    `gatsby-plugin-react-helmet`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `data`,
+        path: `${__dirname}/src/data/`,
+        ignore: [`**/\.*`], // ignore files starting with a dot
+      },
+    },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `clinical-regex-docs`,
+        short_name: `clinical-regex`,
+        start_url: `/`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/logo.png`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/sitemap.xml`,
+        exclude: ["/404/*"],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "XXXXXXXX",
+        head: false,
+        respectDNT: true,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [`Poppins\:300,400,700`, `Inter`, `JetBrains Mono`],
+      },
+    },
+    {
+      resolve: `@chakra-ui/gatsby-plugin`,
+      options: {
+        resetCSS: true,
+      },
+    },
+    // this (optional) plugin enables Progressive Web App + Offline functionality
+    // To learn more, visit: https://gatsby.dev/offline
+    // `gatsby-plugin-offline`,
+  ],
+}
