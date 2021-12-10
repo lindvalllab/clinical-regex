@@ -54,7 +54,7 @@ const IndexPage = () => {
     `
   )
 
-  const os = 'Mac';
+  const os = "Mac"
 
   let osIcon
 
@@ -68,8 +68,6 @@ const IndexPage = () => {
     osIcon = <FaLaptop />
   }
 
-  const isUnavailable = os === "Android" || os === "iOS" || os === "Linux"
-
   return (
     <Layout>
       <SEO title="Home" />
@@ -82,12 +80,9 @@ const IndexPage = () => {
         >
           <Heading as="h1">Clinical Regex</Heading>
           <Text>{site.siteMetadata.description}</Text>
-          <Button size="lg" leftIcon={osIcon} isDisabled={isUnavailable}>
-            {isUnavailable
-              ? `Clinical Regex is only available for Mac and Windows`
-              : `Download for ${os}`}
+          <Button size="lg" leftIcon={osIcon} isDisabled={true}>
+            Coming soon!
           </Button>
-          <Link fontSize="xs">Looking for another version?</Link>
         </WrapItem>
         <WrapItem>
           <Flex
