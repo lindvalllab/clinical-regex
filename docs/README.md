@@ -7,7 +7,7 @@ Documentation site for [Clinical Regex](https://github.com/lindvalllab/clinical-
 1.  **Start the development server**
 
     ```sh
-    cd clinical-regex-docs/
+    cd docs/
     gatsby develop
     ```
 
