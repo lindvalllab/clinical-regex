@@ -27,6 +27,7 @@ module.exports = {
         ignore: [`**/\.*`], // ignore files starting with a dot
       },
     },
+    `gatsby-transformer-csv`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {

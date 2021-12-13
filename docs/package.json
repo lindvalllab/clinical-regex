@@ -12,6 +12,7 @@
     "framer-motion": "^4",
     "gatsby": "^2.13.64",
     "gatsby-image": "^2.2.8",
+    "gatsby-transformer-csv": "^4.3.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
