@@ -1,5 +1,5 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react"
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, useStaticQuery, Link as GatsbyLink } from "gatsby"
 import React from "react"
 import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
@@ -42,7 +42,11 @@ const AboutPage = () => {
         </Text>
         <Text>
           It has been used in a number of peer-reviewed studies, which can be
-          found <Link href="/publications">here</Link>.
+          found{" "}
+          <Link as={GatsbyLink} to="/publications">
+            here
+          </Link>
+          .
         </Text>
       </Flex>
     </Layout>
