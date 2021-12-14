@@ -1,3 +1,15 @@
+# v0.5.5 (Tue Dec 14 2021)
+
+#### 🐛 Bug Fix
+
+- Fix broken link on About page in docs [#249](https://github.com/lindvalllab/clinical-regex/pull/249) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.4 (Tue Dec 14 2021)
 
 #### 🐛 Bug Fix
