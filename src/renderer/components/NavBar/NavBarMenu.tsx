@@ -21,6 +21,7 @@ import {
 import { useHistory } from 'react-router';
 import { menuEntries } from '../../../menu';
 import { ApiContext, HandleMenuEntryContext } from '../../api';
+import useExportConfig from '../../hooks/useExportConfig';
 import useExportAnnotations from '../../hooks/useExportAnnotations';
 import useExportMatches from '../../hooks/useExportMatches';
 import useLoadDb from '../../hooks/useLoadDb';
@@ -33,6 +34,7 @@ function NavBarMenu(): JSX.Element {
   const history = useHistory();
   const saveDbAs = useSaveDbAs();
   const loadDb = useLoadDb();
+  const exportConfigFile = useExportConfig();
   const exportAnnotations = useExportAnnotations();
   const exportMatches = useExportMatches();
   const disclosure = useDisclosure();
@@ -45,6 +47,8 @@ function NavBarMenu(): JSX.Element {
   const [openProjectDialogVisible, setOpenProjectDialogVisible] =
     useState<boolean>(false);
   const [exportMatchesProgressVisible, setExportMatchesProgressVisible] =
+    useState<boolean>(false);
+  const [exportConfigVisible, setExportConfigVisible] =
     useState<boolean>(false);
 
   const newProject = {
@@ -84,7 +88,16 @@ function NavBarMenu(): JSX.Element {
       }
     },
   };
-
+  const exportConfig = {
+    onClick: async () => {
+      setExportConfigVisible(true);
+      try {
+        await exportConfigFile();
+      } finally {
+        setExportConfigVisible(false);
+      }
+    },
+  };
   // Associate menu actions to the electron menu.
   useEffect(() => {
     handleMenuEntry[menuEntries.NEW_PROJECT](newProject.onClick);
@@ -146,6 +159,10 @@ function NavBarMenu(): JSX.Element {
             Export Keyword Matches
           </MenuItem>
           <MenuDivider />
+          <MenuItem icon={<FaDownload />} onClick={exportConfig.onClick}>
+            Export Configuration
+          </MenuItem>
+          <MenuDivider />{' '}
           <MenuItem icon={<FaCog />} onClick={preferences.onClick} command="⌘,">
             Preferences
           </MenuItem>
@@ -181,6 +198,11 @@ function NavBarMenu(): JSX.Element {
       <ProgressModal
         isOpen={exportMatchesProgressVisible}
         text="Exporting..."
+        progress={0}
+      />
+      <ProgressModal
+        isOpen={exportConfigVisible}
+        text="Exporting configuration file..."
         progress={0}
       />
     </>

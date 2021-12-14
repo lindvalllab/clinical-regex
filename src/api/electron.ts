@@ -27,6 +27,7 @@ import Papa from 'papaparse';
 import { Transaction, ref } from 'objection';
 import { ExportedEntry } from './types';
 import { getUnique } from '../utils';
+import { groupBy } from 'lodash';
 
 interface RendererApi {
   [key: string]: (...args: unknown[]) => Promise<unknown>;
@@ -384,6 +385,46 @@ export default class ElectronApi extends BaseApi {
     } catch (err) {
       console.log('Error completing database insert transaction');
       console.error(err);
+    }
+  }
+
+  async exportConfig(): Promise<string | undefined> {
+    const destination = dialog.showSaveDialogSync({
+      title: 'Export Config File As',
+      defaultPath: 'Untitled.json',
+      filters: [
+        {
+          name: 'JavaScript Object Notation',
+          extensions: ['json'],
+        },
+      ],
+    });
+
+    if (destination) {
+      const settings = await this.getSettings();
+      const labels = await this.getAllLabels()
+        .then((labels) => groupBy(labels, (e) => e.name))
+        .then((labels) =>
+          Object.entries(labels).map(([key, value], index) => ({
+            name: key,
+            patterns: value.map((label) => label.pattern),
+          }))
+        );
+
+      const config = {
+        isGrouped: settings.IS_GROUPED,
+        groupIdField: settings.GROUP_ID_FIELD,
+        textField: settings.TEXT_ID_FIELD,
+        labels: labels,
+      };
+
+      fs.writeFileSync(destination, JSON.stringify(config, null, 2));
+
+      return destination;
+    } else {
+      // TO-DO: figure out a better way to handle this.
+      console.error(`Destination ${destination} not valid.`);
+      return;
     }
   }
 

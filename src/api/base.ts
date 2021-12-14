@@ -39,6 +39,7 @@ export default abstract class BaseApi {
   public abstract insertLabel(text: CRLabel): Promise<void>;
   public abstract insertText(text: CRText): Promise<void>;
   public abstract updateAnnotation(annotation: CRAnnotation): Promise<void>;
+  public abstract exportConfig(): Promise<string | undefined>;
   public abstract exportAnnotations(): Promise<string | undefined>;
   public abstract findRegexMatches(): Promise<void>;
   public abstract exportMatches(): Promise<string | undefined>;
