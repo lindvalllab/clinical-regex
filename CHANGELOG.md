@@ -1,3 +1,26 @@
+# v0.5.4 (Tue Dec 14 2021)
+
+#### 🐛 Bug Fix
+
+- Add option to export config. [#247](https://github.com/lindvalllab/clinical-regex/pull/247) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 🏠 Internal
+
+- use chakra-react-select from npm [#240](https://github.com/lindvalllab/clinical-regex/pull/240) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### 📝 Documentation
+
+- Update with real publication list. [#246](https://github.com/lindvalllab/clinical-regex/pull/246) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Disable download button (for now). [#245](https://github.com/lindvalllab/clinical-regex/pull/245) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Publish docs [#241](https://github.com/lindvalllab/clinical-regex/pull/241) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.3 (Thu Dec 09 2021)
 
 #### 🐛 Bug Fix
