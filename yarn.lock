@@ -2018,20 +2018,15 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fontsource/inter@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.3.0.tgz#deb5c5d5d2ce0d8d16173a68ba1e961741ef6d30"
-  integrity sha512-qtUF+Fn9vH4O7V/13kOeemEJpQfhTMxtnOJzJw3kY7SOwl1cbs4fnd9QnQOczU3AVBJEPF1ik639uvaOg7g43A==
+"@fontsource/ibm-plex-mono@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/ibm-plex-mono/-/ibm-plex-mono-4.5.2.tgz#3bb3af4454abaea38dd6dc61ba0e8875b7256f69"
+  integrity sha512-1n+mymSnxZBGDYIxN7fhHRNMcHU/oENVp0qNshU+zbk/SGgZksrjobkjTi49kY30A2jWa/pGCY9i6ADb+VlVUw==
 
-"@fontsource/jetbrains-mono@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/jetbrains-mono/-/jetbrains-mono-4.3.0.tgz#fde42ebd091975af9cec5168c97fc7e5c187b75e"
-  integrity sha512-JLA18uXrIJZadVN8D1kT2xalJQ+jkS9ZwlRdCXem+kJrnwvdBLH6DSkT9LX0NCmLHAzvRjt8lbM0q31Ar9dlzA==
-
-"@fontsource/poppins@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-4.3.0.tgz#10feb9e1ddecb3adf406ac8c0548e8a9e599d0e1"
-  integrity sha512-SSZOiqlEVH6KjgzOaDIi6r6JhvHK2Cht+XwkALD/KEPzf10QjHVszEamVjr71eSfB8xweabiP8u5/gnGEkIEsw==
+"@fontsource/ibm-plex-sans@^4.5.2":
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/ibm-plex-sans/-/ibm-plex-sans-4.5.2.tgz#6d553cca9cceee138d98c98d4dfd3871339221f7"
+  integrity sha512-1mL4SLmSlzrsOCkNl7y7o/hQqX5Xf0GfATJXZe0y0NkmyLA1Gq/52gzeC2H2kFtwtNCj2MTSbSYdLYOFykWXjA==
 
 "@hapi/address@2.x.x":
   version "2.1.4"

@@ -9,9 +9,9 @@ const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Poppins, system-ui, sans-serif',
-    body: 'Inter, system-ui, sans-serif',
-    mono: 'JetBrains Mono, monospace',
+    heading: 'IBM Plex Sans, system-ui, sans-serif',
+    body: 'IBM Plex Sans, system-ui, sans-serif',
+    mono: 'IBM Plex Mono, monospace',
   },
 });
 
