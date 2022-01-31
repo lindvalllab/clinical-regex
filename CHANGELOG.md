@@ -1,3 +1,15 @@
+# v0.5.8 (Mon Jan 31 2022)
+
+#### 🐛 Bug Fix
+
+- Remove text from Dashboard table [#252](https://github.com/lindvalllab/clinical-regex/pull/252) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.7 (Mon Jan 31 2022)
 
 #### 🐛 Bug Fix
