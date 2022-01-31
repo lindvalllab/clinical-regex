@@ -1,5 +1,5 @@
 import { Link, useHistory } from 'react-router-dom';
-import { Button, ButtonProps, Flex, Heading, Text } from '@chakra-ui/react';
+import { Button, ButtonProps, Flex, Text } from '@chakra-ui/react';
 import useLoadDb from '../../hooks/useLoadDb';
 import { FaPlus, FaUpload } from 'react-icons/fa';
 import { useContext, useEffect } from 'react';
