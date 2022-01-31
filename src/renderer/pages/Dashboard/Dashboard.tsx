@@ -8,14 +8,7 @@ import {
 } from 'react';
 import { Column, Row } from 'react-table';
 import { ApiContext } from '../../api';
-import {
-  Box,
-  Heading,
-  Icon,
-  Tag,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Heading, Icon, Tag, useColorModeValue } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
 import { DashboardEntry, LabelEntity } from '../../../types';
 import DataTable from '../../components/DataTable';
@@ -93,20 +86,6 @@ function Dashboard(): JSX.Element {
           ) : (
             ''
           ),
-      },
-      {
-        Header: 'Text',
-        accessor: 'text',
-        Cell: ({ row }) => (
-          <Text
-            isTruncated
-            textOverflow="ellipsis"
-            overflow="hidden"
-            maxW="40vw"
-          >
-            {row.original.text}
-          </Text>
-        ),
       },
     ],
     [palette]
