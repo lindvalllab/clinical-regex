@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useViewportScroll } from 'framer-motion';
 import {
@@ -9,20 +9,32 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import NavBarMenu from './NavBarMenu';
+import { ApiContext } from '../../api';
 
 const activeStyle: React.CSSProperties = {
   fontWeight: 'bold',
 };
 
 function NavBarContent(): JSX.Element {
-  // const api = useContext(ApiContext);
+  const api = useContext(ApiContext);
+  const [isProjectStarted, setIsProjectStarted] = useState(false);
+
+  useEffect(() => {
+    api.projectStarted().then(setIsProjectStarted);
+  }, [api]);
 
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
       <Flex align="center" w="100%">
         <NavBarMenu />
       </Flex>
-      <Flex justify="flex-end" align="center" w="100%" maxW="1100px">
+      <Flex
+        hidden={!isProjectStarted}
+        justify="flex-end"
+        align="center"
+        w="100%"
+        maxW="1100px"
+      >
         <HStack spacing={5} display={{ base: 'none', sm: 'flex' }}>
           <NavLink to="/dashboard" activeStyle={activeStyle}>
             Dashboard
