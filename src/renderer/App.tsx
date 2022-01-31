@@ -6,10 +6,9 @@ import AnnotationInterface from './pages/AnnotationInterface';
 import NavBar from './components/NavBar';
 import { Box, Flex, ChakraProvider } from '@chakra-ui/react';
 import theme from './theme';
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/poppins/400.css';
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/600.css';
 import { ColorPaletteProvider } from './ColorPaletteProvider';
 
 function App(): JSX.Element {

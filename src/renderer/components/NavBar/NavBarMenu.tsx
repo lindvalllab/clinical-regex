@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuDivider,
   useDisclosure,
+  HStack,
 } from '@chakra-ui/react';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -29,6 +30,7 @@ import useSaveDbAs from '../../hooks/useSaveDbAs';
 import PreferencesModal from '../PreferencesModal';
 import ProgressModal from '../ProgressModal';
 import UnsavedProgressDialog from './UnsavedProgressDialog';
+import Logo from '../Logo';
 
 function NavBarMenu(): JSX.Element {
   const history = useHistory();
@@ -125,7 +127,10 @@ function NavBarMenu(): JSX.Element {
           variant="ghost"
           rightIcon={<FaChevronDown color="gray" />}
         >
-          <Heading size="md">✨ Clinical Regex</Heading>
+          <HStack gap={2}>
+            <Logo boxSize={8} />
+            <Heading size="md">Clinical Regex</Heading>
+          </HStack>
         </MenuButton>
         <MenuList>
           <MenuItem icon={<FaPlus />} onClick={newProject.onClick} command="⌘N">

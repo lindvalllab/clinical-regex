@@ -1,29 +1,14 @@
-import {
-  Image,
-  ImageProps,
-  keyframes,
-  usePrefersReducedMotion,
-} from '@chakra-ui/react';
-import logo from './logo.svg';
+import { Icon, IconProps } from '@chakra-ui/react';
+import { ReactComponent as LogoIcon } from './logo_icon.svg';
+import { ReactComponent as LogoMain } from './logo_main.svg';
 
-const spin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
+type LogoProps = {
+  type?: 'main' | 'icon';
+} & IconProps;
 
-function Logo(props: ImageProps): JSX.Element {
-  const prefersReducedMotion = usePrefersReducedMotion();
-  const animation = prefersReducedMotion
-    ? undefined
-    : `${spin} infinite 20s linear`;
-  return (
-    <Image
-      src={logo}
-      alt="Clinical Regex Logo"
-      animation={animation}
-      {...props}
-    />
-  );
+function Logo(props: LogoProps): JSX.Element {
+  const svg = props.type === 'main' ? LogoMain : LogoIcon;
+  return <Icon as={svg} {...props} />;
 }
 
 export default Logo;
