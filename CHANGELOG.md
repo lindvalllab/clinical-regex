@@ -1,3 +1,15 @@
+# v0.5.7 (Mon Jan 31 2022)
+
+#### 🐛 Bug Fix
+
+- Hide Dashboard and Annotate links when there is no project. [#251](https://github.com/lindvalllab/clinical-regex/pull/251) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.6 (Mon Jan 31 2022)
 
 #### 🐛 Bug Fix
