@@ -4,6 +4,7 @@ import useLoadDb from '../../hooks/useLoadDb';
 import { FaPlus, FaUpload } from 'react-icons/fa';
 import { useContext, useEffect } from 'react';
 import { ApiContext } from '../../api';
+import Logo from '../../components/Logo';
 
 type MainLinkBoxProps = {
   text: string;
@@ -45,15 +46,15 @@ function Home(): JSX.Element {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      gridGap={8}
-      h="full"
       w="full"
+      h="full"
+      mt={-16}
     >
-      <Heading size="3xl">✨ Clinical Regex</Heading>
+      <Logo type="main" boxSize={96} mb={-6} />
       <Flex
         textAlign="center"
         justifyContent="center"
-        gridGap={2}
+        alignItems="start"
         fontSize="2xl"
       >
         <MainLink icon={<FaPlus />} text="New Project" href="/upload" />
