@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useViewportScroll } from 'framer-motion';
 import {
   chakra,
@@ -17,11 +17,12 @@ const activeStyle: React.CSSProperties = {
 
 function NavBarContent(): JSX.Element {
   const api = useContext(ApiContext);
+  const location = useLocation();
   const [isProjectStarted, setIsProjectStarted] = useState(false);
 
   useEffect(() => {
     api.projectStarted().then(setIsProjectStarted);
-  }, [api]);
+  }, [api, location.hash]);
 
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
