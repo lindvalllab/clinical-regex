@@ -6,7 +6,7 @@ const ExternalLinkIcon = (props: IconProps) => {
   return <Icon as={FaExternalLinkAlt} boxSize={3} {...props} />
 }
 
-const ExternalLink = (props: LinkProps) => {
+const ExternalLink = (props: LinkProps): JSX.Element => {
   return (
     <Link {...props} target="_blank" rel="noopener noreferrer">
       {props.children} <ExternalLinkIcon />

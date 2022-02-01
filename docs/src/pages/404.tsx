@@ -3,7 +3,7 @@ import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 import { Flex, Heading, Text, Link } from "@chakra-ui/react"
 
-const NotFoundPage = () => (
+const NotFoundPage = (): JSX.Element => (
   <Layout>
     <SEO title="404: Not found" />
     <Flex
