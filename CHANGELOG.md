@@ -1,3 +1,15 @@
+# v0.5.10 (Tue Feb 01 2022)
+
+#### 🐛 Bug Fix
+
+- Switch to location.pathname instead of location.hash. [#255](https://github.com/lindvalllab/clinical-regex/pull/255) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.9 (Tue Feb 01 2022)
 
 #### 🐛 Bug Fix
