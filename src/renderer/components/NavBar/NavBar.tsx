@@ -22,7 +22,7 @@ function NavBarContent(): JSX.Element {
 
   useEffect(() => {
     api.projectStarted().then(setIsProjectStarted);
-  }, [api, location.hash]);
+  }, [api, location.pathname]);
 
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
