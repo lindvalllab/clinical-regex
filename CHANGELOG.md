@@ -1,3 +1,15 @@
+# v0.5.9 (Tue Feb 01 2022)
+
+#### 🐛 Bug Fix
+
+- Refresh on route hash change. [#254](https://github.com/lindvalllab/clinical-regex/pull/254) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.8 (Mon Jan 31 2022)
 
 #### 🐛 Bug Fix
