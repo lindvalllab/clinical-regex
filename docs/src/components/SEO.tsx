@@ -36,6 +36,10 @@ const SEO = ({ description, lang, meta, title }: SEOProps): JSX.Element => {
           content: "utf-8",
         },
         {
+          name: `lang`,
+          content: "en",
+        },
+        {
           property: `og:title`,
           content: title,
         },
