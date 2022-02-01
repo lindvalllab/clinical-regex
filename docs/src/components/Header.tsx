@@ -20,6 +20,7 @@ const HeaderLink = ({
     <ChakraLink
       {...(isExternal ? { href } : { as: GatsbyLink, to: href })}
       fontFamily="heading"
+      fontSize={24}
       activeClassName="active"
       sx={{
         ":not(.active)": {
