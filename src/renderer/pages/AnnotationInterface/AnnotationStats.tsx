@@ -94,7 +94,7 @@ function AnnotationStats({
         <StatLabel>% annotated</StatLabel>
         <Flex alignItems="center">
           <CircularProgress
-            value={percentAnnotatedWithMatches}
+            value={percentAnnotatedWithMatches || 0}
             thickness="12px"
             color="red.500"
             size={6}
@@ -103,7 +103,9 @@ function AnnotationStats({
           />
           <StatNumber>
             {numAnnotatedWithMatches !== -1
-              ? `${percentAnnotatedWithMatches.toFixed(0)}%`
+              ? !isNaN(percentAnnotatedWithMatches)
+                ? `${percentAnnotatedWithMatches.toFixed(0)}%`
+                : 'N/A'
               : 'Loading...'}
           </StatNumber>
         </Flex>
