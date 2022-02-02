@@ -1,3 +1,15 @@
+# v0.5.13 (Wed Feb 02 2022)
+
+#### 🐛 Bug Fix
+
+- Fix icon path. [#265](https://github.com/lindvalllab/clinical-regex/pull/265) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.12 (Wed Feb 02 2022)
 
 #### 🐛 Bug Fix
