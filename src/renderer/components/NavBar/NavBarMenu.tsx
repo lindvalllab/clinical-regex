@@ -32,7 +32,11 @@ import ProgressModal from '../ProgressModal';
 import UnsavedProgressDialog from './UnsavedProgressDialog';
 import Logo from '../Logo';
 
-function NavBarMenu(): JSX.Element {
+type NavBarMenuProps = {
+  isProjectStarted?: boolean;
+};
+
+function NavBarMenu(props: NavBarMenuProps): JSX.Element {
   const history = useHistory();
   const saveDbAs = useSaveDbAs();
   const loadDb = useLoadDb();
@@ -62,6 +66,7 @@ function NavBarMenu(): JSX.Element {
   };
   const saveProjectAs = {
     onClick: saveDbAs,
+    isDisabled: !props.isProjectStarted,
   };
   const openProject = {
     onClick: async () => {
@@ -79,6 +84,7 @@ function NavBarMenu(): JSX.Element {
         setExportMatchesProgressVisible(false);
       }
     },
+    isDisabled: !props.isProjectStarted,
   };
   const exportProjectMatches = {
     onClick: async () => {
@@ -89,6 +95,7 @@ function NavBarMenu(): JSX.Element {
         setExportMatchesProgressVisible(false);
       }
     },
+    isDisabled: !props.isProjectStarted,
   };
   const exportConfig = {
     onClick: async () => {
@@ -99,6 +106,7 @@ function NavBarMenu(): JSX.Element {
         setExportConfigVisible(false);
       }
     },
+    isDisabled: !props.isProjectStarted,
   };
   // Associate menu actions to the electron menu.
   useEffect(() => {
@@ -147,6 +155,7 @@ function NavBarMenu(): JSX.Element {
             icon={<FaSave />}
             onClick={saveProjectAs.onClick}
             command="⌘⇧S"
+            isDisabled={saveProjectAs.isDisabled}
           >
             Save Project As
           </MenuItem>
@@ -154,17 +163,23 @@ function NavBarMenu(): JSX.Element {
             icon={<FaDownload />}
             onClick={exportProjectAnnotations.onClick}
             command="⌘E"
+            isDisabled={exportProjectAnnotations.isDisabled}
           >
             Export Annotations
           </MenuItem>
           <MenuItem
             icon={<FaDownload />}
             onClick={exportProjectMatches.onClick}
+            isDisabled={exportProjectMatches.isDisabled}
           >
             Export Keyword Matches
           </MenuItem>
           <MenuDivider />
-          <MenuItem icon={<FaDownload />} onClick={exportConfig.onClick}>
+          <MenuItem
+            icon={<FaDownload />}
+            onClick={exportConfig.onClick}
+            isDisabled={exportConfig.isDisabled}
+          >
             Export Configuration
           </MenuItem>
           <MenuDivider />{' '}

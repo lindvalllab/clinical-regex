@@ -27,7 +27,7 @@ function NavBarContent(): JSX.Element {
   return (
     <Flex justifyContent="space-between" p={6} align="center" w="100%">
       <Flex align="center" w="100%">
-        <NavBarMenu />
+        <NavBarMenu isProjectStarted={isProjectStarted} />
       </Flex>
       <Flex
         hidden={!isProjectStarted}
