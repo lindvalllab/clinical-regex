@@ -1,3 +1,34 @@
+# v0.5.11 (Tue Feb 01 2022)
+
+#### 🐛 Bug Fix
+
+- Handle case where `percentAnnotatedWithMatches` is NaN. [#260](https://github.com/lindvalllab/clinical-regex/pull/260) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 📝 Documentation
+
+- Revert "Increase link font size." [#259](https://github.com/lindvalllab/clinical-regex/pull/259) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Increase link font size. [#258](https://github.com/lindvalllab/clinical-regex/pull/258) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Rename logo.tsx to Logo.tsx. [#257](https://github.com/lindvalllab/clinical-regex/pull/257) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Add new logo to docs [#256](https://github.com/lindvalllab/clinical-regex/pull/256) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.10 (Tue Feb 01 2022)
+
+#### 🐛 Bug Fix
+
+- Switch to location.pathname instead of location.hash. [#255](https://github.com/lindvalllab/clinical-regex/pull/255) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.9 (Tue Feb 01 2022)
 
 #### 🐛 Bug Fix

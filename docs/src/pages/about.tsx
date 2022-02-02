@@ -5,7 +5,7 @@ import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
-const AboutPage = () => {
+const AboutPage = (): JSX.Element => {
   const { site } = useStaticQuery(
     graphql`
       query {

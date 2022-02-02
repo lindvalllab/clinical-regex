@@ -31,7 +31,7 @@ const HeaderLink = ({
   )
 }
 
-const Header = () => {
+const Header = (): JSX.Element => {
   return (
     <Flex p={4} justifyContent="center" gridGap={4}>
       <HeaderLink href="/">Home</HeaderLink>

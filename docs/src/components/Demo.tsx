@@ -21,7 +21,7 @@ const Highlight = ({ children, bgColor, label }: HighlightProps) => {
   )
 }
 
-const Demo = () => {
+const Demo = (): JSX.Element => {
   const labelACP = "advanced care planning"
   const colorACP = "yellow.200"
 

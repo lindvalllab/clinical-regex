@@ -1,17 +1,9 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Link,
-  Text,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react"
+import { Button, Flex, Heading, Text, Wrap, WrapItem } from "@chakra-ui/react"
 import { FaApple, FaWindows, FaLaptop, FaLinux } from "react-icons/fa"
 import React from "react"
 
 import Layout from "../components/Layout"
-// import Logo from "../components/logo"
+import Logo from "../components/Logo"
 import SEO from "../components/SEO"
 import { useStaticQuery, graphql } from "gatsby"
 import Demo from "../components/Demo"
@@ -41,7 +33,7 @@ function getOS() {
   return os
 }
 
-const IndexPage = () => {
+const IndexPage = (): JSX.Element => {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -78,7 +70,7 @@ const IndexPage = () => {
           justifyContent="center"
           gridGap={2}
         >
-          <Heading as="h1">Clinical Regex</Heading>
+          <Logo />
           <Text>{site.siteMetadata.description}</Text>
           <Button size="lg" leftIcon={osIcon} isDisabled={true}>
             Coming soon!

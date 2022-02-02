@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import { Box } from "@chakra-ui/react"
 import ExternalLink from "./ExternalLink"
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
