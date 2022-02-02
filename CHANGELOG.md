@@ -1,3 +1,20 @@
+# v0.5.12 (Wed Feb 02 2022)
+
+#### 🐛 Bug Fix
+
+- Disable menu items [#263](https://github.com/lindvalllab/clinical-regex/pull/263) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 📝 Documentation
+
+- Rename file. [#262](https://github.com/lindvalllab/clinical-regex/pull/262) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Switch to using SVG for logo in docs [#261](https://github.com/lindvalllab/clinical-regex/pull/261) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.11 (Tue Feb 01 2022)
 
 #### 🐛 Bug Fix
