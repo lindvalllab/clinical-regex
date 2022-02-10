@@ -39,13 +39,3 @@ jobs:
             dist/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload build to public release repo
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/*.dmg
-            dist/*.exe
-            dist/*.AppImage
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
-          GITHUB_REPOSITORY: akwok-dfci/clinical-regex-releases
