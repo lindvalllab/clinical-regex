@@ -1,3 +1,15 @@
+# v0.5.14 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- Add public release step to build workflow. [#266](https://github.com/lindvalllab/clinical-regex/pull/266) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.13 (Wed Feb 02 2022)
 
 #### 🐛 Bug Fix
