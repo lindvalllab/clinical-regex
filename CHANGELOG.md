@@ -1,3 +1,15 @@
+# v0.5.16 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- Fill in "runs-on" value. [#268](https://github.com/lindvalllab/clinical-regex/pull/268) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.15 (Thu Feb 10 2022)
 
 #### 🐛 Bug Fix
