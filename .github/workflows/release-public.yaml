@@ -1,0 +1,25 @@
+name: Create public release
+
+on:
+  workflow_run:
+    workflows: [Build release]
+    types: [completed]
+
+jobs:
+  on-success:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Download artifacts
+        run: echo {{ workflow_run.artifacts_url }}
+
+    # upload_assets:
+    #   name: Upload assets
+    #   uses: softprops/action-gh-release@v1
+    #   with:
+    #     files: |
+    #       dist/*.dmg
+    #       dist/*.exe
+    #       dist/*.AppImage
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
+    #     GITHUB_REPOSITORY: akwok-dfci/clinical-regex-releases
