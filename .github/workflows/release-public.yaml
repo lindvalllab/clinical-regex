@@ -35,7 +35,7 @@ jobs:
 
             console.log("Creating release in public repo.")
             const publicRelease = await github.rest.repos.createRelease({
-              ...latestRelease
+              ...latestRelease,
               owner: PUBLIC_REPO_OWNER,
               repo: PUBLIC_REPO_NAME,
             });
