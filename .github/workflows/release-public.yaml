@@ -39,7 +39,7 @@ jobs:
               repo: PUBLIC_REPO_NAME,
               tag_name: latestRelease.tag_name,
               name: latestRelease.name,
-              body: latestRelease.body.
+              body: latestRelease.body,
             });
 
             console.log(latestRelease)
