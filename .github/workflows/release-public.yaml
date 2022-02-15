@@ -17,6 +17,12 @@ jobs:
             -H "Accept: application/vnd.github.v3+json"\
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
             https://api.github.com/repos/${{ github.repository }}/releases/latest
+      - name: Create release in public repo
+        run: |
+          curl \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}"\
+                https://api.github.com/repos/lindvalllab/clinical-regex-public-releases
 
     # upload_assets:
     #   name: Upload assets
