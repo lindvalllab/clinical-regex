@@ -16,7 +16,7 @@ jobs:
         id: get_latest_release
         with:
           script: |
-            await github.rest.repos.getLatestRelease({
+            return github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
