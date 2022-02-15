@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Download artifacts
         env:
-          EVENT:
+          EVENT: ${{ github.event }}
         run: |
           echo $EVENT
 
