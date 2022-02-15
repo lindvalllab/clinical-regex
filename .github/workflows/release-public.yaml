@@ -16,10 +16,14 @@ jobs:
         id: get_latest_release
         with:
           script: |
-            return github.rest.repos.getLatestRelease({
+            const release = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
+
+            console.log(release);
+
+            return release;
 
       - uses: actions/github-script@v6
         name: Create public release
@@ -32,17 +36,15 @@ jobs:
           script: |
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME, RELEASE } = process.env
 
-            console.log(RELEASE)
+            const publicRelease = await github.rest.repos.createRelease({
+              owner: PUBLIC_REPO_OWNER,
+              repo: PUBLIC_REPO_NAME,
+              tag_name: RELEASE.tag_name,
+              name: RELEASE.name,
+              body: RELEASE.body,
+            });
 
-    # const publicRelease = await github.rest.repos.createRelease({
-    #   owner: PUBLIC_REPO_OWNER,
-    #   repo: PUBLIC_REPO_NAME,
-    #   tag_name: latestRelease.tag_name,
-    #   name: latestRelease.name,
-    #   body: latestRelease.body,
-    # });
-
-    # console.log(publicRelease)
+            console.log(publicRelease);
 
     # curl \
     #   -X POST \
