@@ -11,39 +11,39 @@ jobs:
     runs-on: ubuntu-latest
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      # - name: Get latest release
-      #   id: get_latest_release
-      #   run: |
-      #     curl \
-      #       -H "Accept: application/vnd.github.v3+json"\
-      #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-      #       https://api.github.com/repos/${{ github.repository }}/releases/latest
+      - uses: actions/github-script@v6
+        name: Get latest release
+        id: get_latest_release
+        with:
+          script: |
+            await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
       - uses: actions/github-script@v6
         name: Create public release
         env:
-          GH_TOKEN_PUBLIC_RELEASES: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
+          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           PUBLIC_REPO_OWNER: akwok-dfci
           PUBLIC_REPO_NAME: clinical-regex-releases
         with:
           script: |
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
-            console.log("Getting latest release.")
-            const latestRelease = await github.rest.repos.getLatestRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
 
-            console.log("Creating release in public repo.")
-            const publicRelease = await github.rest.repos.createRelease({
-              owner: PUBLIC_REPO_OWNER,
-              repo: PUBLIC_REPO_NAME,
-              tag_name: latestRelease.tag_name,
-              name: latestRelease.name,
-              body: latestRelease.body,
-            });
+            console.log(
+              ${{ steps.get_latest_release.outputs.result }}
+            )
 
-            console.log(latestRelease)
-            console.log(publicRelease)
+    # const publicRelease = await github.rest.repos.createRelease({
+    #   owner: PUBLIC_REPO_OWNER,
+    #   repo: PUBLIC_REPO_NAME,
+    #   tag_name: latestRelease.tag_name,
+    #   name: latestRelease.name,
+    #   body: latestRelease.body,
+    # });
+
+    # console.log(publicRelease)
 
     # curl \
     #   -X POST \
