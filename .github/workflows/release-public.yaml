@@ -11,10 +11,15 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Download artifacts
-        env:
-          EVENT: ${{ github.event }}
-        run: |
-          echo $EVENT
+        uses: actions/github-script@v5
+        with:
+          script: |
+            let releases = await github.rest.actions.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+
+            console.log(releases)
 
     # upload_assets:
     #   name: Upload assets
