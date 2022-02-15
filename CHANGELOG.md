@@ -1,3 +1,15 @@
+# v0.5.18 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Echo workflow_run event payload. [#270](https://github.com/lindvalllab/clinical-regex/pull/270) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.17 (Thu Feb 10 2022)
 
 #### 🐛 Bug Fix
