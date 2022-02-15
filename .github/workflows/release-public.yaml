@@ -22,7 +22,7 @@ jobs:
         name: Get latest release
         with:
           script: |
-            const release = github.rest.releases.latest({
+            const release = github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
