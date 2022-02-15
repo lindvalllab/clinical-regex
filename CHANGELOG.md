@@ -1,3 +1,15 @@
+# v0.5.21 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Switch to curl. [#273](https://github.com/lindvalllab/clinical-regex/pull/273) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.20 (Tue Feb 15 2022)
 
 #### 🐛 Bug Fix
