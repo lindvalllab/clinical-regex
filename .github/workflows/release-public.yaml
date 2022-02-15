@@ -22,8 +22,11 @@ jobs:
         name: Get latest release
         with:
           script: |
-            const releases = context.repo.releases
-            console.log(releases)
+            const release = github.rest.releases.latest({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            console.log(release)
     # curl \
     #   -X POST \
     #   -H "Accept: application/vnd.github.v3+json" \
