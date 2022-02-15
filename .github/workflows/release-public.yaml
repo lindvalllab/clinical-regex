@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Download artifacts
         run: |
+          echo ${{ github.repository_owner }}
+          echo ${{ github.repository }}
           curl \
             -H "Accept: application/vnd.github.v3+json"\
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
