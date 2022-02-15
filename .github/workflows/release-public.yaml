@@ -27,13 +27,12 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           PUBLIC_REPO_OWNER: akwok-dfci
           PUBLIC_REPO_NAME: clinical-regex-releases
+          RELEASE: ${{ steps.get_latest_release.outputs.result }}
         with:
           script: |
-            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
+            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME, RELEASE } = process.env
 
-            console.log(
-              ${{ steps.get_latest_release.outputs.result }}
-            )
+            console.log(RELEASE)
 
     # const publicRelease = await github.rest.repos.createRelease({
     #   owner: PUBLIC_REPO_OWNER,
