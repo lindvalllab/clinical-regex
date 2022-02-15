@@ -19,6 +19,7 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/releases/latest
       - name: Create release in public repo
         run: |
+          echo "Trying to create a release..."
           curl \
             -X POST \
             -H "Accept: application/vnd.github.v3+json" \
