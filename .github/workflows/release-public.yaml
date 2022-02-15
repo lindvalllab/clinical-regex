@@ -20,9 +20,11 @@ jobs:
       - name: Create release in public repo
         run: |
           curl \
+            -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}"\
-                https://api.github.com/repos/lindvalllab/clinical-regex-public-releases
+                https://api.github.com/repos/akwok-dfci/clinical-regex-release\
+            -d '{"tag_name": "test_release_v0.01"}'
 
     # upload_assets:
     #   name: Upload assets
