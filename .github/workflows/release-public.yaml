@@ -13,12 +13,10 @@ jobs:
     steps:
       - name: Download artifacts
         run: |
-          echo ${{ github.repository_owner }}
-          echo ${{ github.repository }}
           curl \
             -H "Accept: application/vnd.github.v3+json"\
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-            https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/releases/latest
+            https://api.github.com/repos/${{ github.repository }}/releases/latest
 
     # upload_assets:
     #   name: Upload assets
