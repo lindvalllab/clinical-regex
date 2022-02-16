@@ -34,19 +34,20 @@ jobs:
         with:
           github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           script: |
-            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME, RELEASE } = process.env
+            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
+            let { RELEASE } = process.env
 
-            console.log(JSON.parse(RELEASE))
+            RELEASE = JSON.parse(RELEASE)
 
-    # const publicRelease = await github.rest.repos.createRelease({
-    #   owner: PUBLIC_REPO_OWNER,
-    #   repo: PUBLIC_REPO_NAME,
-    #   tag_name: RELEASE.tag_name,
-    #   name: RELEASE.name,
-    #   body: RELEASE.body,
-    # });
+            const publicRelease = await github.rest.repos.createRelease({
+              owner: PUBLIC_REPO_OWNER,
+              repo: PUBLIC_REPO_NAME,
+              tag_name: RELEASE.tag_name,
+              name: RELEASE.name,
+              body: RELEASE.body,
+            });
 
-    # console.log(publicRelease);
+            console.log(publicRelease);
 
     # curl \
     #   -X POST \
