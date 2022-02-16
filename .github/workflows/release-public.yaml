@@ -20,7 +20,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
             https://api.github.com/repos/${{ github.repository }}/releases/latest)
-          echo "::set-output name=release::$RELEASE"
+          echo "::set-output name=release::${RELEASE}"
       - name: Create public release
         env:
           PUBLIC_REPO_OWNER: akwok-dfci
