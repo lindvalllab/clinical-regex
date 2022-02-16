@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Get latest release
         id: latest_release
+        outputs:
+          release: ${{ steps.latest_release.outputs.release }}
         run: |
           RELEASE=$(curl \
             -H "Accept: application/vnd.github.v3+json" \
