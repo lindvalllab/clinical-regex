@@ -28,11 +28,11 @@ jobs:
       - uses: actions/github-script@v6
         name: Create public release
         env:
-          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           PUBLIC_REPO_OWNER: akwok-dfci
           PUBLIC_REPO_NAME: clinical-regex-releases
           RELEASE: ${{ steps.get_latest_release.outputs.result }}
         with:
+          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           script: |
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME, RELEASE } = process.env
 
