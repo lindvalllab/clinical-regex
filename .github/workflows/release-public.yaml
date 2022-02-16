@@ -43,6 +43,6 @@ jobs:
               console.log(await github.rest.repos.getReleaseAsset({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                release_id: publicRelease.id,
+                release_id: RELEASE.id,
               }))
             })
