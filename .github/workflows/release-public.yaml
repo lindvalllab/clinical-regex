@@ -47,12 +47,6 @@ jobs:
               body: RELEASE.body,
             });
 
-            RELEASE.assets.forEach(async (asset) => {
-              await github.rest.repos.uploadReleaseAsset({
-                owner: PUBLIC_REPO_OWNER,
-                repo: PUBLIC_REPO_NAME,
-                release_id: publicRelease.id,
-                name: asset.data.name,
-                data: asset,
-              })
+            RELEASE.assets.forEach((asset) => {
+              console.log(asset)
             })
