@@ -11,18 +11,48 @@ jobs:
     runs-on: ubuntu-latest
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Get latest release
+      - uses: actions/github-script@v6
+        name: Get latest release
         id: latest_release
-        run: |
-          echo "::set-output name=release::$(curl \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-            https://api.github.com/repos/${{ github.repository }}/releases/latest)"
-      - name: Create public release
+        with:
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+
+            console.log(release);
+
+            return release;
+
+      - uses: actions/github-script@v6
+        name: Create public release
         env:
           PUBLIC_REPO_OWNER: akwok-dfci
           PUBLIC_REPO_NAME: clinical-regex-releases
-          RELEASE: ${{ steps.latest_release.outputs.release }}
-          GH_TOKEN_PUBLIC: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo $RELEASE
+          RELEASE: ${{ steps.latest_release.outputs.result }}
+        with:
+          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
+          script: |
+            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
+            let { RELEASE } = process.env
+
+            RELEASE = JSON.parse(RELEASE).data;
+
+            // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
+            RELEASE.assets.forEach(async (asset) => {
+              const file = fs.createWriteStream(asset.data.name)
+              const response = await github.rest.repos.getReleaseAsset({
+                headers: {
+                  Accept: 'application/octet-stream'
+                },
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                asset_id: asset.data.id,
+              });
+              
+              file.write(response.data);
+              file.end();
+            });
+
+            fs.readdirSync('.').forEach(console.log)
