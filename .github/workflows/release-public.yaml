@@ -14,15 +14,16 @@ jobs:
       - name: Get latest release
         id: latest_release
         run: |
-          curl \
+          release=$(curl \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-            https://api.github.com/repos/${{ github.repository }}/releases/latest
+            https://api.github.com/repos/${{ github.repository }}/releases/latest)
+          echo "::set-output name=release::release"
       - name: Create public release
         env:
           PUBLIC_REPO_OWNER: akwok-dfci
           PUBLIC_REPO_NAME: clinical-regex-releases
-          RELEASE: ${{ steps.latest_release.outputs.result }}
+          RELEASE: ${{ steps.latest_release.outputs.release }}
           GH_TOKEN_PUBLIC: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo $RELEASE
