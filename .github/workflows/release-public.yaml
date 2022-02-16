@@ -42,14 +42,14 @@ jobs:
 
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
             RELEASE.assets.forEach(async (asset) => {
-              const file = fs.createWriteStream(asset.data.name)
+              const file = fs.createWriteStream(asset.name)
               const response = await github.rest.repos.getReleaseAsset({
                 headers: {
                   Accept: 'application/octet-stream'
                 },
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                asset_id: asset.data.id,
+                asset_id: asset.id,
               });
               
               file.write(response.data);
