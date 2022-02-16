@@ -39,14 +39,6 @@ jobs:
 
             RELEASE = JSON.parse(RELEASE).data;
 
-            const publicRelease = await github.rest.repos.createRelease({
-              owner: PUBLIC_REPO_OWNER,
-              repo: PUBLIC_REPO_NAME,
-              tag_name: RELEASE.tag_name,
-              name: RELEASE.name,
-              body: RELEASE.body,
-            });
-
             RELEASE.assets.forEach((asset) => {
               console.log(asset)
             })
