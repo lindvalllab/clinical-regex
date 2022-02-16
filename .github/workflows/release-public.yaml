@@ -16,6 +16,7 @@ jobs:
         run: |
           curl \
             -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
             https://api.github.com/repos/${{ github.repository }}/releases/latest
       - name: Create public release
         env:
