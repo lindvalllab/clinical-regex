@@ -36,7 +36,7 @@ jobs:
           script: |
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME, RELEASE } = process.env
 
-            console.log(RELEASE)
+            console.log(JSON.parse(RELEASE))
 
     # const publicRelease = await github.rest.repos.createRelease({
     #   owner: PUBLIC_REPO_OWNER,
