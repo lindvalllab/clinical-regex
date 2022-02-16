@@ -40,5 +40,5 @@ jobs:
             RELEASE = JSON.parse(RELEASE).data;
 
             RELEASE.assets.forEach((asset) => {
-              console.log(asset)
+              console.log(asset.name)
             })
