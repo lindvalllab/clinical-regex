@@ -52,8 +52,8 @@ jobs:
                 asset_id: asset.id,
               });
               
-              file.write(JSON.stringify(response.data));
-              console.log(response.data);
+              file.write(Buffer.from(response.data));
+              // console.log(response.data);
               file.end();
             }
 
