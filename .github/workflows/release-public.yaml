@@ -64,6 +64,6 @@ jobs:
               name: RELEASE.name,
               body: RELEASE.body,
             });
-            console.log(publicRelease);
+            console.log(publicRelease.data);
 
             fs.readdirSync('.').forEach(console.log)
