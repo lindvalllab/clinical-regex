@@ -7,7 +7,7 @@ on:
   #   types: [completed]
 
 jobs:
-  on-success:
+  publish-release:
     runs-on: ubuntu-latest
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
@@ -16,14 +16,10 @@ jobs:
         id: latest_release
         with:
           script: |
-            const release = await github.rest.repos.getLatestRelease({
+            return await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-
-            console.log(release);
-
-            return release;
 
       - uses: actions/github-script@v6
         name: Create public release
@@ -48,9 +44,8 @@ jobs:
               body: RELEASE.body,
             });
 
-            // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
             for (const asset of RELEASE.assets) {
-              const file = fs.createWriteStream(asset.name)
+              // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
               const response = await github.rest.repos.getReleaseAsset({
                 headers: {
                   Accept: 'application/octet-stream'
@@ -66,12 +61,4 @@ jobs:
                 name: asset.name,
                 data: response.data
               });
-
-              
-              file.write(Buffer.from(response.data));
-              // console.log(response.data);
-              file.end();
             }
-
-
-            fs.readdirSync('.').forEach(console.log)
