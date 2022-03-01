@@ -44,7 +44,7 @@ jobs:
             console.log('B');
 
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
-            RELEASE.assets.forEach(async (asset) => {
+            for (const asset of assets) {
               console.log('new asset');
               console.log(asset.name);
               const file = fs.createWriteStream(asset.name)
@@ -59,6 +59,7 @@ jobs:
               
               file.write(JSON.stringify(response.data));
               file.end();
-            });
+              fs.readdirSync('.').forEach(console.log)
+            }
 
             fs.readdirSync('.').forEach(console.log)
