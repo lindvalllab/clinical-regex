@@ -1,15 +1,14 @@
 name: Create public release
 
 on:
-  push
-  # workflow_run:
-  #   workflows: [Build release]
-  #   types: [completed]
+  workflow_run:
+    workflows: [Build release]
+    types: [completed]
 
 jobs:
   publish-release:
     runs-on: ubuntu-latest
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/github-script@v6
         name: Get latest release
@@ -30,7 +29,6 @@ jobs:
         with:
           github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
           script: |
-            const fs = require("fs");
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
             let { RELEASE } = process.env
 
