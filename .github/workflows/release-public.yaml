@@ -44,7 +44,7 @@ jobs:
             console.log('B');
 
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
-            for (const asset of assets) {
+            for (const asset of RELEASE.assets) {
               console.log('new asset');
               console.log(asset.name);
               const file = fs.createWriteStream(asset.name)
