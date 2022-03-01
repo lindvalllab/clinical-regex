@@ -45,6 +45,8 @@ jobs:
 
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
             RELEASE.assets.forEach(async (asset) => {
+              console.log('new asset');
+              console.log(asset.name);
               const file = fs.createWriteStream(asset.name)
               const response = await github.rest.repos.getReleaseAsset({
                 headers: {
