@@ -28,7 +28,7 @@ jobs:
       - uses: actions/github-script@v6
         name: Create public release
         env:
-          PUBLIC_REPO_OWNER: akwok-dfci
+          PUBLIC_REPO_OWNER: lindvalllab 
           PUBLIC_REPO_NAME: clinical-regex-releases
           RELEASE: ${{ steps.latest_release.outputs.result }}
         with:
