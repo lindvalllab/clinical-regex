@@ -1,3 +1,152 @@
+# v0.5.23 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Try different expression for token. [#275](https://github.com/lindvalllab/clinical-regex/pull/275) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.22 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Add token. [#274](https://github.com/lindvalllab/clinical-regex/pull/274) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.21 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Switch to curl. [#273](https://github.com/lindvalllab/clinical-regex/pull/273) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.20 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- List releases. [#272](https://github.com/lindvalllab/clinical-regex/pull/272) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.19 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Actually put the environment variable. [#271](https://github.com/lindvalllab/clinical-regex/pull/271) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.18 (Tue Feb 15 2022)
+
+#### 🐛 Bug Fix
+
+- Echo workflow_run event payload. [#270](https://github.com/lindvalllab/clinical-regex/pull/270) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.17 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- List all artifacts (WIP). [#269](https://github.com/lindvalllab/clinical-regex/pull/269) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.16 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- Fill in "runs-on" value. [#268](https://github.com/lindvalllab/clinical-regex/pull/268) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.15 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- Add public release workflow (WIP) [#267](https://github.com/lindvalllab/clinical-regex/pull/267) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.14 (Thu Feb 10 2022)
+
+#### 🐛 Bug Fix
+
+- Add public release step to build workflow. [#266](https://github.com/lindvalllab/clinical-regex/pull/266) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.13 (Wed Feb 02 2022)
+
+#### 🐛 Bug Fix
+
+- Fix icon path. [#265](https://github.com/lindvalllab/clinical-regex/pull/265) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
+# v0.5.12 (Wed Feb 02 2022)
+
+#### 🐛 Bug Fix
+
+- Disable menu items [#263](https://github.com/lindvalllab/clinical-regex/pull/263) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 📝 Documentation
+
+- Rename file. [#262](https://github.com/lindvalllab/clinical-regex/pull/262) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Switch to using SVG for logo in docs [#261](https://github.com/lindvalllab/clinical-regex/pull/261) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.11 (Tue Feb 01 2022)
 
 #### 🐛 Bug Fix
