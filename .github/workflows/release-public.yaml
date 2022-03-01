@@ -39,6 +39,9 @@ jobs:
             let { RELEASE } = process.env
 
             RELEASE = JSON.parse(RELEASE).data;
+            console.log('A');
+            fs.readdirSync('.').forEach(console.log);
+            console.log('B');
 
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
             RELEASE.assets.forEach(async (asset) => {
