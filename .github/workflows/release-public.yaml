@@ -40,6 +40,14 @@ jobs:
 
             RELEASE = JSON.parse(RELEASE).data;
 
+            const publicRelease = await github.rest.repos.createRelease({
+              owner: PUBLIC_REPO_OWNER,
+              repo: PUBLIC_REPO_NAME,
+              tag_name: RELEASE.tag_name,
+              name: RELEASE.name,
+              body: RELEASE.body,
+            });
+
             // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
             for (const asset of RELEASE.assets) {
               const file = fs.createWriteStream(asset.name)
@@ -51,26 +59,19 @@ jobs:
                 repo: context.repo.repo,
                 asset_id: asset.id,
               });
+              github.rest.repos.uploadReleaseAsset({
+                owner: PUBLIC_REPO_OWNER,
+                repo: PUBLIC_REPO_NAME,
+                release_id: publicRelease.data.id,
+                name: asset.name,
+                data: response.data
+              });
+
               
               file.write(Buffer.from(response.data));
               // console.log(response.data);
               file.end();
             }
 
-            const publicRelease = await github.rest.repos.createRelease({
-              owner: PUBLIC_REPO_OWNER,
-              repo: PUBLIC_REPO_NAME,
-              tag_name: RELEASE.tag_name,
-              name: RELEASE.name,
-              body: RELEASE.body,
-            });
-            console.log(publicRelease.data);
-            github.rest.repos.uploadReleaseAsset({
-              owner: PUBLIC_REPO_OWNER,
-              repo: PUBLIC_REPO_NAME,
-              release_id: publicRelease.data.id,
-              name: 'test file',
-              data: 'test data'
-            });
 
             fs.readdirSync('.').forEach(console.log)
