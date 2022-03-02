@@ -18,12 +18,17 @@ import { useStaticQuery, graphql } from "gatsby"
 import { Octokit } from "octokit"
 import { Endpoints } from "@octokit/types"
 
-type Release = Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
+type Release =
+  Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
 
-const osSupported = ["Mac", "Windows", "Linux"];
+const osSupported = ["Mac", "Windows", "Linux"]
 
 // https://stackoverflow.com/a/38241481
 function getOS(): string {
+  const isBrowser = typeof window !== "undefined"
+
+  if (!isBrowser) return "Unknown"
+
   const userAgent = window.navigator.userAgent,
     platform = window.navigator.platform,
     macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
@@ -89,10 +94,10 @@ const IndexPage = (): JSX.Element => {
           repo: "clinical-regex-releases",
         }
       )
-      .then(response => {
+      .then((response) => {
         setRelease(response.data)
 
-        const asset = (response.data as Release).assets.find(asset => {
+        const asset = (response.data as Release).assets.find((asset) => {
           if (os === "Mac") {
             return asset.name.endsWith(".dmg")
           } else if (os === "Windows") {
@@ -110,7 +115,7 @@ const IndexPage = (): JSX.Element => {
       })
   }, [os])
 
-  const isSupported = osSupported.indexOf(os) !== -1;
+  const isSupported = osSupported.indexOf(os) !== -1
 
   return (
     <Layout>
@@ -133,7 +138,9 @@ const IndexPage = (): JSX.Element => {
               isDisabled={!isSupported}
               w="full"
             >
-              {isSupported ? `Download ${release?.tag_name}` : `App not supported for detected OS`}
+              {isSupported
+                ? `Download ${release?.tag_name}`
+                : `App not supported for detected OS`}
             </Button>
           </Link>
           <Text fontSize="sm">
