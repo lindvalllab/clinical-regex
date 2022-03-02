@@ -1,22 +1,36 @@
-import { Button, Flex, Heading, Text, Wrap, WrapItem } from "@chakra-ui/react"
+import {
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Text,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react"
 import { FaApple, FaWindows, FaLaptop, FaLinux } from "react-icons/fa"
-import React from "react"
-
+import React, { useState, useEffect } from "react"
 import Layout from "../components/Layout"
 import Logo from "../components/Logo"
 import SEO from "../components/SEO"
-import { useStaticQuery, graphql } from "gatsby"
 import Demo from "../components/Demo"
+import ExternalLink from "../components/ExternalLink"
+import { useStaticQuery, graphql } from "gatsby"
+import { Octokit } from "octokit"
+import { Endpoints } from "@octokit/types"
+
+type Release = Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
+
+const osSupported = ["Mac", "Windows", "Linux"];
 
 // https://stackoverflow.com/a/38241481
-function getOS() {
+function getOS(): string {
   const userAgent = window.navigator.userAgent,
     platform = window.navigator.platform,
     macosPlatforms = ["Macintosh", "MacIntel", "MacPPC", "Mac68K"],
     windowsPlatforms = ["Win32", "Win64", "Windows", "WinCE"],
     iosPlatforms = ["iPhone", "iPad", "iPod"]
 
-  let os = undefined
+  let os = "Unknown"
 
   if (macosPlatforms.indexOf(platform) !== -1) {
     os = "Mac"
@@ -40,13 +54,14 @@ const IndexPage = (): JSX.Element => {
         site {
           siteMetadata {
             description
+            releasesUrl
           }
         }
       }
     `
   )
 
-  const os = "Mac"
+  const os = getOS()
 
   let osIcon
 
@@ -60,6 +75,43 @@ const IndexPage = (): JSX.Element => {
     osIcon = <FaLaptop />
   }
 
+  const [release, setRelease] = useState<Release | undefined>(undefined)
+  const [downloadLink, setDownloadLink] = useState("#")
+
+  useEffect(() => {
+    const octokit = new Octokit()
+
+    octokit
+      .request(
+        "GET /repos/lindvalllab/clinical-regex-releases/releases/latest",
+        {
+          owner: "lindvalllab",
+          repo: "clinical-regex-releases",
+        }
+      )
+      .then(response => {
+        setRelease(response.data)
+
+        const asset = (response.data as Release).assets.find(asset => {
+          if (os === "Mac") {
+            return asset.name.endsWith(".dmg")
+          } else if (os === "Windows") {
+            return asset.name.endsWith(".exe")
+          } else if (os === "Linux") {
+            return asset.name.endsWith(".AppImage")
+          } else {
+            return false
+          }
+        })
+
+        if (asset?.browser_download_url) {
+          setDownloadLink(asset.browser_download_url)
+        }
+      })
+  }, [os])
+
+  const isSupported = osSupported.indexOf(os) !== -1;
+
   return (
     <Layout>
       <SEO title="Home" />
@@ -72,9 +124,24 @@ const IndexPage = (): JSX.Element => {
         >
           <Logo />
           <Text>{site.siteMetadata.description}</Text>
-          <Button size="lg" leftIcon={osIcon} isDisabled={true}>
-            Coming soon!
-          </Button>
+          <Link href={downloadLink}>
+            <Button
+              size="lg"
+              leftIcon={osIcon}
+              isLoading={release === null || release === undefined}
+              loadingText={"Fetching download link"}
+              isDisabled={!isSupported}
+              w="full"
+            >
+              {isSupported ? `Download ${release?.tag_name}` : `App not supported for detected OS`}
+            </Button>
+          </Link>
+          <Text fontSize="sm">
+            Not seeing the version you want?{" "}
+            <ExternalLink href={site.siteMetadata.releasesUrl}>
+              Click here for more options.
+            </ExternalLink>
+          </Text>
         </WrapItem>
         <WrapItem>
           <Flex
