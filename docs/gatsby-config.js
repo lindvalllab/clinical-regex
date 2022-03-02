@@ -6,6 +6,7 @@ module.exports = {
     siteUrl: `https://lindvalllab.dana-farber.org/`,
     labUrl: `https://lindvalllab.dana-farber.org/`,
     dfciUrl: `https://www.dana-farber.org/`,
+    releasesUrl: `https://github.com/lindvalllab/clinical-regex-releases/releases`,
   },
   pathPrefix: `/clinical-regex`,
   plugins: [
@@ -24,7 +25,7 @@ module.exports = {
       options: {
         name: `data`,
         path: `${__dirname}/src/data/`,
-        ignore: [`**/\.*`], // ignore files starting with a dot
+        ignore: [`**/.*`], // ignore files starting with a dot
       },
     },
     `gatsby-transformer-csv`,
@@ -60,7 +61,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: [`Poppins\:300,400,700`, `Inter`, `JetBrains Mono`],
+        fonts: [`Poppins:300,400,700`, `Inter`, `JetBrains Mono`],
       },
     },
     {
