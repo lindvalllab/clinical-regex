@@ -1,3 +1,16 @@
+# v0.6.0 (Wed Mar 02 2022)
+
+#### 🚀 Enhancement
+
+- Upload releases to public repo [#276](https://github.com/lindvalllab/clinical-regex/pull/276) ([@akwok-dfci](https://github.com/akwok-dfci) [@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.5.23 (Tue Feb 15 2022)
 
 #### 🐛 Bug Fix
