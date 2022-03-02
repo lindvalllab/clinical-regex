@@ -6,25 +6,57 @@ on:
     types: [completed]
 
 jobs:
-  on-success:
+  publish-release:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Download artifacts
-        run: |
-          curl \
-            -H "Accept: application/vnd.github.v3+json"\
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"\
-            https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/releases/latest
+      - uses: actions/github-script@v6
+        name: Get latest release
+        id: latest_release
+        with:
+          script: |
+            return await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
 
-    # upload_assets:
-    #   name: Upload assets
-    #   uses: softprops/action-gh-release@v1
-    #   with:
-    #     files: |
-    #       dist/*.dmg
-    #       dist/*.exe
-    #       dist/*.AppImage
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
-    #     GITHUB_REPOSITORY: akwok-dfci/clinical-regex-releases
+      - uses: actions/github-script@v6
+        name: Create public release
+        env:
+          PUBLIC_REPO_OWNER: lindvalllab 
+          PUBLIC_REPO_NAME: clinical-regex-releases
+          RELEASE: ${{ steps.latest_release.outputs.result }}
+        with:
+          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
+          script: |
+            const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
+            let { RELEASE } = process.env
+
+            RELEASE = JSON.parse(RELEASE).data;
+
+            const publicRelease = await github.rest.repos.createRelease({
+              owner: PUBLIC_REPO_OWNER,
+              repo: PUBLIC_REPO_NAME,
+              tag_name: RELEASE.tag_name,
+              name: RELEASE.name,
+              body: RELEASE.body,
+            });
+
+            for (const asset of RELEASE.assets) {
+              // https://github.com/octokit/rest.js/issues/6#issuecomment-477800969
+              const response = await github.rest.repos.getReleaseAsset({
+                headers: {
+                  Accept: 'application/octet-stream'
+                },
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                asset_id: asset.id,
+              });
+              github.rest.repos.uploadReleaseAsset({
+                owner: PUBLIC_REPO_OWNER,
+                repo: PUBLIC_REPO_NAME,
+                release_id: publicRelease.data.id,
+                name: asset.name,
+                data: response.data
+              });
+            }
