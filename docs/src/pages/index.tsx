@@ -45,7 +45,7 @@ function getOS(): string {
     os = "Windows"
   } else if (/Android/.test(userAgent)) {
     os = "Android"
-  } else if (!os && /Linux/.test(platform)) {
+  } else if (/Linux/.test(platform)) {
     os = "Linux"
   }
 
