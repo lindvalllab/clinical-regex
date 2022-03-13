@@ -1,7 +1,5 @@
-export function createRegex(pattern: string, exclusions: string[]): string {
-  const re = new RegExp(pattern, 'i');
-  const relevantExclusions = exclusions.filter(re.test, re);
-  return relevantExclusions.join('|') + '|(?<result>' + pattern + ')';
+export function createRegex(patterns: string[], exclusions: string[]): string {
+  return exclusions.join('|') + '|(?<result>' + patterns.join('|') + ')';
 }
 
 export function* getMatches(
@@ -20,4 +18,4 @@ export function* getMatches(
   }
 }
 
-getMatches(createRegex('b', ['ab', 'bc']), 'abbabc');
+getMatches(createRegex(['b'], ['ab', 'bc']), 'abbabc');
