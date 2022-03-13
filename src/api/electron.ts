@@ -5,6 +5,7 @@ import {
   getTempDbPath,
   initDb,
   AnnotationModel,
+  ExclusionModel,
   LabelModel,
   MatchModel,
   TextModel,
@@ -42,6 +43,10 @@ export default class ElectronApi extends BaseApi {
 
   async getAllLabels(): Promise<LabelEntity[]> {
     return LabelModel.query();
+  }
+
+  async getAllExclusions(): Promise<LabelEntity[]> {
+    return ExclusionModel.query();
   }
 
   async getAllTexts(): Promise<TextEntity[]> {
@@ -141,6 +146,12 @@ export default class ElectronApi extends BaseApi {
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
     for (const pattern of label.patterns) {
       await LabelModel.query(trx).insert({
+        name: label.name,
+        pattern: pattern,
+      });
+    }
+    for (const pattern of label.exclusions) {
+      await ExclusionModel.query(trx).insert({
         name: label.name,
         pattern: pattern,
       });
@@ -483,6 +494,30 @@ export default class ElectronApi extends BaseApi {
       console.error(`Destination ${destination} not valid.`);
       return;
     }
+  }
+
+  async collectLabels(): Promise<CRLabel[]> {
+    const labels: CRLabel[] = await this.getAllLabels()
+      .then((labels) => groupBy(labels, (e) => e.name))
+      .then((grouped) =>
+        Object.entries(grouped).map(([key, value], _index) => ({
+          name: key,
+          patterns: value.map((label) => label.pattern),
+          exclusions: [],
+        }))
+      );
+
+    const exclusions = await this.getAllExclusions().then((exclusions) =>
+      groupBy(exclusions, (e) => e.name)
+    );
+
+    for (let i = 0; i < labels.length; ++i) {
+      labels[i].exclusions =
+        labels[i].name in exclusions
+          ? exclusions[labels[i].name].map((entity) => entity.pattern)
+          : [];
+    }
+    return labels;
   }
 
   async findRegexMatches(): Promise<void> {

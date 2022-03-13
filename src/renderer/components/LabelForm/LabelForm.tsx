@@ -32,7 +32,7 @@ function LabelForm(): JSX.Element {
               type="button"
               size="md"
               leftIcon={<FaPlus />}
-              onClick={() => arrayHelpers.push({ name: '', patterns: [] })}
+              onClick={() => arrayHelpers.push({ name: '', patterns: [], exclusions: [] })}
               px={12}
             >
               Add Label
@@ -46,6 +46,7 @@ function LabelForm(): JSX.Element {
               label={{
                 name: label.name,
                 patterns: label.patterns,
+                exclusions: [],
               }}
               color={paletteAsList[index % paletteAsList.length]}
               errors={errors.labels && errors.labels[index]}
