@@ -32,7 +32,9 @@ function LabelForm(): JSX.Element {
               type="button"
               size="md"
               leftIcon={<FaPlus />}
-              onClick={() => arrayHelpers.push({ name: '', patterns: [], exclusions: [] })}
+              onClick={() =>
+                arrayHelpers.push({ name: '', patterns: [], exclusions: [] })
+              }
               px={12}
             >
               Add Label
@@ -46,7 +48,7 @@ function LabelForm(): JSX.Element {
               label={{
                 name: label.name,
                 patterns: label.patterns,
-                exclusions: [],
+                exclusions: label.exclusions,
               }}
               color={paletteAsList[index % paletteAsList.length]}
               errors={errors.labels && errors.labels[index]}
@@ -57,9 +59,15 @@ function LabelForm(): JSX.Element {
               onChangePatterns={(value) => {
                 setFieldValue(`labels[${index}].patterns`, value);
               }}
+              onChangeExclusions={(value) => {
+                setFieldValue(`labels[${index}].exclusions`, value);
+              }}
               onBlurName={() => setFieldTouched(`labels[${index}].name`, true)}
               onBlurPatterns={() =>
                 setFieldTouched(`labels[${index}].patterns`, true)
+              }
+              onBlurExclusions={() =>
+                setFieldTouched(`labels[${index}].exclusions`, true)
               }
               onClickRemove={() => arrayHelpers.remove(index)}
               isRemoveDisabled={values.labels.length <= 1}

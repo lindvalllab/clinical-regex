@@ -226,7 +226,9 @@ function NewProject(): JSX.Element {
           groupIdField:
             config.groupIdFieldIndex || ref.current?.values.groupIdField || -1,
           labels: config.labels ||
-            ref.current?.values.labels || [{ name: '', patterns: [], exclusions: [] }],
+            ref.current?.values.labels || [
+              { name: '', patterns: [], exclusions: [] },
+            ],
           fields: ref.current?.values.fields || [],
         }}
         validationSchema={validationDataset.concat(validationLabels)}

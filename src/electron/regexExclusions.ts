@@ -1,5 +1,9 @@
+export const REGEX_MATCH_ID = 'cr_internal_match_id';
+
 export function createRegex(patterns: string[], exclusions: string[]): string {
-  return exclusions.join('|') + '|(?<result>' + patterns.join('|') + ')';
+  return (
+    exclusions.join('|') + `|(?<${REGEX_MATCH_ID}>` + patterns.join('|') + ')'
+  );
 }
 
 export function* getMatches(
@@ -11,11 +15,9 @@ export function* getMatches(
   for (const match of matches) {
     if (
       match.groups !== undefined &&
-      match.groups['result'] !== undefined &&
+      match.groups[REGEX_MATCH_ID] !== undefined &&
       match.index !== undefined
     )
       yield [match.index, match[0].length];
   }
 }
-
-getMatches(createRegex(['b'], ['ab', 'bc']), 'abbabc');
