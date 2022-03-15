@@ -12,7 +12,7 @@ type PatternInputProps = {
   placeholder?: string;
   onChange?: (value: string[]) => void;
   onBlur?: () => void;
-  value: string[];
+  value?: string[];
   inputId?: string;
 };
 
@@ -23,7 +23,7 @@ function PatternInput(props: PatternInputProps): JSX.Element {
   );
 
   useEffect(() => {
-    setValue(props.value.map(createOption));
+    setValue(props.value === undefined ? [] : props.value.map(createOption));
   }, [props.value]);
 
   const acceptInput = () => {
