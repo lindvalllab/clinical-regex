@@ -1,3 +1,5 @@
+// Use the trick from https://www.rexegg.com/regex-best-trick.html to handle
+// excluded patterns.
 export const REGEX_MATCH_ID = 'cr_internal_match_id';
 
 export function createRegex(patterns: string[], exclusions: string[]): string {
