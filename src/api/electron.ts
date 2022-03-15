@@ -11,6 +11,7 @@ import {
   TextModel,
   SettingsModel,
 } from '../electron/db';
+import { getRegexMatches } from '../electron/regexExclusions';
 import {
   AnnotationEntity,
   CRAnnotation,
@@ -412,14 +413,7 @@ export default class ElectronApi extends BaseApi {
 
     if (destination) {
       const settings = await this.getSettings();
-      const labels = await this.getAllLabels()
-        .then((labels) => groupBy(labels, (e) => e.name))
-        .then((labels) =>
-          Object.entries(labels).map(([key, value], index) => ({
-            name: key,
-            patterns: value.map((label) => label.pattern),
-          }))
-        );
+      const labels = await this.collectLabels();
 
       const config = {
         isGrouped: settings.IS_GROUPED,
@@ -521,7 +515,7 @@ export default class ElectronApi extends BaseApi {
   }
 
   async findRegexMatches(): Promise<void> {
-    const labels = await this.getAllLabels();
+    const labels = await this.collectLabels();
     const promises: Promise<void>[] = [];
     const numberOfTexts = await TextModel.query().resultSize();
     progress = 0;
@@ -529,21 +523,22 @@ export default class ElectronApi extends BaseApi {
       for (let text_id = 1; text_id <= numberOfTexts; text_id++) {
         const textEntity = await TextModel.query(trx).findById(text_id);
         for (const label of labels) {
-          const re = new RegExp(label.pattern, 'gi');
-          for (const match of Array.from(textEntity.text.matchAll(re))) {
-            if (match.index !== undefined) {
-              promises.push(
-                new Promise(async (resolve) => {
-                  await MatchModel.query(trx).insert({
-                    text_id: text_id,
-                    label: label.name,
-                    start: match.index,
-                    length: match[0].length,
-                  });
-                  resolve();
-                })
-              );
-            }
+          for (const match of getRegexMatches(
+            label.patterns,
+            label.exclusions,
+            textEntity.text
+          )) {
+            promises.push(
+              new Promise(async (resolve) => {
+                await MatchModel.query(trx).insert({
+                  text_id: text_id,
+                  label: label.name,
+                  start: match.index,
+                  length: match.length,
+                });
+                resolve();
+              })
+            );
           }
         }
         progress = 100 * (text_id / numberOfTexts);
