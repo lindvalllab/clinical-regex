@@ -4,7 +4,7 @@ import EntryDisplay from '../../components/EntryDisplay';
 import {
   CRAnnotation,
   Entry,
-  LabelEntity,
+  PatternEntity,
   SettingsEntity,
   SpanWithTag,
 } from '../../../types';
@@ -43,7 +43,7 @@ function AnnotationInterface(): JSX.Element {
 
   const bg = useColorModeValue('white', 'gray.800');
   const [groupIds, setGroupIds] = useState<string[]>([]);
-  const [labels, setLabels] = useState<LabelEntity[]>([]);
+  const [patterns, setPatterns] = useState<PatternEntity[]>([]);
   const [settings, setSettings] = useState<SettingsEntity>();
   const [entry, setEntry] = useState<Entry>();
   const [highlights, setHighlights] =
@@ -97,7 +97,7 @@ function AnnotationInterface(): JSX.Element {
       .getAllGroupIds({ orderByMatches: true })
       .then(setGroupIds)
       .catch(console.error);
-    api.getAllPatterns().then(setLabels).catch(console.error);
+    api.getAllPatterns().then(setPatterns).catch(console.error);
     api
       .getTotalEntriesWithMatches()
       .then(setTotalEntriesWithMatches)
@@ -156,7 +156,7 @@ function AnnotationInterface(): JSX.Element {
   if (settings === undefined) return <RedirectHome />;
 
   const uniqueLabels = getUnique(
-    labels.sort((e) => e.id).map((label) => label.label)
+    patterns.sort((e) => e.id).map((pattern) => pattern.label)
   );
   const matchedLabels =
     highlights === undefined
@@ -195,7 +195,7 @@ function AnnotationInterface(): JSX.Element {
 
   return (
     <Flex flexDirection="column" h="full" w="full">
-      {entry && labels && highlights ? (
+      {entry && patterns && highlights ? (
         <HStack alignItems="flex-start" maxW="100vw">
           <Box w="80vw" pl={8} pr={4} mt={4}>
             <AnnotationStats
@@ -209,9 +209,9 @@ function AnnotationInterface(): JSX.Element {
             />
             <EntryDisplay
               entry={entry}
-              labels={labels}
+              labels={patterns}
               highlights={highlights}
-              palette={paletteFromLabels(labels)}
+              palette={paletteFromLabels(patterns)}
               contextWindow={contextWindow}
               autoHide={autoHide}
             />
@@ -220,7 +220,7 @@ function AnnotationInterface(): JSX.Element {
             entry={entry}
             labels={uniqueLabels}
             matched={matched}
-            palette={paletteFromLabels(labels)}
+            palette={paletteFromLabels(patterns)}
             onSubmit={onSubmit}
           />
         </HStack>

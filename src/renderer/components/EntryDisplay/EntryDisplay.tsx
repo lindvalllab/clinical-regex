@@ -1,5 +1,5 @@
 import HighlightedText from '../HighlightedText';
-import { Entry, LabelEntity, SpanWithTag } from '../../../types';
+import { Entry, PatternEntity, SpanWithTag } from '../../../types';
 import { Box, VStack } from '@chakra-ui/react';
 
 import { ColorPaletteFromLabels } from '../../ColorPaletteProvider';
@@ -7,7 +7,7 @@ import { AUTO_HIDE_OPTIONS } from '../../pages/AnnotationInterface/constants';
 
 type EntryDisplayProps = {
   entry: Entry;
-  labels: LabelEntity[];
+  labels: PatternEntity[];
   highlights: { [textId: number]: SpanWithTag[] };
   palette: ColorPaletteFromLabels;
   contextWindow: number;

@@ -19,7 +19,7 @@ import {
   CRText,
   DashboardEntry,
   Entry,
-  LabelEntity,
+  PatternEntity,
   MatchEntity,
   SettingsEntity,
   TextEntity,
@@ -42,11 +42,11 @@ export default class ElectronApi extends BaseApi {
     return AnnotationModel.query();
   }
 
-  async getAllPatterns(): Promise<LabelEntity[]> {
+  async getAllPatterns(): Promise<PatternEntity[]> {
     return PatternModel.query();
   }
 
-  async getAllExclusions(): Promise<LabelEntity[]> {
+  async getAllExclusions(): Promise<PatternEntity[]> {
     return ExclusionModel.query();
   }
 

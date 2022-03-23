@@ -5,7 +5,7 @@ import {
   CRText,
   DashboardEntry,
   Entry,
-  LabelEntity,
+  PatternEntity,
   MatchEntity,
   SettingsEntity,
   TextEntity,
@@ -13,7 +13,7 @@ import {
 
 export default abstract class BaseApi {
   public abstract getAllAnnotations(): Promise<AnnotationEntity[]>;
-  public abstract getAllPatterns(): Promise<LabelEntity[]>;
+  public abstract getAllPatterns(): Promise<PatternEntity[]>;
   public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getAllMatches(): Promise<MatchEntity[]>;
   public abstract getAllGroupIds(opts: {

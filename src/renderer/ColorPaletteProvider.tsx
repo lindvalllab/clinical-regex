@@ -1,6 +1,6 @@
 import { useColorModeValue } from '@chakra-ui/react';
 import { Context, Dispatch, createContext, useEffect, useReducer } from 'react';
-import { LabelEntity } from '../types';
+import { PatternEntity } from '../types';
 import { getUnique } from '../utils';
 
 type ColorPaletteName = 'rainbow' | 'bright';
@@ -31,7 +31,7 @@ const DEFAULT = BRIGHT;
 
 interface ColorPaletteContextType {
   dispatch: Dispatch<ColorPaletteName>;
-  paletteFromLabels: (labels: LabelEntity[]) => ColorPaletteFromLabels;
+  paletteFromLabels: (labels: PatternEntity[]) => ColorPaletteFromLabels;
   paletteAsList: ColorPaletteColors;
 }
 
@@ -60,7 +60,7 @@ const ColorPaletteProvider: React.FC = ({ children }) => {
   const isDark = useColorModeValue(false, true);
 
   /** Create a (label name, hex value) map given a set of labels */
-  const paletteFromLabels = (labels: LabelEntity[]) => {
+  const paletteFromLabels = (labels: PatternEntity[]) => {
     const unique = getUnique(
       labels.sort((label) => label.id).map((label) => label.label)
     );
