@@ -17,6 +17,7 @@ import ExternalLink from "../components/ExternalLink"
 import { useStaticQuery, graphql } from "gatsby"
 import { Octokit } from "octokit"
 import { Endpoints } from "@octokit/types"
+import Helmet from "react-helmet"
 
 type Release =
   Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
@@ -119,6 +120,7 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
+      <Helmet><script src="//embed.typeform.com/next/embed.js"></script></Helmet>
       <SEO title="Home" />
       <Wrap spacing={12} justify="center">
         <WrapItem
@@ -143,6 +145,15 @@ const IndexPage = (): JSX.Element => {
                 : `App not supported for detected OS`}
             </Button>
           </Link>
+          <Button
+            data-tf-popup="ALBY4SzH"
+            data-tf-size="70"
+            data-tf-iframe-props="title=Clinical Regex - Contact Form"
+            data-tf-medium="snippet"
+            variant="outline"
+          >
+              User Registration
+          </Button>
           <Text fontSize="sm">
             Not seeing the version you want?{" "}
             <ExternalLink href={site.siteMetadata.releasesUrl}>
