@@ -32,7 +32,7 @@ function Dashboard(): JSX.Element {
   }, [api]);
 
   useEffect(() => {
-    api.getAllLabels().then((labels) => setLabels(labels));
+    api.getAllPatterns().then((labels) => setLabels(labels));
   }, [api]);
 
   useEffect(() => {

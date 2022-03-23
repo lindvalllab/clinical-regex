@@ -13,7 +13,7 @@ import {
 
 export default abstract class BaseApi {
   public abstract getAllAnnotations(): Promise<AnnotationEntity[]>;
-  public abstract getAllLabels(): Promise<LabelEntity[]>;
+  public abstract getAllPatterns(): Promise<LabelEntity[]>;
   public abstract getAllTexts(): Promise<TextEntity[]>;
   public abstract getAllMatches(): Promise<MatchEntity[]>;
   public abstract getAllGroupIds(opts: {

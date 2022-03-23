@@ -97,7 +97,7 @@ function AnnotationInterface(): JSX.Element {
       .getAllGroupIds({ orderByMatches: true })
       .then(setGroupIds)
       .catch(console.error);
-    api.getAllLabels().then(setLabels).catch(console.error);
+    api.getAllPatterns().then(setLabels).catch(console.error);
     api
       .getTotalEntriesWithMatches()
       .then(setTotalEntriesWithMatches)
@@ -156,7 +156,7 @@ function AnnotationInterface(): JSX.Element {
   if (settings === undefined) return <RedirectHome />;
 
   const uniqueLabels = getUnique(
-    labels.sort((e) => e.id).map((label) => label.name)
+    labels.sort((e) => e.id).map((label) => label.label)
   );
   const matchedLabels =
     highlights === undefined

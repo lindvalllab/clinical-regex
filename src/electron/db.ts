@@ -46,18 +46,18 @@ export class TextModel extends Model {
   }
 }
 
-export class LabelModel extends Model {
+export class PatternModel extends Model {
   id!: number;
-  name!: string;
+  label!: string;
   pattern!: string;
   static get tableName(): string {
-    return 'labels';
+    return 'patterns';
   }
 }
 
 export class ExclusionModel extends Model {
   id!: number;
-  name!: string;
+  label!: string;
   pattern!: string;
   static get tableName(): string {
     return 'exclusions';
@@ -176,7 +176,7 @@ export async function isDbBroken(filename: string): Promise<boolean> {
     await Promise.all([
       db.schema.hasTable('texts'),
       db.schema.hasTable('annotations'),
-      db.schema.hasTable('labels'),
+      db.schema.hasTable('patterns'),
       db.schema.hasTable('exclusions'),
       db.schema.hasTable('settings'),
       db.schema.hasTable('matches'),
@@ -188,13 +188,13 @@ export async function isDbBroken(filename: string): Promise<boolean> {
     return true;
   }
 
-  // If any of the texts, labels, matches, or settings tables are empty and if there
+  // If any of the texts, patterns, matches, or settings tables are empty and if there
   // are no annotations, we assume that the project was not initialized properly.
   const hasData =
     (
       await Promise.all([
         db('texts').count('* as count'),
-        db('labels').count('* as count'),
+        db('patterns').count('* as count'),
         db('matches').count('* as count'),
         db('settings').count('* as count'),
       ])

@@ -62,7 +62,7 @@ const ColorPaletteProvider: React.FC = ({ children }) => {
   /** Create a (label name, hex value) map given a set of labels */
   const paletteFromLabels = (labels: LabelEntity[]) => {
     const unique = getUnique(
-      labels.sort((label) => label.id).map((label) => label.name)
+      labels.sort((label) => label.id).map((label) => label.label)
     );
 
     const paletteForMode = isDark ? palette.dark : palette.light;
