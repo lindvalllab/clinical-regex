@@ -142,6 +142,10 @@ const initDb = async (filename?: string): Promise<void> => {
         filename: filename,
       };
     },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: path.join(__dirname, 'migrations'),
+    },
   });
 
   // Give the knex instance to objection
@@ -234,6 +238,9 @@ export async function isDbBroken(filename: string): Promise<boolean> {
       return {
         filename: filename,
       };
+    },
+    migrations: {
+      tableName: 'knex_migrations',
     },
   });
   const hasTables = (
