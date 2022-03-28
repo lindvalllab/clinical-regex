@@ -151,79 +151,8 @@ const initDb = async (filename?: string): Promise<void> => {
   // Give the knex instance to objection
   Model.knex(db);
 
-  async function createSchema() {
-    if (!(await db.schema.hasTable('texts'))) {
-      await db.schema.createTable('texts', (table) => {
-        table.increments('id').primary();
-        table.string('group_id').notNullable();
-        table.text('text').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('labels'))) {
-      await db.schema.createTable('labels', (table) => {
-        table.increments('id').primary();
-        table.string('name').notNullable();
-        table.text('pattern').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('exclusions'))) {
-      await db.schema.createTable('exclusions', (table) => {
-        table.increments('id').primary();
-        table.string('name').notNullable();
-        table.text('pattern').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('annotations'))) {
-      await db.schema.createTable('annotations', (table) => {
-        table.increments('id').primary();
-        table
-          .string('group_id')
-          .references('group_id')
-          .inTable('texts')
-          .notNullable();
-        table
-          .string('label')
-          .references('name')
-          .inTable('labels')
-          .notNullable();
-        table.integer('value').notNullable();
-        table.unique(['group_id', 'label']);
-      });
-    }
-
-    if (!(await db.schema.hasTable('settings'))) {
-      await db.schema.createTable('settings', (table) => {
-        table.increments('id').primary();
-        table.integer('IS_GROUPED').notNullable();
-        table.string('GROUP_ID_FIELD');
-        table.string('TEXT_ID_FIELD').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('matches'))) {
-      await db.schema.createTable('matches', (table) => {
-        table.increments('id').primary();
-        table
-          .integer('text_id')
-          .references('id')
-          .inTable('texts')
-          .notNullable();
-        table
-          .string('label')
-          .references('name')
-          .inTable('labels')
-          .notNullable();
-        table.integer('start').notNullable();
-        table.integer('length').notNullable();
-      });
-    }
-  }
-
   try {
-    await createSchema();
+    await db.migrate.latest();
   } catch (err) {
     console.error(err);
   }
