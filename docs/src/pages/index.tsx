@@ -120,7 +120,13 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <Helmet><script src="//embed.typeform.com/next/embed.js"></script></Helmet>
+      <Helmet
+        htmlAttributes={{
+          lang: "en",
+        }}
+      >
+        <script src="//embed.typeform.com/next/embed.js"></script>
+      </Helmet>
       <SEO title="Home" />
       <Wrap spacing={12} justify="center">
         <WrapItem
@@ -129,7 +135,7 @@ const IndexPage = (): JSX.Element => {
           justifyContent="center"
           gridGap={2}
         >
-          <Logo />
+          <Logo width={512} />
           <Text>{site.siteMetadata.description}</Text>
           <Link href={downloadLink}>
             <Button
@@ -152,7 +158,7 @@ const IndexPage = (): JSX.Element => {
             data-tf-medium="snippet"
             variant="outline"
           >
-              User Registration
+            User Registration
           </Button>
           <Text fontSize="sm">
             Not seeing the version you want?{" "}
