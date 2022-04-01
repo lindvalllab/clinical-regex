@@ -14,6 +14,7 @@ export interface CRText {
 export interface CRLabel {
   name: string;
   patterns: string[];
+  exclusions: string[];
 }
 export interface CRAnnotation {
   group_id: string;

@@ -55,6 +55,15 @@ export class LabelModel extends Model {
   }
 }
 
+export class ExclusionModel extends Model {
+  id!: number;
+  name!: string;
+  pattern!: string;
+  static get tableName(): string {
+    return 'exclusions';
+  }
+}
+
 export class AnnotationModel extends Model {
   id!: number;
   group_id!: string;
@@ -155,6 +164,14 @@ const initDb = async (filename?: string): Promise<void> => {
       });
     }
 
+    if (!(await db.schema.hasTable('exclusions'))) {
+      await db.schema.createTable('exclusions', (table) => {
+        table.increments('id').primary();
+        table.string('name').notNullable();
+        table.text('pattern').notNullable();
+      });
+    }
+
     if (!(await db.schema.hasTable('annotations'))) {
       await db.schema.createTable('annotations', (table) => {
         table.increments('id').primary();
@@ -224,6 +241,7 @@ export async function isDbBroken(filename: string): Promise<boolean> {
       db.schema.hasTable('texts'),
       db.schema.hasTable('annotations'),
       db.schema.hasTable('labels'),
+      db.schema.hasTable('exclusions'),
       db.schema.hasTable('settings'),
       db.schema.hasTable('matches'),
     ])

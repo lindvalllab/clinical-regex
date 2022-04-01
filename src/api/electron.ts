@@ -5,11 +5,13 @@ import {
   getTempDbPath,
   initDb,
   AnnotationModel,
+  ExclusionModel,
   LabelModel,
   MatchModel,
   TextModel,
   SettingsModel,
 } from '../electron/db';
+import { getRegexMatches } from '../electron/regexExclusions';
 import {
   AnnotationEntity,
   CRAnnotation,
@@ -42,6 +44,10 @@ export default class ElectronApi extends BaseApi {
 
   async getAllLabels(): Promise<LabelEntity[]> {
     return LabelModel.query();
+  }
+
+  async getAllExclusions(): Promise<LabelEntity[]> {
+    return ExclusionModel.query();
   }
 
   async getAllTexts(): Promise<TextEntity[]> {
@@ -141,6 +147,12 @@ export default class ElectronApi extends BaseApi {
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
     for (const pattern of label.patterns) {
       await LabelModel.query(trx).insert({
+        name: label.name,
+        pattern: pattern,
+      });
+    }
+    for (const pattern of label.exclusions) {
+      await ExclusionModel.query(trx).insert({
         name: label.name,
         pattern: pattern,
       });
@@ -401,14 +413,7 @@ export default class ElectronApi extends BaseApi {
 
     if (destination) {
       const settings = await this.getSettings();
-      const labels = await this.getAllLabels()
-        .then((labels) => groupBy(labels, (e) => e.name))
-        .then((labels) =>
-          Object.entries(labels).map(([key, value], index) => ({
-            name: key,
-            patterns: value.map((label) => label.pattern),
-          }))
-        );
+      const labels = await this.collectLabels();
 
       const config = {
         isGrouped: settings.IS_GROUPED,
@@ -485,8 +490,32 @@ export default class ElectronApi extends BaseApi {
     }
   }
 
+  async collectLabels(): Promise<CRLabel[]> {
+    const labels: CRLabel[] = await this.getAllLabels()
+      .then((labels) => groupBy(labels, (e) => e.name))
+      .then((grouped) =>
+        Object.entries(grouped).map(([key, value], _index) => ({
+          name: key,
+          patterns: value.map((label) => label.pattern),
+          exclusions: [],
+        }))
+      );
+
+    const exclusions = await this.getAllExclusions().then((exclusions) =>
+      groupBy(exclusions, (e) => e.name)
+    );
+
+    for (let i = 0; i < labels.length; ++i) {
+      labels[i].exclusions =
+        labels[i].name in exclusions
+          ? exclusions[labels[i].name].map((entity) => entity.pattern)
+          : [];
+    }
+    return labels;
+  }
+
   async findRegexMatches(): Promise<void> {
-    const labels = await this.getAllLabels();
+    const labels = await this.collectLabels();
     const promises: Promise<void>[] = [];
     const numberOfTexts = await TextModel.query().resultSize();
     progress = 0;
@@ -494,21 +523,22 @@ export default class ElectronApi extends BaseApi {
       for (let text_id = 1; text_id <= numberOfTexts; text_id++) {
         const textEntity = await TextModel.query(trx).findById(text_id);
         for (const label of labels) {
-          const re = new RegExp(label.pattern, 'gi');
-          for (const match of Array.from(textEntity.text.matchAll(re))) {
-            if (match.index !== undefined) {
-              promises.push(
-                new Promise(async (resolve) => {
-                  await MatchModel.query(trx).insert({
-                    text_id: text_id,
-                    label: label.name,
-                    start: match.index,
-                    length: match[0].length,
-                  });
-                  resolve();
-                })
-              );
-            }
+          for (const match of getRegexMatches(
+            label.patterns,
+            label.exclusions,
+            textEntity.text
+          )) {
+            promises.push(
+              new Promise(async (resolve) => {
+                await MatchModel.query(trx).insert({
+                  text_id: text_id,
+                  label: label.name,
+                  start: match.index,
+                  length: match.length,
+                });
+                resolve();
+              })
+            );
           }
         }
         progress = 100 * (text_id / numberOfTexts);

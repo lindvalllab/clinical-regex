@@ -46,7 +46,7 @@ function NewProject(): JSX.Element {
     textFieldIndex: -1,
     groupIdFieldIndex: -1,
     isGrouped: true,
-    labels: [{ name: '', patterns: [] }],
+    labels: [{ name: '', patterns: [], exclusions: [] }],
   });
   const [modalText, setModalText] = useState<string>();
   const [progress, setProgress] = useState<number>(0);
@@ -226,7 +226,9 @@ function NewProject(): JSX.Element {
           groupIdField:
             config.groupIdFieldIndex || ref.current?.values.groupIdField || -1,
           labels: config.labels ||
-            ref.current?.values.labels || [{ name: '', patterns: [] }],
+            ref.current?.values.labels || [
+              { name: '', patterns: [], exclusions: [] },
+            ],
           fields: ref.current?.values.fields || [],
         }}
         validationSchema={validationDataset.concat(validationLabels)}

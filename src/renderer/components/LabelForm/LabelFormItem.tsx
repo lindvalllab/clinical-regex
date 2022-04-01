@@ -24,8 +24,10 @@ type LabelFormItemProps = {
   isRemoveDisabled: boolean;
   onChangeName: ChangeEventHandler<HTMLInputElement>;
   onChangePatterns: ComponentProps<typeof PatternInput>['onChange'];
+  onChangeExclusions: ComponentProps<typeof PatternInput>['onChange'];
   onBlurName: FocusEventHandler<HTMLInputElement>;
   onBlurPatterns: () => void;
+  onBlurExclusions: () => void;
   onClickRemove: () => void;
   errors?: string | FormikErrors<CRLabel>;
   touched?: FormikTouched<CRLabel>;
@@ -39,8 +41,10 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
     touched,
     onChangeName,
     onChangePatterns,
+    onChangeExclusions,
     onBlurName,
     onBlurPatterns,
+    onBlurExclusions,
     onClickRemove,
     isRemoveDisabled,
   } = props;
@@ -100,6 +104,31 @@ function LabelFormItem(props: LabelFormItemProps): JSX.Element {
           onChange={onChangePatterns}
           onBlur={onBlurPatterns}
           placeholder="pall(iative)? (care|medicine)"
+        />
+        <FormHelperText>
+          Press <Kbd>tab</Kbd> or <Kbd>Enter</Kbd> while typing to start a new
+          pattern.
+        </FormHelperText>
+      </FormControl>
+      <FormControl
+        isInvalid={errors?.exclusions !== undefined && touched?.exclusions}
+      >
+        <Flex justifyContent="space-between" alignItems="center" py={1}>
+          <FormLabel
+            m={0}
+            alignSelf="center"
+            htmlFor={`exclusions-${displayNumber}`}
+          >
+            Exclusions
+          </FormLabel>
+          <FormErrorMessage my={0}>{errors?.exclusions}</FormErrorMessage>
+        </Flex>
+        <PatternInput
+          inputId={`exclusions-${displayNumber}`}
+          value={label.exclusions}
+          onChange={onChangeExclusions}
+          onBlur={onBlurExclusions}
+          placeholder="pall(iative)? care not discussed"
         />
         <FormHelperText>
           Press <Kbd>tab</Kbd> or <Kbd>Enter</Kbd> while typing to start a new
