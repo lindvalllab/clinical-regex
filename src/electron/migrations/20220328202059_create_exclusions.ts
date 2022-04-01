@@ -10,8 +10,7 @@ export async function up(knex: Knex): Promise<void> {
   }
 }
 
-export async function down(knex: Knex): Promise<void> {
-  if (await knex.schema.hasTable('exclusions')) {
-    await knex.schema.dropTable('exclusions');
-  }
+export async function down(_knex: Knex): Promise<void> {
+  // Don't drop the exclusions table, as this would lose information
+  // for people opening the file in an older version.
 }
