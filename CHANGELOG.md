@@ -1,3 +1,24 @@
+# v0.7.0 (Fri Apr 01 2022)
+
+#### 🚀 Enhancement
+
+- Exclude [#281](https://github.com/lindvalllab/clinical-regex/pull/281) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### 📝 Documentation
+
+- Minor cleanup [#283](https://github.com/lindvalllab/clinical-regex/pull/283) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Add user registration form [#282](https://github.com/lindvalllab/clinical-regex/pull/282) ([@akwok-dfci](https://github.com/akwok-dfci))
+- remove always failing check for linux OS [#280](https://github.com/lindvalllab/clinical-regex/pull/280) ([@benfl-dfci](https://github.com/benfl-dfci))
+- Add check if window is defined. [#279](https://github.com/lindvalllab/clinical-regex/pull/279) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Add release download link. [#278](https://github.com/lindvalllab/clinical-regex/pull/278) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v0.6.0 (Wed Mar 02 2022)
 
 #### 🚀 Enhancement

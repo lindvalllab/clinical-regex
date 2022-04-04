@@ -17,6 +17,7 @@ import ExternalLink from "../components/ExternalLink"
 import { useStaticQuery, graphql } from "gatsby"
 import { Octokit } from "octokit"
 import { Endpoints } from "@octokit/types"
+import Helmet from "react-helmet"
 
 type Release =
   Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
@@ -45,7 +46,7 @@ function getOS(): string {
     os = "Windows"
   } else if (/Android/.test(userAgent)) {
     os = "Android"
-  } else if (!os && /Linux/.test(platform)) {
+  } else if (/Linux/.test(platform)) {
     os = "Linux"
   }
 
@@ -119,6 +120,13 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
+      <Helmet
+        htmlAttributes={{
+          lang: "en",
+        }}
+      >
+        <script src="//embed.typeform.com/next/embed.js"></script>
+      </Helmet>
       <SEO title="Home" />
       <Wrap spacing={12} justify="center">
         <WrapItem
@@ -127,7 +135,7 @@ const IndexPage = (): JSX.Element => {
           justifyContent="center"
           gridGap={2}
         >
-          <Logo />
+          <Logo width={512} />
           <Text>{site.siteMetadata.description}</Text>
           <Link href={downloadLink}>
             <Button
@@ -143,6 +151,15 @@ const IndexPage = (): JSX.Element => {
                 : `App not supported for detected OS`}
             </Button>
           </Link>
+          <Button
+            data-tf-popup="ALBY4SzH"
+            data-tf-size="70"
+            data-tf-iframe-props="title=Clinical Regex - Contact Form"
+            data-tf-medium="snippet"
+            variant="outline"
+          >
+            User Registration
+          </Button>
           <Text fontSize="sm">
             Not seeing the version you want?{" "}
             <ExternalLink href={site.siteMetadata.releasesUrl}>
