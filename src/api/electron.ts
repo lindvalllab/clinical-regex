@@ -312,14 +312,14 @@ export default class ElectronApi extends BaseApi {
     }
   }
 
-  async saveDbAs(): Promise<string | undefined> {
+  async saveDbAs(defaultPath?: string): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Save File As',
-      defaultPath: 'Untitled.cr',
+      defaultPath: defaultPath === undefined ? 'Untitled.crx' : defaultPath,
       filters: [
         {
           name: 'Clinical Regex File',
-          extensions: ['cr'], // TO-DO: decide on actual extension
+          extensions: ['crx'],
         },
       ],
     });
@@ -347,13 +347,26 @@ export default class ElectronApi extends BaseApi {
       filters: [
         {
           name: 'Clinical Regex File',
-          extensions: ['cr'], // TO-DO: decide on actual extension
+          extensions: ['cr', 'crx'],
         },
       ],
     });
 
     if (source !== undefined && source.length > 0) {
       this.loadDbFromPath(source[0]);
+      if (source[0].endsWith('.cr')) {
+        dialog.showMessageBoxSync({
+          message:
+            'This file needs to be updated to the latest version of Clinical Regex.',
+        });
+        try {
+          return this.saveDbAs(source[0] + 'x');
+        } catch (err) {
+          // Connect to temporary database.
+          this.loadDbFromPath();
+          return;
+        }
+      }
       return source[0];
     } else {
       console.log('No source selected');

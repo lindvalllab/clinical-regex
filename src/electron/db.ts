@@ -127,7 +127,7 @@ const getTempDbPath = async (): Promise<string> => {
     userDataPath = await ipcRenderer.invoke('electron:userDataPath');
   }
 
-  return path.join(userDataPath, 'temp.cr');
+  return path.join(userDataPath, 'temp.crx');
 };
 
 const initDb = async (filename?: string): Promise<void> => {
