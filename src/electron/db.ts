@@ -154,7 +154,7 @@ const initDb = async (filename?: string): Promise<void> => {
   try {
     await db.migrate.latest();
   } catch (err) {
-    console.error(err);
+    throw Error('Migration Error');
   }
 };
 

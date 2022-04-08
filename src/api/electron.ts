@@ -327,7 +327,7 @@ export default class ElectronApi extends BaseApi {
     if (destination) {
       const source = (await getKnexDb().client.config.connection()).filename;
       fs.copyFileSync(source, destination);
-      this.loadDbFromPath(destination);
+      await this.loadDbFromPath(destination);
       return destination;
     } else {
       // TO-DO: figure out a better way to handle this.
@@ -338,7 +338,20 @@ export default class ElectronApi extends BaseApi {
 
   async loadDbFromPath(source?: string): Promise<void> {
     await getKnexDb().destroy();
-    await initDb(source);
+    try {
+      await initDb(source);
+    } catch (err) {
+      if (err.message === 'Migration Error') {
+        dialog.showMessageBoxSync({
+          message:
+            'This file was created with a more recent version of Clinical Regex. ' +
+            'Please upgrade to the latest version.',
+        });
+        await initDb(); // Load temporary database.
+      } else {
+        throw err;
+      }
+    }
   }
 
   async loadDb(): Promise<string | undefined> {
@@ -353,7 +366,7 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (source !== undefined && source.length > 0) {
-      this.loadDbFromPath(source[0]);
+      await this.loadDbFromPath(source[0]);
       if (source[0].endsWith('.cr')) {
         dialog.showMessageBoxSync({
           message:
