@@ -1,3 +1,15 @@
+# v1.0.0 (Thu Apr 28 2022)
+
+#### 💥 Breaking Change
+
+- Handle database migrations [#284](https://github.com/lindvalllab/clinical-regex/pull/284) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v0.7.0 (Fri Apr 01 2022)
 
 #### 🚀 Enhancement
