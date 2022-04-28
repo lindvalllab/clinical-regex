@@ -46,18 +46,18 @@ export class TextModel extends Model {
   }
 }
 
-export class LabelModel extends Model {
+export class PatternModel extends Model {
   id!: number;
-  name!: string;
+  label!: string;
   pattern!: string;
   static get tableName(): string {
-    return 'labels';
+    return 'patterns';
   }
 }
 
 export class ExclusionModel extends Model {
   id!: number;
-  name!: string;
+  label!: string;
   pattern!: string;
   static get tableName(): string {
     return 'exclusions';
@@ -127,7 +127,7 @@ const getTempDbPath = async (): Promise<string> => {
     userDataPath = await ipcRenderer.invoke('electron:userDataPath');
   }
 
-  return path.join(userDataPath, 'temp.cr');
+  return path.join(userDataPath, 'temp.crx');
 };
 
 const initDb = async (filename?: string): Promise<void> => {
@@ -142,86 +142,19 @@ const initDb = async (filename?: string): Promise<void> => {
         filename: filename,
       };
     },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: path.join(__dirname, 'migrations'),
+    },
   });
 
   // Give the knex instance to objection
   Model.knex(db);
 
-  async function createSchema() {
-    if (!(await db.schema.hasTable('texts'))) {
-      await db.schema.createTable('texts', (table) => {
-        table.increments('id').primary();
-        table.string('group_id').notNullable();
-        table.text('text').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('labels'))) {
-      await db.schema.createTable('labels', (table) => {
-        table.increments('id').primary();
-        table.string('name').notNullable();
-        table.text('pattern').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('exclusions'))) {
-      await db.schema.createTable('exclusions', (table) => {
-        table.increments('id').primary();
-        table.string('name').notNullable();
-        table.text('pattern').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('annotations'))) {
-      await db.schema.createTable('annotations', (table) => {
-        table.increments('id').primary();
-        table
-          .string('group_id')
-          .references('group_id')
-          .inTable('texts')
-          .notNullable();
-        table
-          .string('label')
-          .references('name')
-          .inTable('labels')
-          .notNullable();
-        table.integer('value').notNullable();
-        table.unique(['group_id', 'label']);
-      });
-    }
-
-    if (!(await db.schema.hasTable('settings'))) {
-      await db.schema.createTable('settings', (table) => {
-        table.increments('id').primary();
-        table.integer('IS_GROUPED').notNullable();
-        table.string('GROUP_ID_FIELD');
-        table.string('TEXT_ID_FIELD').notNullable();
-      });
-    }
-
-    if (!(await db.schema.hasTable('matches'))) {
-      await db.schema.createTable('matches', (table) => {
-        table.increments('id').primary();
-        table
-          .integer('text_id')
-          .references('id')
-          .inTable('texts')
-          .notNullable();
-        table
-          .string('label')
-          .references('name')
-          .inTable('labels')
-          .notNullable();
-        table.integer('start').notNullable();
-        table.integer('length').notNullable();
-      });
-    }
-  }
-
   try {
-    await createSchema();
+    await db.migrate.latest();
   } catch (err) {
-    console.error(err);
+    throw Error('Migration Error');
   }
 };
 
@@ -235,12 +168,15 @@ export async function isDbBroken(filename: string): Promise<boolean> {
         filename: filename,
       };
     },
+    migrations: {
+      tableName: 'knex_migrations',
+    },
   });
   const hasTables = (
     await Promise.all([
       db.schema.hasTable('texts'),
       db.schema.hasTable('annotations'),
-      db.schema.hasTable('labels'),
+      db.schema.hasTable('patterns'),
       db.schema.hasTable('exclusions'),
       db.schema.hasTable('settings'),
       db.schema.hasTable('matches'),
@@ -252,13 +188,13 @@ export async function isDbBroken(filename: string): Promise<boolean> {
     return true;
   }
 
-  // If any of the texts, labels, matches, or settings tables are empty and if there
+  // If any of the texts, patterns, matches, or settings tables are empty and if there
   // are no annotations, we assume that the project was not initialized properly.
   const hasData =
     (
       await Promise.all([
         db('texts').count('* as count'),
-        db('labels').count('* as count'),
+        db('patterns').count('* as count'),
         db('matches').count('* as count'),
         db('settings').count('* as count'),
       ])

@@ -1,7 +1,7 @@
 import { ModelObject } from 'objection';
 import {
   AnnotationModel,
-  LabelModel,
+  PatternModel,
   MatchModel,
   SettingsModel,
   TextModel,
@@ -23,7 +23,7 @@ export interface CRAnnotation {
 }
 // The three types below correspond to rows in the database.
 export type TextEntity = ModelObject<TextModel>;
-export type LabelEntity = ModelObject<LabelModel>;
+export type PatternEntity = ModelObject<PatternModel>;
 export type AnnotationEntity = ModelObject<AnnotationModel>;
 export type SettingsEntity = ModelObject<SettingsModel>;
 export type MatchEntity = ModelObject<MatchModel>;

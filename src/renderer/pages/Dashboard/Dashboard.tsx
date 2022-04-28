@@ -10,7 +10,7 @@ import { Column, Row } from 'react-table';
 import { ApiContext } from '../../api';
 import { Box, Heading, Icon, Tag, useColorModeValue } from '@chakra-ui/react';
 import { FaCheckCircle } from 'react-icons/fa';
-import { DashboardEntry, LabelEntity } from '../../../types';
+import { DashboardEntry, PatternEntity } from '../../../types';
 import DataTable from '../../components/DataTable';
 import { useHistory } from 'react-router-dom';
 import {
@@ -21,7 +21,7 @@ import RedirectHome from '../../components/RedirectHome';
 
 function Dashboard(): JSX.Element {
   const api = useContext(ApiContext);
-  const [labels, setLabels] = useState<LabelEntity[]>();
+  const [labels, setLabels] = useState<PatternEntity[]>();
   const [groupIds, setGroupIds] = useState<string[]>();
   const [palette, setPalette] = useState<ColorPaletteFromLabels>();
   const [hasData, setHasData] = useState<boolean>(true);
@@ -32,7 +32,7 @@ function Dashboard(): JSX.Element {
   }, [api]);
 
   useEffect(() => {
-    api.getAllLabels().then((labels) => setLabels(labels));
+    api.getAllPatterns().then((labels) => setLabels(labels));
   }, [api]);
 
   useEffect(() => {

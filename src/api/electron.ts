@@ -6,7 +6,7 @@ import {
   initDb,
   AnnotationModel,
   ExclusionModel,
-  LabelModel,
+  PatternModel,
   MatchModel,
   TextModel,
   SettingsModel,
@@ -19,14 +19,14 @@ import {
   CRText,
   DashboardEntry,
   Entry,
-  LabelEntity,
+  PatternEntity,
   MatchEntity,
   SettingsEntity,
   TextEntity,
 } from '../types';
 import { dialog, IpcMain, IpcRenderer, IpcMainInvokeEvent } from 'electron';
 import Papa from 'papaparse';
-import { Transaction, ref } from 'objection';
+import { DBError, Transaction, ref } from 'objection';
 import { ExportedEntry } from './types';
 import { getUnique } from '../utils';
 import { groupBy } from 'lodash';
@@ -42,11 +42,11 @@ export default class ElectronApi extends BaseApi {
     return AnnotationModel.query();
   }
 
-  async getAllLabels(): Promise<LabelEntity[]> {
-    return LabelModel.query();
+  async getAllPatterns(): Promise<PatternEntity[]> {
+    return PatternModel.query();
   }
 
-  async getAllExclusions(): Promise<LabelEntity[]> {
+  async getAllExclusions(): Promise<PatternEntity[]> {
     return ExclusionModel.query();
   }
 
@@ -146,14 +146,14 @@ export default class ElectronApi extends BaseApi {
 
   async insertLabel(label: CRLabel, trx?: Transaction): Promise<void> {
     for (const pattern of label.patterns) {
-      await LabelModel.query(trx).insert({
-        name: label.name,
+      await PatternModel.query(trx).insert({
+        label: label.name,
         pattern: pattern,
       });
     }
     for (const pattern of label.exclusions) {
       await ExclusionModel.query(trx).insert({
-        name: label.name,
+        label: label.name,
         pattern: pattern,
       });
     }
@@ -192,7 +192,7 @@ export default class ElectronApi extends BaseApi {
   }
 
   async insertLabels(labels: CRLabel[]): Promise<void> {
-    await LabelModel.transaction(async (trx) => {
+    await PatternModel.transaction(async (trx) => {
       for (const label of labels) {
         await this.insertLabel(label, trx);
       }
@@ -301,17 +301,25 @@ export default class ElectronApi extends BaseApi {
   }
 
   async projectStarted(): Promise<boolean> {
-    return (await SettingsModel.query()).length > 0;
+    try {
+      return (await SettingsModel.query()).length > 0;
+    } catch (error) {
+      if (error instanceof DBError) {
+        return false;
+      } else {
+        throw error;
+      }
+    }
   }
 
-  async saveDbAs(): Promise<string | undefined> {
+  async saveDbAs(defaultPath?: string): Promise<string | undefined> {
     const destination = dialog.showSaveDialogSync({
       title: 'Save File As',
-      defaultPath: 'Untitled.cr',
+      defaultPath: defaultPath === undefined ? 'Untitled.crx' : defaultPath,
       filters: [
         {
           name: 'Clinical Regex File',
-          extensions: ['cr'], // TO-DO: decide on actual extension
+          extensions: ['crx'],
         },
       ],
     });
@@ -319,7 +327,7 @@ export default class ElectronApi extends BaseApi {
     if (destination) {
       const source = (await getKnexDb().client.config.connection()).filename;
       fs.copyFileSync(source, destination);
-      this.loadDbFromPath(destination);
+      await this.loadDbFromPath(destination);
       return destination;
     } else {
       // TO-DO: figure out a better way to handle this.
@@ -330,7 +338,20 @@ export default class ElectronApi extends BaseApi {
 
   async loadDbFromPath(source?: string): Promise<void> {
     await getKnexDb().destroy();
-    await initDb(source);
+    try {
+      await initDb(source);
+    } catch (err) {
+      if (err.message === 'Migration Error') {
+        dialog.showMessageBoxSync({
+          message:
+            'This file was created with a more recent version of Clinical Regex. ' +
+            'Please upgrade to the latest version.',
+        });
+        await initDb(); // Load temporary database.
+      } else {
+        throw err;
+      }
+    }
   }
 
   async loadDb(): Promise<string | undefined> {
@@ -339,13 +360,26 @@ export default class ElectronApi extends BaseApi {
       filters: [
         {
           name: 'Clinical Regex File',
-          extensions: ['cr'], // TO-DO: decide on actual extension
+          extensions: ['cr', 'crx'],
         },
       ],
     });
 
     if (source !== undefined && source.length > 0) {
-      this.loadDbFromPath(source[0]);
+      await this.loadDbFromPath(source[0]);
+      if (source[0].endsWith('.cr')) {
+        dialog.showMessageBoxSync({
+          message:
+            'This file needs to be updated to the latest version of Clinical Regex.',
+        });
+        try {
+          return this.saveDbAs(source[0] + 'x');
+        } catch (err) {
+          // Connect to temporary database.
+          this.loadDbFromPath();
+          return;
+        }
+      }
       return source[0];
     } else {
       console.log('No source selected');
@@ -445,8 +479,8 @@ export default class ElectronApi extends BaseApi {
     });
 
     if (destination) {
-      const labels = await this.getAllLabels()
-        .then((labels) => labels.map((label) => label.name))
+      const labels = await this.getAllPatterns()
+        .then((patterns) => patterns.map((pattern) => pattern.label))
         .then(getUnique);
 
       const annotations = await TextModel.query()
@@ -491,8 +525,8 @@ export default class ElectronApi extends BaseApi {
   }
 
   async collectLabels(): Promise<CRLabel[]> {
-    const labels: CRLabel[] = await this.getAllLabels()
-      .then((labels) => groupBy(labels, (e) => e.name))
+    const labels: CRLabel[] = await this.getAllPatterns()
+      .then((patterns) => groupBy(patterns, (e) => e.label))
       .then((grouped) =>
         Object.entries(grouped).map(([key, value], _index) => ({
           name: key,
@@ -502,7 +536,7 @@ export default class ElectronApi extends BaseApi {
       );
 
     const exclusions = await this.getAllExclusions().then((exclusions) =>
-      groupBy(exclusions, (e) => e.name)
+      groupBy(exclusions, (e) => e.label)
     );
 
     for (let i = 0; i < labels.length; ++i) {
