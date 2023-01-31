@@ -23,7 +23,6 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.resolve(path.join(__dirname, 'preload.js')),
-      enableRemoteModule: false,
       allowRunningInsecureContent: false,
       experimentalFeatures: false,
       webSecurity: true,
