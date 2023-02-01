@@ -1,3 +1,20 @@
+# v1.0.2 (Wed Feb 01 2023)
+
+#### 🐛 Bug Fix
+
+- update electron builder [#292](https://github.com/lindvalllab/clinical-regex/pull/292) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### 📝 Documentation
+
+- Update dependencies for doc site [#293](https://github.com/lindvalllab/clinical-regex/pull/293) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 2
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v1.0.1 (Wed Feb 01 2023)
 
 #### 🐛 Bug Fix
