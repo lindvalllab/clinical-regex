@@ -10,8 +10,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-      - name: Check variables
-        run: '[ ${{ secrets.GH_TOKEN }} = ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }} ]; echo "$?"'
       - name: Prepare repository
         run: git fetch --unshallow --tags
       - name: Cache node_modules
@@ -31,5 +29,5 @@ jobs:
         run: yarn test
       - name: Create release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CR_BOT_BASIC_TOKEN }}
         run: yarn auto shipit

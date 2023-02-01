@@ -27,7 +27,7 @@ jobs:
           PUBLIC_REPO_NAME: clinical-regex-releases
           RELEASE: ${{ steps.latest_release.outputs.result }}
         with:
-          github-token: ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }}
+          github-token: ${{ secrets.CR_BOT_BASIC_TOKEN }}
           script: |
             const { PUBLIC_REPO_OWNER, PUBLIC_REPO_NAME } = process.env
             let { RELEASE } = process.env
