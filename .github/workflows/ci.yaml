@@ -6,6 +6,11 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.CR_BOT_BASIC_TOKEN }}
+      - name: Prepare repository
+        # Fetch full git history and tags
+        run: git fetch --tags
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -29,5 +34,5 @@ jobs:
         run: yarn test
       - name: Create release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CR_BOT_BASIC_TOKEN }}
         run: yarn auto shipit

@@ -14,15 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-      - name: Prepare repository
-        # Fetch full git history and tags
-        run: git fetch --unshallow --tags
-      - name: Unset header
-        # checkout adds a header that makes branch protection report errors
-        # because the Github action bot is not a collaborator on the repo
-        run: git config --local --unset http.https://github.com/.extraheader
       - name: Setup node
         uses: actions/setup-node@v3
         with:

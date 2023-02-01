@@ -26,4 +26,4 @@ jobs:
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/lindvalllab/clinical-regex.git
           yarn gh-pages -d public -u 'github-actions-bot <support+actions@github.com>'
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CR_BOT_BASIC_TOKEN }}
