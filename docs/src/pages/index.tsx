@@ -17,7 +17,6 @@ import ExternalLink from "../components/ExternalLink"
 import { useStaticQuery, graphql } from "gatsby"
 import { Octokit } from "octokit"
 import { Endpoints } from "@octokit/types"
-import Helmet from "react-helmet"
 
 type Release =
   Endpoints["GET /repos/{owner}/{repo}/releases/latest"]["response"]["data"]
@@ -120,13 +119,6 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
-      <Helmet
-        htmlAttributes={{
-          lang: "en",
-        }}
-      >
-        <script src="//embed.typeform.com/next/embed.js"></script>
-      </Helmet>
       <SEO title="Home" />
       <Wrap spacing={12} justify="center">
         <WrapItem
@@ -187,5 +179,12 @@ const IndexPage = (): JSX.Element => {
     </Layout>
   )
 }
+
+export const Head = () => (
+      <>
+        <html lang="en" />
+        <script src="//embed.typeform.com/next/embed.js"></script>
+      </>
+)
 
 export default IndexPage
