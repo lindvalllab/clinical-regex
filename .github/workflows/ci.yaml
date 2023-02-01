@@ -10,6 +10,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+      - name: Check variables
+        run: '[ ${{ secrets.GH_TOKEN }} = ${{ secrets.GH_TOKEN_PUBLIC_RELEASES }} ]; echo "$?"'
       - name: Prepare repository
         run: git fetch --unshallow --tags
       - name: Cache node_modules
