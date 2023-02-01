@@ -1,3 +1,24 @@
+# v1.0.1 (Wed Feb 01 2023)
+
+#### 🐛 Bug Fix
+
+- Workflow credentials [#291](https://github.com/lindvalllab/clinical-regex/pull/291) ([@benfl-dfci](https://github.com/benfl-dfci))
+- unset git header [#290](https://github.com/lindvalllab/clinical-regex/pull/290) ([@benfl-dfci](https://github.com/benfl-dfci))
+- change token in build workflow [#289](https://github.com/lindvalllab/clinical-regex/pull/289) ([@benfl-dfci](https://github.com/benfl-dfci))
+- try to follow auto instructions [#288](https://github.com/lindvalllab/clinical-regex/pull/288) ([@benfl-dfci](https://github.com/benfl-dfci))
+- add persist-credentials: false to build workflow [#287](https://github.com/lindvalllab/clinical-regex/pull/287) ([@benfl-dfci](https://github.com/benfl-dfci))
+- Upgrade electron [#285](https://github.com/lindvalllab/clinical-regex/pull/285) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### 🤖 CI Upgrades
+
+- update cache, checkout actions to v3 [#286](https://github.com/lindvalllab/clinical-regex/pull/286) ([@benfl-dfci](https://github.com/benfl-dfci))
+
+#### Authors: 1
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+
+---
+
 # v1.0.0 (Thu Apr 28 2022)
 
 #### 💥 Breaking Change
