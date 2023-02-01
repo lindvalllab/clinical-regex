@@ -10,7 +10,7 @@ jobs:
           token: ${{ secrets.CR_BOT_BASIC_TOKEN }}
       - name: Prepare repository
         # Fetch full git history and tags
-        run: git fetch --unshallow --tags
+        run: git fetch --tags
       - name: Setup node
         uses: actions/setup-node@v3
         with:
