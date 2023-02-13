@@ -13,14 +13,14 @@ import SEO from "../components/SEO"
 const OtherSoftwarePage = (): JSX.Element => {
   return (
     <Layout>
-      <SEO title="Other software" />
+      <SEO title="Other Software" />
       <Flex
         flexDir="column"
         alignItems="left"
         justifyContent="center"
         gridGap={2}
       >
-        <Heading as="h1">Other software</Heading>
+        <Heading as="h1">Other Software</Heading>
         <Text>
           <UnorderedList>
             <ListItem>

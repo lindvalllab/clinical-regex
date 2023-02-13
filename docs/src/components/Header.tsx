@@ -37,7 +37,7 @@ const Header = (): JSX.Element => {
       <HeaderLink href="/">Home</HeaderLink>
       <HeaderLink href="/about">About</HeaderLink>
       <HeaderLink href="/publications">Publications</HeaderLink>
-      <HeaderLink href="/otherSoftware">Other software</HeaderLink>
+      <HeaderLink href="/otherSoftware">Other Software</HeaderLink>
     </Flex>
   )
 }
