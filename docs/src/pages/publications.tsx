@@ -13,18 +13,21 @@ import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
-interface Publication {
+interface Library {
   Title: string
   Authors: string
   Journal_Book: string
   Publication_Year: number
   PMID: string
   Citation: string
+  Labels: string
+  Exclusions: string
+  Filename: string
 }
 
 export const query = graphql`
   query {
-    allPublicationsCsv {
+    allLibrariesCsv {
       nodes {
         Title
         Authors
@@ -32,6 +35,9 @@ export const query = graphql`
         Journal_Book
         PMID
         Citation
+        Labels
+        Exclusions
+        Filename
       }
     }
   }
@@ -40,30 +46,30 @@ export const query = graphql`
 const PublicationsPage = ({
   data,
 }: {
-  data: { allPublicationsCsv: { nodes: Publication[] } }
+  data: { allLibrariesCsv: { nodes: Library[] } }
 }): JSX.Element => {
-  const publications = data.allPublicationsCsv.nodes
+  const libraries = data.allLibrariesCsv.nodes
 
   return (
     <Layout>
-      <SEO title="Publications" />
+      <SEO title="Libraries" />
       <Flex
         flexDir="column"
         alignItems="left"
         justifyContent="center"
         gridGap={2}
       >
-        <Heading as="h1">Publications</Heading>
-        <Text mb={8}>List of publications using Clinical Regex</Text>
+        <Heading as="h1">Publications and Keyword Libraries</Heading>
+        <Text mb={8}>List of publications using Clinical Regex and keyword libraries</Text>
         <Stack spacing={8} direction="column" divider={<StackDivider />}>
-          {publications === undefined
+          {libraries === undefined
             ? "Loading"
-            : publications
+            : libraries
                 .sort(
                   (a, b) =>
                     Number(b.Publication_Year) - Number(a.Publication_Year)
                 )
-                .map((publication, index) => (
+                .map((library, index) => (
                   <Grid
                     key={index}
                     templateColumns={{
@@ -72,17 +78,29 @@ const PublicationsPage = ({
                     }}
                     gridGap={2}
                   >
-                    <Text fontSize="sm">{publication.Publication_Year}</Text>
-                    <GridItem colSpan={7}>
+                    <Text fontSize="sm">{library.Publication_Year}</Text>
+                    <GridItem colSpan={4}>
                       <ExternalLink
-                        href={`https://pubmed.ncbi.nlm.nih.gov/${publication.PMID}/`}
+                        href={`https://pubmed.ncbi.nlm.nih.gov/${library.PMID}/`}
                       >
-                        {publication.Title}
+                        {library.Title}
                       </ExternalLink>
-                      <Text fontSize="sm">{publication.Authors}</Text>
+                      <Text fontSize="sm">{library.Authors}</Text>
                       <Text fontSize="sm" color="gray">
-                        {publication.Citation}
+                        {library.Citation}
                       </Text>
+                    </GridItem>
+                    <GridItem colSpan={3}>
+                      <Text>Keyword Library:</Text>
+                      <Text fontSize="sm">{library.Labels}</Text>
+                      <Text fontSize="sm" color="gray">
+                        {library.Exclusions}
+                      </Text>
+                      <ExternalLink
+                        href={`/downloads/${library.Filename}/`}
+                      >
+                        Download Configuration File
+                      </ExternalLink>
                     </GridItem>
                   </Grid>
                 ))}
