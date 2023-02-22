@@ -1,0 +1,57 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Palliative Care",
+      "patterns": [
+        "\\bPallcare\\b,",
+        "\\bpalliative care\\b,",
+        "\\bpall care\\b,",
+        "\\bpallcare\\b,",
+        "\\bpalliative medicine\\b"
+      ]
+    },
+    {
+      "name": "Goals of care",
+      "patterns": [
+        "\\bGoals of care\\b,",
+        "\\bgoc\\b,",
+        "\\bgoals for care\\b,",
+        "\\bgoals of treatment\\b,",
+        "\\bgoals for treatment\\b,",
+        "\\btreatment goals\\b,",
+        "\\bfamily meeting\\b,",
+        "\\bfamily discussion\\b,",
+        "\\bfamily discussions\\b,",
+        "\\bdebility/goals of care\\b,",
+        "\\bgoc/coping\\b,",
+        "\\bpatient goals\\b"
+      ]
+    },
+    {
+      "name": "Code status limitations",
+      "patterns": [
+        "\\bDnr\\b,",
+        "\\bdnrdni\\b,",
+        ", \\bdni\\b,",
+        "\\bdo not resuscitate\\b,",
+        "\\bdo-notresuscitate\\b,",
+        "bdo not intubate\\b,",
+        "\\bdo-notintubate\\b,",
+        "\\bchest compressions\\b,",
+        "\\bno defibrillation\\b,",
+        "\\bno endotracheal intubation\\b,",
+        "\\bno mechanical intubation\\b,",
+        "\\bshocks\\b,",
+        "\\bcmo\\b,",
+        "\\bcomfort measure\\b"
+      ]
+    },
+    {
+      "name": "Hospice",
+      "patterns": [
+        "\\bHospice\\b"
+      ]
+    }
+  ]
+}

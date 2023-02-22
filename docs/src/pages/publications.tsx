@@ -13,7 +13,13 @@ import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
+
 interface Library {
+  publicURL: string
+  name: string
+}
+
+interface Publication {
   Title: string
   Authors: string
   Journal_Book: string
@@ -23,11 +29,12 @@ interface Library {
   Labels: string
   Exclusions: string
   Filename: string
+  Library?: Library
 }
 
 export const query = graphql`
   query {
-    allLibrariesCsv {
+    allPublicationsCsv {
       nodes {
         Title
         Authors
@@ -40,19 +47,31 @@ export const query = graphql`
         Filename
       }
     }
+    allFile(filter: {extension: {eq: "json"}}) {
+      nodes {
+        publicURL
+        name
+      }
+    }
   }
 `
 
 const PublicationsPage = ({
   data,
 }: {
-  data: { allLibrariesCsv: { nodes: Library[] } }
+  data: { allPublicationsCsv: { nodes: Publication[] }, allFile: { nodes: Library[] } }
 }): JSX.Element => {
-  const libraries = data.allLibrariesCsv.nodes
-
+  const configFiles = data.allFile.nodes
+  const publications = data.allPublicationsCsv.nodes.map(
+    publication => ({
+      ...publication,
+      Library: configFiles.find(configFile => (`${configFile.name}.json` == publication.Filename))
+    })
+  )
+  
   return (
     <Layout>
-      <SEO title="Libraries" />
+      <SEO title="Publications" />
       <Flex
         flexDir="column"
         alignItems="left"
@@ -62,14 +81,14 @@ const PublicationsPage = ({
         <Heading as="h1">Publications and Keyword Libraries</Heading>
         <Text mb={8}>List of publications using Clinical Regex and keyword libraries</Text>
         <Stack spacing={8} direction="column" divider={<StackDivider />}>
-          {libraries === undefined
+          {publications === undefined
             ? "Loading"
-            : libraries
+            : publications
                 .sort(
                   (a, b) =>
                     Number(b.Publication_Year) - Number(a.Publication_Year)
                 )
-                .map((library, index) => (
+                .map((publication, index) => (
                   <Grid
                     key={index}
                     templateColumns={{
@@ -78,26 +97,26 @@ const PublicationsPage = ({
                     }}
                     gridGap={2}
                   >
-                    <Text fontSize="sm">{library.Publication_Year}</Text>
+                    <Text fontSize="sm">{publication.Publication_Year}</Text>
                     <GridItem colSpan={4}>
                       <ExternalLink
-                        href={`https://pubmed.ncbi.nlm.nih.gov/${library.PMID}/`}
+                        href={`https://pubmed.ncbi.nlm.nih.gov/${publication.PMID}/`}
                       >
-                        {library.Title}
+                        {publication.Title}
                       </ExternalLink>
-                      <Text fontSize="sm">{library.Authors}</Text>
+                      <Text fontSize="sm">{publication.Authors}</Text>
                       <Text fontSize="sm" color="gray">
-                        {library.Citation}
+                        {publication.Citation}
                       </Text>
                     </GridItem>
                     <GridItem colSpan={3}>
                       <Text>Keyword Library:</Text>
-                      <Text fontSize="sm">{library.Labels}</Text>
+                      <Text fontSize="sm">{publication.Labels}</Text>
                       <Text fontSize="sm" color="gray">
-                        {library.Exclusions}
+                        {publication.Exclusions}
                       </Text>
                       <ExternalLink
-                        href={`/downloads/${library.Filename}/`}
+                        href={publication.Library?.publicURL}
                       >
                         Download Configuration File
                       </ExternalLink>

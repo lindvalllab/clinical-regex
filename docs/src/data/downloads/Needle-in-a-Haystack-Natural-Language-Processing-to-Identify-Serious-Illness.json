@@ -1,0 +1,20 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Pneumoperitoneum",
+      "patterns": [
+        "\\bfree air\\b,",
+        "\\bextraluminal air\\b,",
+        "\\bextraluminal gas\\b,",
+        "\\bpneumoperitoneum\\b,"
+      ]
+    },
+    {
+      "name": "Leptomeningeal disease",
+      "patterns": [
+        "\\bleptomeningeal\\b,"
+      ]
+    }
+  ]
+}
