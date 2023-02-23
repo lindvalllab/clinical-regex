@@ -1,0 +1,16 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Pneumoperitoneum",
+      "patterns": [
+        "\\bfree air\\b,",
+        "\\bair under the diaphragm\\b,",
+        "\\bgas under the diaphragm\\b,",
+        "\\bextra-luminal air\\b,",
+        "\\bextra-luminal gas\\b,",
+        "\\bpneumoperitoneum\\b,"
+      ]
+    }
+  ]
+}

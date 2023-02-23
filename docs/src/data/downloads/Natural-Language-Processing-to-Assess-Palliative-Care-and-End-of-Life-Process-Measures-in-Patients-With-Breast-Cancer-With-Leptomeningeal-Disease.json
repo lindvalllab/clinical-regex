@@ -1,0 +1,50 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Goals-of-Care discussions",
+      "patterns": [
+        "\\bGoals of care\\b,",
+        "\\bgoc\\b,",
+        "\\bgoals for care\\b,",
+        "\\bgoals of treatment\\b,",
+        "bgoals for treatment\\b,",
+        "\\btreatment goals\\b,",
+        "\\bfamily meeting\\b,",
+        "\\bfamily discussion\\b,",
+        "bfamily discussions\\b,",
+        "\\bdebility/goals of care\\b,",
+        "\\bgoc/coping\\b,",
+        "\\bpatient goals\\b"
+      ]
+    },
+    {
+      "name": "Clarifying code status",
+      "patterns": [
+        "\\bDNR\\b,",
+        "bDNI\\b,",
+        "\\bchest compressions\\b,",
+        "\\bcomfort measures only\\b,",
+        "\\bfull code confirmed\\b,",
+        "\\bwould like to be full code\\b,",
+        "\\bfull code per patient\\b"
+      ]
+    },
+    {
+      "name": "Assessment for hospice",
+      "patterns": [
+        "\\bHospice\\b"
+      ]
+    },
+    {
+      "name": "Consideration for palliative care consultation",
+      "patterns": [
+        "\\bPalliative care\\b,",
+        "\\bpall care\\b,",
+        "\\bpallcare\\b,",
+        "\\bpalliative medicine\\b,",
+        "\\bsupportive care\\b"
+      ]
+    }
+  ]
+}

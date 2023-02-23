@@ -1,0 +1,44 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Intraoperative Neuromonitoring",
+      "patterns": [
+        "\\bneuromonitoring\\b,",
+        "\\bneuro monitoring\\b,",
+        "\\bspinal cord monitoring\\b,",
+        "\\bneural monitoring\\b,",
+        "\\bmotor evoked potential\\b,",
+        "\\bmotor evoked potentials\\b,",
+        "\\bMEP\\b,",
+        "\\bMEPs\\b,",
+        "\\bMEPS\\b,",
+        "\\btranscranial motor evoked potential\\b,",
+        "\\btranscranial motor evoked potentials\\b,",
+        "\\bTCMEP\\b,",
+        "\\bTCMEPs\\b,",
+        "\\bTcMEP\\b,",
+        "\\bTcMEPs\\b,",
+        "\\bsomatosensory evoked potentials\\b,",
+        "\\bsomatosensory evoked potential\\b,",
+        "\\bSSEP\\b,",
+        "\\bSSEPs\\b,",
+        "\\bSSEPS\\b,",
+        "\\bevoked potentials\\b,",
+        "\\bevoked potential\\b,",
+        "\\bevoked response\\b,",
+        "\\bevoked responses\\b,",
+        "\\bmotor evoked responses\\b,",
+        "\\bsomatosensory evoked responses\\b,",
+        "\\bmotor evoked response\\b,",
+        "\\bsomatosensory evoked response\\b,",
+        "\\bneurologic monitors\\b,",
+        "\\bneurologic monitor\\b,",
+        "\\belectrophysiological monitoring\\b,",
+        "\\belectrophysiologic monitoring\\b,",
+        "\\belectrophysiological monitor\\b,",
+        "\\belectrophysiologic monitor\\b,"
+      ]
+    }
+  ]
+}
