@@ -1,0 +1,20 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Wheelchair Use",
+      "patterns": [
+        "\\bwheelchair\\b,",
+        "\\belectric chair\\b,",
+        "\\belectric wheelchair\\b,",
+        "\\bpower chair\\b,",
+        "\\bmanual chair\\b,",
+        "\\bmotorized chair\\b,",
+        "\\bmotorized wheelchair\\b,",
+        "\\bscooter\\b,",
+        "\\bwheelchair-user\\b,",
+        "\\bwheelchair user\\b,"
+      ]
+    }
+  ]
+}
