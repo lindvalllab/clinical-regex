@@ -7,6 +7,10 @@ module.exports = {
     labUrl: `https://lindvalllab.dana-farber.org/`,
     dfciUrl: `https://www.dana-farber.org/`,
     releasesUrl: `https://github.com/lindvalllab/clinical-regex-releases/releases`,
+    oldTrainingUrl: `https://lindvalllab.dana-farber.org/clinicalregex.html`,
+    gettingStartedVideoUrl: `https://www.youtube.com/embed/PutemhaS_D0`,
+    annotatingVideoUrl: `https://www.youtube.com/embed/7HV_TaW66Lo`,
+    finishingSavingVideoUrl: `https://www.youtube.com/embed/_Qe-wT00nZg`,
   },
   pathPrefix: `/clinical-regex`,
   plugins: [
