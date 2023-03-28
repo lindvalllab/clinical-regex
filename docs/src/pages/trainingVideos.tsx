@@ -1,5 +1,5 @@
-import { Flex, Heading, Link, Text, AspectRatio } from "@chakra-ui/react"
-import { graphql, useStaticQuery, Link as GatsbyLink } from "gatsby"
+import { Flex, Heading, Text } from "@chakra-ui/react"
+import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
 import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
@@ -49,9 +49,9 @@ const TrainingVideosPage = (): JSX.Element => {
             height="315"
             src={site.siteMetadata.gettingStartedVideoUrl}
             title="YouTube video player"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
+            allowFullScreen>
         </iframe>
         <Heading as="h3">Annotating</Heading>
         <iframe
@@ -59,9 +59,9 @@ const TrainingVideosPage = (): JSX.Element => {
             height="315"
             src={site.siteMetadata.annotatingVideoUrl}
             title="YouTube video player"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
+            allowFullScreen>
         </iframe>
         <Heading as="h3">Finishing and Saving</Heading>
         <iframe
@@ -69,9 +69,9 @@ const TrainingVideosPage = (): JSX.Element => {
             height="315"
             src={site.siteMetadata.finishingSavingVideoUrl}
             title="YouTube video player"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
+            allowFullScreen>
         </iframe>
       </Flex>
     </Layout>
