@@ -5,6 +5,28 @@ import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
+function Video (link) {
+    return (
+        <Flex
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        gridGap={2}
+        >
+            <Heading as="h2">{link.title}</Heading>
+            <iframe
+                width="560"
+                height="315"
+                src={link.src}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen>
+            </iframe>
+        </Flex>
+    )
+}
+
 const TrainingVideosPage = (): JSX.Element => {
   const { site } = useStaticQuery(
     graphql`
@@ -30,7 +52,7 @@ const TrainingVideosPage = (): JSX.Element => {
         flexDir="column"
         alignItems="center"
         justifyContent="center"
-        gridGap={2}
+        gridGap={3}
       >
         <Heading as="h1">Training Videos</Heading>
         <Text>
@@ -43,36 +65,9 @@ const TrainingVideosPage = (): JSX.Element => {
         <Text>
           Training videos can be found below.
         </Text>
-        <Heading as="h3">Getting Started</Heading>
-        <iframe
-            width="560"
-            height="315"
-            src={site.siteMetadata.gettingStartedVideoUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen>
-        </iframe>
-        <Heading as="h3">Annotating</Heading>
-        <iframe
-            width="560"
-            height="315"
-            src={site.siteMetadata.annotatingVideoUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen>
-        </iframe>
-        <Heading as="h3">Finishing and Saving</Heading>
-        <iframe
-            width="560"
-            height="315"
-            src={site.siteMetadata.finishingSavingVideoUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen>
-        </iframe>
+        <Video title="Annotating" src={site.siteMetadata.gettingStartedVideoUrl}/>
+        <Video title="Getting Started" src={site.siteMetadata.annotatingVideoUrl}/>
+        <Video title="Finishing and Saving" src={site.siteMetadata.finishingSavingVideoUrl}/>
       </Flex>
     </Layout>
   )
