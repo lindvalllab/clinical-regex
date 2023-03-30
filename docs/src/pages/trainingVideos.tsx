@@ -13,7 +13,7 @@ function Video (link) {
         justifyContent="center"
         gridGap={2}
         >
-            <Heading as="h2">{link.title}</Heading>
+            <Text>{link.title}</Text>
             <iframe
                 width="560"
                 height="315"
@@ -35,7 +35,6 @@ const TrainingVideosPage = (): JSX.Element => {
           siteMetadata {
             labUrl
             dfciUrl
-            oldTrainingUrl
             gettingStartedVideoUrl
             annotatingVideoUrl
             finishingSavingVideoUrl
@@ -55,18 +54,8 @@ const TrainingVideosPage = (): JSX.Element => {
         gridGap={3}
       >
         <Heading as="h1">Training Videos</Heading>
-        <Text>
-          Old Download and Installation Instructions can be found{" "}
-          <ExternalLink href={site.siteMetadata.oldTrainingUrl}>
-            here
-          </ExternalLink>{" "}
-          .
-        </Text>
-        <Text>
-          Training videos can be found below.
-        </Text>
-        <Video title="Annotating" src={site.siteMetadata.gettingStartedVideoUrl}/>
-        <Video title="Getting Started" src={site.siteMetadata.annotatingVideoUrl}/>
+        <Video title="Getting Started" src={site.siteMetadata.gettingStartedVideoUrl}/>
+        <Video title="Annotating" src={site.siteMetadata.annotatingVideoUrl}/>
         <Video title="Finishing and Saving" src={site.siteMetadata.finishingSavingVideoUrl}/>
       </Flex>
     </Layout>
