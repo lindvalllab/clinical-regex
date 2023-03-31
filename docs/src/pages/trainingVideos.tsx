@@ -1,11 +1,15 @@
 import { Flex, Heading, Text } from "@chakra-ui/react"
 import { graphql, useStaticQuery } from "gatsby"
 import React from "react"
-import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
-function Video (link) {
+interface Link {
+    src: string;
+    title: string;
+}
+
+function Video (link: Link): JSX.Element {
     return (
         <Flex
         flexDir="column"
