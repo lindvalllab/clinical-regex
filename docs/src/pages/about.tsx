@@ -102,10 +102,10 @@ const AboutPage = (): JSX.Element => {
             <Text>
             Manual chart review is time-consuming, resource-intensive, and requires considerable
             clinical expertise and training to achieve high inter-rater reliability
-            <Link as={GatsbyLink} to="#ref22"> [22]</Link>. Clinical
+            <Link as={GatsbyLink} to="#ref22">[22]</Link>. Clinical
             documentation in the EHR is also often lengthy, repetitive, and inconsistently
             formatted. Human coders often experience coder fatigue
-            <Link as={GatsbyLink} to="#ref23"> [23]</Link>, which limits the speed and accuracy of
+            <Link as={GatsbyLink} to="#ref23">[23]</Link>, which limits the speed and accuracy of
             chart review.
             </Text>
             <Text>
