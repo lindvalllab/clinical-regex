@@ -97,7 +97,7 @@ const AboutPage = (): JSX.Element => {
             Unstructured data in the form of free-text notes make up 70-80% of clinical information
             in the electronic health record (EHR) <Link as={GatsbyLink} to="#ref21">[21]</Link>. This
             information has been traditionally inaccessible in large studies, given the laborious
-            process of chart review required to extract usable data elements.
+            process of chart review required to extract usable data elements. 
             </Text>
             <Text>
             Manual chart review is time-consuming, resource-intensive, and requires considerable
