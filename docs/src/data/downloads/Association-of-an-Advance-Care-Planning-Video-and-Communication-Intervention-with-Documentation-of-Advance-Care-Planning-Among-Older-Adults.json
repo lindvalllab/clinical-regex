@@ -1,0 +1,120 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Goals of Care",
+      "patterns": [
+        "\\bgoc\\b,",
+        "\\bgoals of care\\b,",
+        "\\bgoals for care\\b,",
+        "\\bgoals of treatment\\b,",
+        "\\bgoals for treatment\\b,",
+        "\\btreatment goals\\b,",
+        "\\bfamily meeting\\b,",
+        "\\bfamily discussion\\b,",
+        "\\bfamily discussions\\b,",
+        "\\bpatient goals\\b,",
+        "\\bpatient values\\b,",
+        "\\bquality of life\\b,",
+        "\\bprognostic discussions\\b,",
+        "\\billness understanding\\b,",
+        "\\bserious illness conversation\\b,",
+        "\\bserious illness discussion\\b,",
+        "\\bacp\\b,",
+        "\\badvance care plan\\b,",
+        "\\badvance care planning\\b,",
+        "\\badvanced care planning\\b,",
+        "\\bsupportive care\\b,",
+        "\\bcomfort care\\b,",
+        "\\bcomfort approach\\b,",
+        "\\bcomfort directed care\\b,",
+        "\\badvanced care plan/goals of care\\b,",
+        "\\bcomfort measures\\b,",
+        "\\bend of life care\\b,",
+        "\\bwhat matters most\\b,",
+        "\\bwish\\b,"
+      ]
+    },
+    {
+      "name": "Palliative Care",
+      "patterns": [
+        "\\bpalliative care\\b,",
+        "\\bpalliative medicine\\b,",
+        "\\bpall care\\b,",
+        "\\bpallcare\\b,",
+        "\\bpalcare\\b,"
+      ]
+    },
+    {
+      "name": "Hospice",
+      "patterns": [
+        "\\bhospice\\b,"
+      ]
+    },
+    {
+      "name": "Code Status Limitations",
+      "patterns": [
+        "\\bdnr\\b,",
+        "\\bdnrdni\\b,",
+        "\\bdni\\b,",
+        "\\bdnr/dni\\b,",
+        "\\bdo not resuscitate\\b,",
+        "\\bdo-not-resuscitate\\b,",
+        "\\bdo not intubate\\b,",
+        "\\bdo-not-intubate\\b,",
+        "\\bno intubation\\b,",
+        "\\bno mechanical ventilation\\b,",
+        "\\bno ventilation\\b,",
+        "\\bno CPR\\b,",
+        "\\bdeclines CPR\\b,",
+        "\\bno cardiopulmonary resuscitation\\b,",
+        "\\bchest compressions\\b,",
+        "\\bno defibrillation\\b,",
+        "\\bno dialysis\\b,",
+        "\\bno NIPPV\\b,",
+        "\\bno bipap\\b,",
+        "\\bno endotracheal intubation\\b,",
+        "\\bno mechanical intubation\\b,",
+        "\\bdeclines dialysis\\b,",
+        "\\brefuses dialysis\\b,",
+        "\\bshocks\\b,",
+        "\\bcmo\\b,",
+        "\\bcomfort measures\\b,",
+        "\\bcomfort care\\b,",
+        "\\bdo not resuscitate/do not intubate\\b,",
+        "\\bDNR/DNI/DNH\\b,",
+        "\\bDNR/I\\b,",
+        "\\bDNAR\\b,",
+        "\\bfull code\\b,"
+      ]
+    },
+    {
+      "name": "Surrogate Decision Maker",
+      "patterns": [
+        "\\bhealth care agent\\b,",
+        "\\bhealth care proxy\\b",
+        "\\bHCP\\b",
+        "\\bHCP agent\\b",
+        "\\bsurrogate\\b",
+        "\\bdecision maker\\b",
+        "\\bproxy\\b",
+        "\\bhealth agent\\b",
+        "\\bpower of attorney for health care\\b",
+        "\\bHCPOA\\b",
+        "\\bhealth care power of attorney\\b",
+        "\\bhealth care agent\\b",
+        "\\bHCA\\b"
+      ]
+    },
+    {
+      "name": "Video",
+      "patterns": [
+        "\\bvideo\\b,",
+        "\\bvideos\\b",
+        "\\bdecision aid\\b",
+        "\\bshared decision making\\b",
+        "\\bACP decisions\\b"
+      ]
+    }
+  ]
+}
