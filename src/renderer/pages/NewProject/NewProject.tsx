@@ -16,12 +16,9 @@ import validationDataset from '../../components/DatasetForm/validationSchema';
 import validationLabels from '../../components/LabelForm/validationSchema';
 import InlineUpload from '../../components/InlineUpload';
 import { CRLabel } from '../../../types';
-import { ChangeEvent } from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
+import { ChangeEvent, useState, useRef, useContext, useEffect } from 'react';
 import { DatasetFormData } from '../../components/DatasetForm/types';
 import { LabelFormData } from '../../components/LabelForm/types';
-import { useContext } from 'react';
 import { ApiContext } from '../../api';
 import { useHistory } from 'react-router-dom';
 import ProgressModal from '../../components/ProgressModal';
@@ -135,7 +132,7 @@ function NewProject(): JSX.Element {
     if (file)
       try {
         const fields = ref.current?.values.fields;
-        const loadedConfig = JSON.parse(await file?.text());
+        const loadedConfig = JSON.parse(await file.text());
 
         toast.closeAll();
 
@@ -188,6 +185,19 @@ function NewProject(): JSX.Element {
     event.target.value = '';
   };
 
+  const firstNonNullValue = <T,>(
+    array: (T | undefined)[],
+    defaultValue: T
+  ): T => {
+    const found = array.find((e) => e !== undefined && e !== null);
+
+    if (found !== undefined) {
+      return found;
+    }
+
+    return defaultValue;
+  };
+
   return (
     <Container maxW="container.xl" p={16}>
       <Box mb={4}>
@@ -219,17 +229,24 @@ function NewProject(): JSX.Element {
       <Formik
         enableReinitialize
         initialValues={{
-          file: ref.current?.values.file || ({} as File),
-          isGrouped: config.isGrouped || ref.current?.values.isGrouped || true,
-          textField:
-            config.textFieldIndex || ref.current?.values.textField || -1,
-          groupIdField:
-            config.groupIdFieldIndex || ref.current?.values.groupIdField || -1,
-          labels: config.labels ||
-            ref.current?.values.labels || [
-              { name: '', patterns: [], exclusions: [] },
-            ],
-          fields: ref.current?.values.fields || [],
+          file: firstNonNullValue([ref.current?.values.file], {} as File),
+          isGrouped: firstNonNullValue(
+            [config.isGrouped, ref.current?.values.isGrouped],
+            true
+          ),
+          textField: firstNonNullValue(
+            [config.textFieldIndex, ref.current?.values.textField],
+            -1
+          ),
+          groupIdField: firstNonNullValue(
+            [config.groupIdFieldIndex, ref.current?.values.groupIdField],
+            -1
+          ),
+          labels: firstNonNullValue(
+            [config.labels, ref.current?.values.labels],
+            [{ name: '', patterns: [], exclusions: [] }]
+          ),
+          fields: firstNonNullValue([ref.current?.values.fields], []),
         }}
         validationSchema={validationDataset.concat(validationLabels)}
         onSubmit={onSubmit}
