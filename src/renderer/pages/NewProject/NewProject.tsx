@@ -16,7 +16,7 @@ import validationDataset from '../../components/DatasetForm/validationSchema';
 import validationLabels from '../../components/LabelForm/validationSchema';
 import InlineUpload from '../../components/InlineUpload';
 import { CRLabel } from '../../../types';
-import { ChangeEvent, useState, useRef, useContext, useEffect } from 'react';
+import { ChangeEvent, useState, useRef, useContext } from 'react';
 import { DatasetFormData } from '../../components/DatasetForm/types';
 import { LabelFormData } from '../../components/LabelForm/types';
 import { ApiContext } from '../../api';
