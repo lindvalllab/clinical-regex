@@ -1,3 +1,30 @@
+# v1.0.3 (Fri Jun 30 2023)
+
+#### 🐛 Bug Fix
+
+- Fix initial value issue. [#308](https://github.com/lindvalllab/clinical-regex/pull/308) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 📝 Documentation
+
+- Updated publications.csv [#306](https://github.com/lindvalllab/clinical-regex/pull/306) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Added json file for new publication [#305](https://github.com/lindvalllab/clinical-regex/pull/305) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Publications page [#304](https://github.com/lindvalllab/clinical-regex/pull/304) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Revert "fixed link in csv" [#302](https://github.com/lindvalllab/clinical-regex/pull/302) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Added training videos page, links to embedded youtube videos [#301](https://github.com/lindvalllab/clinical-regex/pull/301) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- updated publications.csv [#299](https://github.com/lindvalllab/clinical-regex/pull/299) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Updated to include new json file [#300](https://github.com/lindvalllab/clinical-regex/pull/300) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Add configs [#298](https://github.com/lindvalllab/clinical-regex/pull/298) ([@brigitte-durieux](https://github.com/brigitte-durieux) [@akwok-dfci](https://github.com/akwok-dfci))
+- create page for other software [#294](https://github.com/lindvalllab/clinical-regex/pull/294) ([@benfl-dfci](https://github.com/benfl-dfci))
+- Update yarn.lock with Gatsby Helmet plugin removal. [#295](https://github.com/lindvalllab/clinical-regex/pull/295) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 3
+
+- [@benfl-dfci](https://github.com/benfl-dfci)
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+- Brigitte Durieux ([@brigitte-durieux](https://github.com/brigitte-durieux))
+
+---
+
 # v1.0.2 (Wed Feb 01 2023)
 
 #### 🐛 Bug Fix
