@@ -3,10 +3,7 @@
   "labels": [
     {
       "name": "Goals of Care Discussions",
-      "patterns": [
-        "\\bGoals of care\\b,",
-        "\\bfamily meeting\\b"
-      ],
+      "patterns": ["\\bGoals of care\\b,", "\\bfamily meeting\\b"],
       "exclusions": []
     },
     {
@@ -16,23 +13,16 @@
         "\\bcomfort measures only\\b,",
         "\\bfull code per patient\\b"
       ],
-      "exclusions": [
-        "\\bfull code presumed\\b"
-      ]
+      "exclusions": ["\\bfull code presumed\\b"]
     },
     {
       "name": "Consideration for palliative Care Consultation",
-      "patterns": [
-        "\\bPalliative care\\b,",
-        "\\bpall care\\b"
-      ],
+      "patterns": ["\\bPalliative care\\b,", "\\bpall care\\b"],
       "exclusions": []
     },
     {
       "name": "Assessment for Hospice",
-      "patterns": [
-        "\\bHospice\\b"
-      ],
+      "patterns": ["\\bHospice\\b"],
       "exclusions": []
     }
   ]

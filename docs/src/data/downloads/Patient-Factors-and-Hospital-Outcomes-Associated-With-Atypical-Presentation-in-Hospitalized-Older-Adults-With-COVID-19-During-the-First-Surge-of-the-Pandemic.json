@@ -3,11 +3,7 @@
   "labels": [
     {
       "name": "[COVID-19 Typical] Fever/Chills",
-      "patterns": [
-        "\\bfever\\b,",
-        "\\bchills\\b,",
-        "\\brigors\\b,"
-      ]
+      "patterns": ["\\bfever\\b,", "\\bchills\\b,", "\\brigors\\b,"]
     },
     {
       "name": "[COVID-19 Typical] Cough",

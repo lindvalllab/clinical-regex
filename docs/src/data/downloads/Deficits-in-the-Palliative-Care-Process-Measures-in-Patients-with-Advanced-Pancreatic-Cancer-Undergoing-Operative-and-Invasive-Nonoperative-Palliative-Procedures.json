@@ -35,18 +35,12 @@
     },
     {
       "name": "Consideration for PC Consultation",
-      "patterns": [
-        "\\bPC\\b,",
-        "\\bpall care\\b,",
-        "\\bpallcare\\b"
-      ],
+      "patterns": ["\\bPC\\b,", "\\bpall care\\b,", "\\bpallcare\\b"],
       "exclusions": []
     },
     {
       "name": "Assessment for Hospice",
-      "patterns": [
-        "\\bHospice\\b"
-      ],
+      "patterns": ["\\bHospice\\b"],
       "exclusions": []
     }
   ]

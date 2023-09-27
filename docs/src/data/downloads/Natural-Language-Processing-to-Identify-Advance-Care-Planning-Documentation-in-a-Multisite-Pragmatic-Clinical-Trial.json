@@ -71,9 +71,7 @@
     },
     {
       "name": "Hospice",
-      "patterns": [
-        "\\bhospice\\b"
-      ]
+      "patterns": ["\\bhospice\\b"]
     },
     {
       "name": "Palliative care",

@@ -47,9 +47,7 @@
     },
     {
       "name": "Hospice",
-      "patterns": [
-        "\\bhospice\\b,"
-      ]
+      "patterns": ["\\bhospice\\b,"]
     },
     {
       "name": "Code Status Limitations",

@@ -5,30 +5,30 @@ import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
 interface Link {
-    src: string;
-    title: string;
+  src: string
+  title: string
 }
 
-function Video (link: Link): JSX.Element {
-    return (
-        <Flex
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
-        gridGap={2}
-        >
-            <Text>{link.title}</Text>
-            <iframe
-                width="560"
-                height="315"
-                src={link.src}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen>
-            </iframe>
-        </Flex>
-    )
+function Video(link: Link): JSX.Element {
+  return (
+    <Flex
+      flexDir="column"
+      alignItems="center"
+      justifyContent="center"
+      gridGap={2}
+    >
+      <Text>{link.title}</Text>
+      <iframe
+        width="560"
+        height="315"
+        src={link.src}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      ></iframe>
+    </Flex>
+  )
 }
 
 const TrainingVideosPage = (): JSX.Element => {
@@ -58,9 +58,15 @@ const TrainingVideosPage = (): JSX.Element => {
         gridGap={3}
       >
         <Heading as="h1">Training Videos</Heading>
-        <Video title="Getting Started" src={site.siteMetadata.gettingStartedVideoUrl}/>
-        <Video title="Annotating" src={site.siteMetadata.annotatingVideoUrl}/>
-        <Video title="Finishing and Saving" src={site.siteMetadata.finishingSavingVideoUrl}/>
+        <Video
+          title="Getting Started"
+          src={site.siteMetadata.gettingStartedVideoUrl}
+        />
+        <Video title="Annotating" src={site.siteMetadata.annotatingVideoUrl} />
+        <Video
+          title="Finishing and Saving"
+          src={site.siteMetadata.finishingSavingVideoUrl}
+        />
       </Flex>
     </Layout>
   )

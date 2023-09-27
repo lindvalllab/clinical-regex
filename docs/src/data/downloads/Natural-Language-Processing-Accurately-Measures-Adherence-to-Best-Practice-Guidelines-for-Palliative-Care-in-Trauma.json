@@ -37,10 +37,7 @@
         "\\bwish to be full code\\b,",
         "\\bremaining full code\\b"
       ],
-      "exclusions": [
-        "\\bfull code\\b,",
-        "\\bcode: full\\b"
-      ]
+      "exclusions": ["\\bfull code\\b,", "\\bcode: full\\b"]
     },
     {
       "name": "Goals-of-care discussions",
@@ -97,9 +94,7 @@
     },
     {
       "name": "Hospice assessment ",
-      "patterns": [
-        "\\bHospice\\b"
-      ],
+      "patterns": ["\\bHospice\\b"],
       "exclusions": []
     }
   ]

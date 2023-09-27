@@ -12,9 +12,7 @@
     },
     {
       "name": "Leptomeningeal disease",
-      "patterns": [
-        "\\bleptomeningeal\\b,"
-      ]
+      "patterns": ["\\bleptomeningeal\\b,"]
     }
   ]
 }

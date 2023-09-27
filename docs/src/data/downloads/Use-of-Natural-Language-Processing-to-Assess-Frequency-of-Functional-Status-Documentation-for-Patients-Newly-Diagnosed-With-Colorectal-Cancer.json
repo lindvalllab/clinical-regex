@@ -11,23 +11,15 @@
     },
     {
       "name": "KPS",
-      "patterns": [
-        "\\bKarnofsky\\b,",
-        "\\bLansky\\b,",
-        "\\bKPS\\b,"
-      ]
+      "patterns": ["\\bKarnofsky\\b,", "\\bLansky\\b,", "\\bKPS\\b,"]
     },
     {
       "name": "Performance Status",
-      "patterns": [
-        "\\bperformance status\\b,"
-      ]
+      "patterns": ["\\bperformance status\\b,"]
     },
     {
       "name": "PS",
-      "patterns": [
-        "\\bPS\\b,"
-      ]
+      "patterns": ["\\bPS\\b,"]
     },
     {
       "name": "ADLs",
