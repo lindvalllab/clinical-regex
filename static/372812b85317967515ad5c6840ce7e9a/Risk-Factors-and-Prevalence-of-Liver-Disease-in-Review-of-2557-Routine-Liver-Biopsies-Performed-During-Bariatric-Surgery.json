@@ -1,0 +1,17 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "Steatosis",
+      "patterns": ["\\bsteatosis\\b,"]
+    },
+    {
+      "name": "NASH",
+      "patterns": ["\\bsteatohepatitis\\b,"]
+    },
+    {
+      "name": "Fibrosis",
+      "patterns": ["\\bfibrosis\\b,"]
+    }
+  ]
+}

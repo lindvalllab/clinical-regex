@@ -1,0 +1,35 @@
+{
+  "isGrouped": true,
+  "labels": [
+    {
+      "name": "ECOG",
+      "patterns": [
+        "\\bEastern Cooperative Oncology Group\\b,",
+        "\\bECOG\\b,",
+        "\\bZubrod\\b,"
+      ]
+    },
+    {
+      "name": "KPS",
+      "patterns": ["\\bKarnofsky\\b,", "\\bLansky\\b,", "\\bKPS\\b,"]
+    },
+    {
+      "name": "Performance Status",
+      "patterns": ["\\bperformance status\\b,"]
+    },
+    {
+      "name": "PS",
+      "patterns": ["\\bPS\\b,"]
+    },
+    {
+      "name": "ADLs",
+      "patterns": [
+        "\\bactivities of daily living\\b,",
+        "\\bactivity of daily living\\b,",
+        "\\bADL\\b,",
+        "\\bADLs\\b,",
+        "\\bADLS\\b,"
+      ]
+    }
+  ]
+}
