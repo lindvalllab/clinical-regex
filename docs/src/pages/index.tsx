@@ -181,10 +181,10 @@ const IndexPage = (): JSX.Element => {
 }
 
 export const Head = () => (
-      <>
-        <html lang="en" />
-        <script src="//embed.typeform.com/next/embed.js"></script>
-      </>
+  <>
+    <html lang="en" />
+    <script src="//embed.typeform.com/next/embed.js"></script>
+  </>
 )
 
 export default IndexPage

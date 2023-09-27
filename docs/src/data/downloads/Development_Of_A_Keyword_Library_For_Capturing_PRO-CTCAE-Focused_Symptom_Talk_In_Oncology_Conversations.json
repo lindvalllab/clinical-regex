@@ -24,7 +24,8 @@
         "\\bparched\\b,",
         "\\bthroat feeling dry\\b,",
         "\\bthroat gets dry\\b,",
-        "\\bthroat gets real dry\\b,"],
+        "\\bthroat gets real dry\\b,"
+      ],
       "exclusions": []
     },
     {
@@ -47,7 +48,8 @@
         "\\bprotonix\\b,",
         "\\bswallow\\b,",
         "\\bswallowing\\b,",
-        "\\btrouble swallowing\\b,"],
+        "\\btrouble swallowing\\b,"
+      ],
       "exclusions": []
     },
     {
@@ -70,7 +72,7 @@
         "\\bsoreness in your mouth\\b,",
         "\\bstomatitis\\b,",
         "\\bthroat pain\\b,"
-        ],
+      ],
       "exclusions": []
     },
     {
@@ -353,10 +355,7 @@
     },
     {
       "name": "Hiccups [Gastrointestinal]",
-      "patterns": [
-        "\\bhiccup\\b,",
-        "\\bhiccups\\b,"
-      ],
+      "patterns": ["\\bhiccup\\b,", "\\bhiccups\\b,"],
       "exclusions": []
     },
     {
@@ -741,10 +740,7 @@
     },
     {
       "name": "Acne [Cutaneous]",
-      "patterns": [
-        "\\bacne\\b,",
-        "\\bmetrocream\\b,"
-      ],
+      "patterns": ["\\bacne\\b,", "\\bmetrocream\\b,"],
       "exclusions": []
     },
     {
@@ -919,9 +915,7 @@
     },
     {
       "name": "Stretch Marks [Cutaneous]",
-      "patterns": [
-        "\\bstretch marks\\b,"
-      ],
+      "patterns": ["\\bstretch marks\\b,"],
       "exclusions": []
     },
     {
@@ -1056,10 +1050,7 @@
     },
     {
       "name": "Visual Floaters [Visual/Perceptual]",
-      "patterns": [
-        "\\bfloaters\\b,",
-        "\\bvisual floaters\\b,"
-      ],
+      "patterns": ["\\bfloaters\\b,", "\\bvisual floaters\\b,"],
       "exclusions": []
     },
     {
@@ -1674,9 +1665,7 @@
     },
     {
       "name": "Vaginal Dryness [Genitourinary]",
-      "patterns": [
-        "\\bvaginal dryness\\b,"
-      ],
+      "patterns": ["\\bvaginal dryness\\b,"],
       "exclusions": []
     },
     {
@@ -1785,9 +1774,7 @@
     },
     {
       "name": "Ejaculation [Sexual]",
-      "patterns": [
-          "\\bejaculation\\b,"
-        ],
+      "patterns": ["\\bejaculation\\b,"],
       "exclusions": []
     },
     {
@@ -1801,16 +1788,12 @@
     },
     {
       "name": "Delayed Orgasm [Sexual]",
-      "patterns": [
-        "\\bdelayed orgasm\\b,"
-      ],
+      "patterns": ["\\bdelayed orgasm\\b,"],
       "exclusions": []
     },
     {
       "name": "Unable to have Orgasm [Sexual]",
-      "patterns": [
-        "\\bunable to have orgasm\\b,"
-      ],
+      "patterns": ["\\bunable to have orgasm\\b,"],
       "exclusions": []
     },
     {
@@ -1944,9 +1927,7 @@
     },
     {
       "name": "Body Odor [Miscellaneous]",
-      "patterns": [
-        "\\bbody odor\\b,"
-      ],
+      "patterns": ["\\bbody odor\\b,"],
       "exclusions": []
     }
   ]

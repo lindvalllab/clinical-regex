@@ -49,9 +49,7 @@
     },
     {
       "name": "Hospice",
-      "patterns": [
-        "\\bHospice\\b"
-      ]
+      "patterns": ["\\bHospice\\b"]
     }
   ]
 }

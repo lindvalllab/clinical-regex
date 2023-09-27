@@ -13,7 +13,6 @@ import ExternalLink from "../components/ExternalLink"
 import Layout from "../components/Layout"
 import SEO from "../components/SEO"
 
-
 interface Library {
   publicURL: string
   name: string
@@ -47,7 +46,7 @@ export const query = graphql`
         Filename
       }
     }
-    allFile(filter: {extension: {eq: "json"}}) {
+    allFile(filter: { extension: { eq: "json" } }) {
       nodes {
         publicURL
         name
@@ -59,16 +58,19 @@ export const query = graphql`
 const PublicationsPage = ({
   data,
 }: {
-  data: { allPublicationsCsv: { nodes: Publication[] }, allFile: { nodes: Library[] } }
+  data: {
+    allPublicationsCsv: { nodes: Publication[] }
+    allFile: { nodes: Library[] }
+  }
 }): JSX.Element => {
   const configFiles = data.allFile.nodes
-  const publications = data.allPublicationsCsv.nodes.map(
-    publication => ({
-      ...publication,
-      Library: configFiles.find(configFile => (`${configFile.name}.json` == publication.Filename))
-    })
-  )
-  
+  const publications = data.allPublicationsCsv.nodes.map((publication) => ({
+    ...publication,
+    Library: configFiles.find(
+      (configFile) => `${configFile.name}.json` == publication.Filename
+    ),
+  }))
+
   return (
     <Layout>
       <SEO title="Publications" />
@@ -79,7 +81,9 @@ const PublicationsPage = ({
         gridGap={2}
       >
         <Heading as="h1">Publications and Keyword Libraries</Heading>
-        <Text mb={8}>List of publications using Clinical Regex and keyword libraries</Text>
+        <Text mb={8}>
+          List of publications using Clinical Regex and keyword libraries
+        </Text>
         <Stack spacing={8} direction="column" divider={<StackDivider />}>
           {publications === undefined
             ? "Loading"
@@ -115,9 +119,7 @@ const PublicationsPage = ({
                       <Text fontSize="sm" color="gray">
                         {publication.Exclusions}
                       </Text>
-                      <ExternalLink
-                        href={publication.Library?.publicURL}
-                      >
+                      <ExternalLink href={publication.Library?.publicURL}>
                         Download Configuration File
                       </ExternalLink>
                     </GridItem>

@@ -24,16 +24,32 @@ const OtherSoftwarePage = (): JSX.Element => {
         <Text>
           <UnorderedList>
             <ListItem>
-              <Link href="https://github.com/lindvalllab/rpdr-converter/releases/" isExternal>RPDR Converter</Link>,
-              a utility to convert RPDR .txt files to the .csv format.
+              <Link
+                href="https://github.com/lindvalllab/rpdr-converter/releases/"
+                isExternal
+              >
+                RPDR Converter
+              </Link>
+              , a utility to convert RPDR .txt files to the .csv format.
             </ListItem>
             <ListItem>
-              <Link href="https://github.com/lindvalllab/datefilter/releases/" isExternal>Datefilter</Link>,
-              a utility to filter .csv files to only contain entries in a specified date range.
+              <Link
+                href="https://github.com/lindvalllab/datefilter/releases/"
+                isExternal
+              >
+                Datefilter
+              </Link>
+              , a utility to filter .csv files to only contain entries in a
+              specified date range.
             </ListItem>
             <ListItem>
-              <Link href="https://github.com/lindvalllab/csv-concat/releases" isExternal>CSV Concatenator</Link>,
-              a utility to concatenate multiple .csv files.
+              <Link
+                href="https://github.com/lindvalllab/csv-concat/releases"
+                isExternal
+              >
+                CSV Concatenator
+              </Link>
+              , a utility to concatenate multiple .csv files.
             </ListItem>
           </UnorderedList>
         </Text>

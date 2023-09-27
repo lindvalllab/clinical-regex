@@ -32,9 +32,7 @@
     },
     {
       "name": "Assessment for hospice",
-      "patterns": [
-        "\\bHospice\\b"
-      ]
+      "patterns": ["\\bHospice\\b"]
     },
     {
       "name": "Consideration for palliative care consultation",

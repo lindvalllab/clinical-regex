@@ -31,9 +31,7 @@
         "\\bfull code\\b,",
         "\\bMOLST\\b"
       ],
-      "exclusions": [
-        "\\bpresumed full code\\b"
-      ]
+      "exclusions": ["\\bpresumed full code\\b"]
     },
     {
       "name": "Goals of care discussions",
@@ -67,9 +65,7 @@
     },
     {
       "name": "Hospice assessment",
-      "patterns": [
-        "\\bHospice\\b"
-      ],
+      "patterns": ["\\bHospice\\b"],
       "exclusions": []
     }
   ]
