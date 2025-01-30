@@ -27,10 +27,14 @@ jobs:
       - name: Install modules
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
+      # workaround since sqlite3 requires node-gyp 8.x, which requires distutils
+      # there may be better fixes for this
+      - name: Set up Python v3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
       - name: Build
-        run: |
-          pip install --upgrade setuptools
-          yarn build -p never
+        run: yarn build -p never
         env:
           CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
           CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
