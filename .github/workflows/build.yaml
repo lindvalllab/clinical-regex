@@ -28,7 +28,9 @@ jobs:
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: yarn
       - name: Build
-        run: yarn build -p never
+        run: |
+          pip install --upgrade setuptools
+          yarn build -p never
         env:
           CSC_LINK: ${{ secrets.MACOS_CERTIFICATE }}
           CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
