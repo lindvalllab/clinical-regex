@@ -5,7 +5,7 @@
     "email": "lindvalllab@gmail.com"
   },
   "description": "Cross-platform desktop app for searching and annotating clinical texts.",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^1.6.2",
