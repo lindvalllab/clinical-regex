@@ -1,3 +1,23 @@
+# v1.0.4 (Thu Jan 30 2025)
+
+#### 🐛 Bug Fix
+
+- Upgrade auto [#316](https://github.com/lindvalllab/clinical-regex/pull/316) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### 📝 Documentation
+
+- Run formatter. [#312](https://github.com/lindvalllab/clinical-regex/pull/312) ([@akwok-dfci](https://github.com/akwok-dfci))
+- Trigger build. [#311](https://github.com/lindvalllab/clinical-regex/pull/311) ([@akwok-dfci](https://github.com/akwok-dfci))
+- updated publications.csv to include VIDEO-PCE [#310](https://github.com/lindvalllab/clinical-regex/pull/310) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+- Added VIDEO-PCE config files [#309](https://github.com/lindvalllab/clinical-regex/pull/309) ([@brigitte-durieux](https://github.com/brigitte-durieux))
+
+#### Authors: 2
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+- Brigitte Durieux ([@brigitte-durieux](https://github.com/brigitte-durieux))
+
+---
+
 # v1.0.3 (Fri Jun 30 2023)
 
 #### 🐛 Bug Fix
