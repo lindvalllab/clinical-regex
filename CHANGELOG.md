@@ -1,3 +1,15 @@
+# v1.0.7 (Thu Jan 30 2025)
+
+#### 🐛 Bug Fix
+
+- Try downgrading to Python 3.11 [#319](https://github.com/lindvalllab/clinical-regex/pull/319) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v1.0.6 (Thu Jan 30 2025)
 
 #### 🐛 Bug Fix
