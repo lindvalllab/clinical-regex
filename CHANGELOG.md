@@ -1,3 +1,15 @@
+# v1.0.5 (Thu Jan 30 2025)
+
+#### 🐛 Bug Fix
+
+- Update sqlite3 [#317](https://github.com/lindvalllab/clinical-regex/pull/317) ([@akwok-dfci](https://github.com/akwok-dfci))
+
+#### Authors: 1
+
+- Anne Kwok ([@akwok-dfci](https://github.com/akwok-dfci))
+
+---
+
 # v1.0.4 (Thu Jan 30 2025)
 
 #### 🐛 Bug Fix
