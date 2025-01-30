@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
 const path = require('path');
-const electron_notarize = require('electron-notarize');
+const { notarize } = require('@electron/notarize');
 const package = require('./package.json');
 
 module.exports = async function (params) {
@@ -27,14 +27,14 @@ module.exports = async function (params) {
   }
 
   console.log(`Notarizing ${appId} found at ${appPath}`);
-  console.log(`process.env.appleId ${process.env.appleId}`);
+  console.log(`process.env.APPLE_ID ${process.env.APPLE_ID}`);
 
   try {
-    await electron_notarize.notarize({
-      appBundleId: appId,
+    await notarize({
       appPath: appPath,
-      appleId: process.env.appleId,
-      appleIdPassword: process.env.appleIdPassword,
+      appleId: process.env.APPLE_ID, // login name of your apple developer account
+      appleIdPassword: process.env.APPLE_ID_APP_SPECIFIC_PASSWORD, // app-specific password
+      teamId: process.env.APPLE_TEAM_ID, // team id for your developer team
     });
   } catch (error) {
     console.error(error);
