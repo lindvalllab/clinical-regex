@@ -4395,7 +4395,7 @@
     "@typescript-eslint/types" "5.50.0"
     eslint-visitor-keys "^3.3.0"
 
-"@vscode/sqlite3@^5.1.8":
+"@vscode/sqlite3@5.1.8-vscode":
   version "5.1.8-vscode"
   resolved "https://registry.yarnpkg.com/@vscode/sqlite3/-/sqlite3-5.1.8-vscode.tgz#f9d7eba5eff2965f4d142f4cdb794235d144bb98"
   integrity sha512-9Ku18yZej1kxS7mh6dhCWxkCof043HljcLIdq+RRJr65QdOeAqPOUJ2i6qXRL63l1Kd72uXV/zLA2SBwhfgiOw==
