@@ -40,6 +40,7 @@ const TrainingVideosPage = (): JSX.Element => {
             labUrl
             dfciUrl
             gettingStartedVideoUrl
+            configFileVideoUrl
             annotatingVideoUrl
             finishingSavingVideoUrl
           }
@@ -61,6 +62,10 @@ const TrainingVideosPage = (): JSX.Element => {
         <Video
           title="Getting Started"
           src={site.siteMetadata.gettingStartedVideoUrl}
+        />
+        <Video
+          title="Making a Configuration File"
+          src={site.siteMetadata.configFileVideoUrl}
         />
         <Video title="Annotating" src={site.siteMetadata.annotatingVideoUrl} />
         <Video
