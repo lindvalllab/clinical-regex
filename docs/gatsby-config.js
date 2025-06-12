@@ -8,7 +8,7 @@ module.exports = {
     dfciUrl: `https://www.dana-farber.org/`,
     releasesUrl: `https://github.com/lindvalllab/clinical-regex-releases/releases`,
     gettingStartedVideoUrl: `https://www.youtube.com/embed/PutemhaS_D0`,
-    configFileVideoUrl: `https://www.youtube.com/embed/vmK7EJdFFbI?si=-JnYc8cgyTgp0-2O`,
+    configFileVideoUrl: `https://www.youtube.com/embed/vmK7EJdFFbI?si=-JnYc8cgyTgp0-20`,
     annotatingVideoUrl: `https://www.youtube.com/embed/7HV_TaW66Lo`,
     finishingSavingVideoUrl: `https://www.youtube.com/embed/_Qe-wT00nZg`,
   },
