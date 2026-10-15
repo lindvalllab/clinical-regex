@@ -15,10 +15,7 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-            persist-credentials: false
-            token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v7
       - name: Setup node
         uses: actions/setup-node@v3
         with:
