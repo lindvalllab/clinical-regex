@@ -1,4 +1,6 @@
 name: Build release
+permissions:
+  contents: read
 
 on:
   release:
